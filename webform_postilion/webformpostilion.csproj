@@ -81,6 +81,10 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data.Entity" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.DirectoryServices.AccountManagement" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Drawing" />
@@ -373,7 +377,30 @@
     <Content Include="DataSet1.xss">
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Content>
+    <Content Include="Link_Account.aspx" />
     <Content Include="Page_Handler.ashx" />
+    <Content Include="DataSet2.xsc">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet2.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet2.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet2.xss">
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Content>
+    <Content Include="DataSet3.xsc">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Content>
+    <None Include="DataSet3.xsd">
+      <SubType>Designer</SubType>
+      <Generator>MSDataSetGenerator</Generator>
+      <LastGenOutput>DataSet3.Designer.cs</LastGenOutput>
+    </None>
+    <Content Include="DataSet3.xss">
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Instant_Account_Result.aspx" />
@@ -387,6 +414,7 @@
     <Content Include="report_change_user.aspx" />
     <Content Include="Retail.aspx" />
     <Content Include="Retail_instant.aspx" />
+    <Content Include="role_report.aspx" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\css\pikaday.css" />
@@ -452,6 +480,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Update_User.aspx" />
+    <Content Include="User_Listing.aspx" />
     <Content Include="ViewSwitcher.ascx" />
     <Content Include="Web.config" />
     <Content Include="Bundle.config" />
@@ -515,6 +544,16 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DataSet1.xsd</DependentUpon>
     </Compile>
+    <Compile Include="DataSet2.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet2.xsd</DependentUpon>
+    </Compile>
+    <Compile Include="DataSet3.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>DataSet3.xsd</DependentUpon>
+    </Compile>
     <Compile Include="Delete_User.aspx.cs">
       <DependentUpon>Delete_User.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -559,6 +598,13 @@
     </Compile>
     <Compile Include="Instant_Search_Account.aspx.designer.cs">
       <DependentUpon>Instant_Search_Account.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Link_Account.aspx.cs">
+      <DependentUpon>Link_Account.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Link_Account.aspx.designer.cs">
+      <DependentUpon>Link_Account.aspx</DependentUpon>
     </Compile>
     <Compile Include="Login.aspx.cs">
       <DependentUpon>Login.aspx</DependentUpon>
@@ -606,6 +652,13 @@
     <Compile Include="Retail_instant.aspx.designer.cs">
       <DependentUpon>Retail_instant.aspx</DependentUpon>
     </Compile>
+    <Compile Include="role_report.aspx.cs">
+      <DependentUpon>role_report.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="role_report.aspx.designer.cs">
+      <DependentUpon>role_report.aspx</DependentUpon>
+    </Compile>
     <Compile Include="Search_Account_Pan.aspx.cs">
       <DependentUpon>Search_Account_Pan.aspx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -642,6 +695,13 @@
     <Compile Include="Update_User.aspx.designer.cs">
       <DependentUpon>Update_User.aspx</DependentUpon>
     </Compile>
+    <Compile Include="User_Listing.aspx.cs">
+      <DependentUpon>User_Listing.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="User_Listing.aspx.designer.cs">
+      <DependentUpon>User_Listing.aspx</DependentUpon>
+    </Compile>
     <Compile Include="ViewSwitcher.ascx.cs">
       <DependentUpon>ViewSwitcher.ascx</DependentUpon>
       <SubType>ASPXCodeBehind</SubType>
@@ -670,6 +730,8 @@
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Report_by_date.rdlc" />
+    <EmbeddedResource Include="Role_report.rdlc" />
+    <EmbeddedResource Include="user_list.rdlc" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

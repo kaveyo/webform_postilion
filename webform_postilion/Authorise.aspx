@@ -51,8 +51,7 @@
               <asp:Button ID="Button4" runat="server" Text="Search" class="btn btn-success" OnClick="Button4_Click" autopostback="false"/>
           </div>
      <div style="overflow-y: scroll;height: 300px; width: 1090px;">
-
-  
+          
 
          <br />
          <br />
@@ -68,6 +67,7 @@
                  <asp:BoundField DataField="account" HeaderText="ACCOUNT NUMBER" />
                  <asp:BoundField DataField="branch" HeaderText="BRANCH" />
                  <asp:BoundField DataField="reason" HeaderText="REASON OF ALTERATION" />
+                <%-- <asp:ButtonField ButtonType="Button" CommandName="reason" HeaderText="REASON" Text="REASON" />--%>
                  <asp:ButtonField ButtonType="Button" CommandName="accept2" HeaderText="ACCEPT" Text="ACCEPT" />
                  <asp:ButtonField ButtonType="Button" CommandName="reject2" HeaderText="REJECT" Text="REJECT" />
              </Columns>

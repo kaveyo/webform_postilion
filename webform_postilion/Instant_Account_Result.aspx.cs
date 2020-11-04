@@ -7,6 +7,7 @@ using System.Web.UI;
 using System.Windows.Forms;
 using System.Web.UI.WebControls;
 using System.Data;
+using System.Web.Services;
 
 namespace webform_postilion
 {
@@ -17,6 +18,7 @@ namespace webform_postilion
         ClassDatabase obj = new ClassDatabase();
         protected void Page_Load(object sender, EventArgs e)
         {
+            if (!IsPostBack) { 
             if (Request.QueryString["acc"] != "")
             {
                 obj.conn.ConnectionString = obj.locate;
@@ -64,7 +66,8 @@ namespace webform_postilion
 
                     using (sdr = cmd.ExecuteReader())
                     {
-                        while (sdr.Read())
+                            //while (sdr.Read())
+                           if (sdr.Read())
                         {
 
                             TextBox1.Text = (sdr["account_id"].ToString());
@@ -78,8 +81,13 @@ namespace webform_postilion
                           //  TextBox6.Text = (sdr["overdraft_limit"].ToString());
 
                         }
+                        else
+                            {
+                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "deleted('1');", true);
 
-                    }
+                            }
+
+                        }
 
                     PopulateGridview(Request.QueryString["acc"]);
                     obj.conn.Close();
@@ -94,8 +102,14 @@ namespace webform_postilion
                 }
 
             }
+        
+          }
         }
-
+        [WebMethod]
+        public static string DeleteClick(string id)
+        {
+            return "DONE";
+        }
         void PopulateGridview(String acc)
         {
             ClassDatabase obj = new ClassDatabase();
@@ -173,8 +187,9 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
 
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
-
-            if (DropDownList2.Enabled == true && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
+       if(str.Text == "019" )
+            { 
+            if (DropDownList2.Enabled == true /*&& gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!"*/)
             {
                 if (DropDownList2.Text != "None")
                 {
@@ -182,19 +197,19 @@ namespace webform_postilion
                     {
                         sqlCon.Open();
                         // string query = "UPDATE pc_cards_1_A SET card_status = 0 WHERE customer_id = '"+customer_id_text.Text+"'";
-                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','PLACE ACCOUNT INSTANT','','" + TextBox1.Text + "','" + str.Text + "','REQUEST TO PLACE HOLD ON ACCOUNT','" + str2.Text + "' , '0')";
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','PLACE HOLD ACCOUNT INSTANT','','" + TextBox1.Text + "','" + str.Text + "','REQUEST TO PLACE HOLD ON ACCOUNT','" + str2.Text + "' , '0')";
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
 
-                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('PLACE ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','','','','','','','' , '')";
+                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('PLACE HOLD ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','','','','','','','' , '')";
 
                         SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
                         sqlCmd2.ExecuteNonQuery();
                         TextBox3.Text = "0";
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PLACED HOLD')", true);
-
+                        Button2.Enabled = false;
                        // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "place('PLACE HOLD')", true);
                     }
                 }
@@ -216,12 +231,22 @@ namespace webform_postilion
                         TextBox3.Text = "0";
                         //   MessageBox.Show("REMOVE HOLD ACCOUNT INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED HOLD RESPONSE')", true);
-
+                        Button2.Enabled = false;
                        // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "place('REMOVED HOLD RESSPONSE')", true);
                     }
                 }
             }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FIRST CLICK THE EDIT BUTTON')", true);
+
+            }
         }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
+        }
+    }
 
         private string get_response(string v)
         {
@@ -352,13 +377,16 @@ namespace webform_postilion
         }
         protected void gvPhoneBook_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+            System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+
+            if (str.Text == "019") { 
             if (e.CommandName.Equals("Delete"))
             {
-                System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
-                System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
-
-                System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
-                System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+                
                 String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
 
@@ -389,6 +417,11 @@ namespace webform_postilion
                 }
             }
         }
+                else
+                {
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
+        }
+    }
         protected void gvPhoneBook_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
           /*  //   ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('Deleted')", true);
@@ -436,7 +469,7 @@ namespace webform_postilion
                     {
                         sqlCon.Open();
                         //   string query = "UPDATE pc_cards_1_A SET card_status = 1 WHERE customer_id = '" + customer_id_text.Text + "'";
-                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','EDIT ACCOUNT INSTANT','" + TextBox1.Text + "','0','" + str.Text + "','REQUEST TO EDIT ACCOUNT','" + str2.Text + "' , '0')";
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','EDIT ACCOUNT INSTANT','" + TextBox1.Text + "','"+TextBox1.Text+"','" + str.Text + "','REQUEST TO EDIT ACCOUNT PRODUCT','" + str2.Text + "' , '0')";
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
@@ -447,13 +480,18 @@ namespace webform_postilion
                         sqlCmd2.ExecuteNonQuery();
 
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SAVED')", true);
-
+                    Button4.Enabled = false;
                   //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "place('SAVED')", true);
                     sqlCon.Close();
                     }
-         
+
             }
-      
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FIRST CLICK THE EDIT BUTTON')", true);
+
+            }
+
         }
     }
 }

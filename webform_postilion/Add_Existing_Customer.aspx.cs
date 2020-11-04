@@ -110,24 +110,29 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
-          
-           
-               
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+
+
+            String date = (DateTime.ParseExact(datepicker34.Text, "ddd MMM dd yyyy", CultureInfo.InvariantCulture)).ToString("yyyyMMdd");
+
+            using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','ADD EXISTING CUSTOMER','" + pan + "','0','" + str.Text + "','REQUEST TO ADD EXISTING CUSTOMER','" + str2.Text + "' , '0')";
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('ADD EXISTING CUSTOMER','" + row + "','" + str.Text + "','','"+TextBox1.Text+"','','','' , '','','','','','','"+TextBox7.Text+"','"+ datepicker34.Text+"','"+TextBox3.Text+"' , '"+TextBox2.Text+"','','','"+TextBox5.Text+"','','','','','"+TextBox11.Text+"' , '"+TextBox16.Text+"')";
+                string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city,dob,language,national_id,fax,tel_nr,address_1_2,address_2_1,address_2_2,city2,country_1,country_2) values ('ADD EXISTING CUSTOMER','" + row + "','" + str.Text + "','','" + TextBox1.Text + "','','','" + pan + "' , '','','','','','','" + TextBox7.Text + "','','" + TextBox3.Text + "' , '" + TextBox2.Text + "','','','" + TextBox8.Text + "','','','','','" + TextBox11.Text + "' , '" + TextBox16.Text + "','" + date + "','','' , '','" + TextBox8.Text + "','" + TextBox10.Text + "','" + TextBox14.Text + "','" + TextBox13.Text + "','" + TextBox15.Text + "','ZWE','ZWE')";
 
-                        SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
+                //  string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('ADD EXISTING CUSTOMER','" + row + "','" + str.Text + "','','"+TextBox1.Text+"','','','' , '','','','','','','"+TextBox7.Text+"','"+ datepicker34.Text+"','"+TextBox3.Text+"' , '"+TextBox2.Text+"','','','"+TextBox5.Text+"','','','','','"+TextBox11.Text+"' , '"+TextBox16.Text+"')";
+                //string query2 = " insert into postilion_hold_data (action,id,branch_code,customer_id,first_name,middle_initial,last_name,name_on_card,mobile,address_1_1,city) values ('ADD EXISTING CUSTOMER','" + row + "','" + str.Text + "','" + TextBox1.Text + "','" + TextBox7.Text + "','" + datepicker34.Text + "','" + TextBox3.Text + "' , '" + TextBox2.Text + "','" + TextBox5.Text + "','" + TextBox11.Text + "' , '" + TextBox16.Text + "')";
+
+                SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
                         sqlCmd2.ExecuteNonQuery();
                 //  TextBox3.Text = "1";
 
                 ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SAVED')", true);
+                Button4.Enabled = false;
                // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('SAVED')", true);
                         sqlCon.Close();
                     }

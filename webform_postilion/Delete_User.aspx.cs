@@ -46,7 +46,7 @@ namespace webform_postilion
                 int crow;
                 crow = Convert.ToInt32(e.CommandArgument.ToString());
 
-                  Response.Redirect("Update_User.aspx?id=" + GridView1.Rows[crow].Cells[0].Text);
+                  Response.Redirect("Update_User.aspx?id=" + GridView1.Rows[crow].Cells[0].Text+"&username="+ GridView1.Rows[crow].Cells[1].Text);
                 
             }
             if (e.CommandName.Equals("reject2"))
@@ -60,7 +60,7 @@ namespace webform_postilion
         }
             protected void Button4_Click(object sender, EventArgs e)
         {
-            if (first.Text !="" || surname.Text !="") {
+            if (first.Text !="" ) {
                   ClassDatabase obj = new ClassDatabase();
                   obj.conn.ConnectionString = obj.locate1;
                   obj.conn.Open();
@@ -86,7 +86,7 @@ namespace webform_postilion
                 using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                 {
                     sqlCon.Open();
-                    SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_users where role != 'ADMINISTRATOR' and first_name ='" + first.Text.ToLower() + "' or last_name ='" + surname.Text.ToLower() + "'", sqlCon);
+                    SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_users where role != 'ADMINISTRATOR' and username ='" + first.Text.ToLower() + "'", sqlCon);
                     sqlDa.Fill(dtbl);
                 }
                 if (dtbl.Rows.Count > 0)

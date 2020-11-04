@@ -16,13 +16,13 @@ namespace webform_postilion
     public partial class Update_User : System.Web.UI.Page
     {
 
-        string id;
+        string id,username;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
                  id = Request.QueryString["id"];
-              
+                 username = Request.QueryString["username"];
                 filldrop();
             }
         }
@@ -90,298 +90,193 @@ namespace webform_postilion
         {
             
             const int big = 8;
-            if (password1.Enabled == true && role.Enabled == false && DropDownList2.Enabled == false)
+         
+            if (role.Enabled == true && DropDownList2.Enabled == true && status.Enabled == true)
             {
-                bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
+               // bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
 
-                if (password1.Text == password2.Text)
-                {
-                    if (password1.Text.Length >= big && isDigitPresent)
-                    {
+                    
 
                         ClassDatabase obj = new ClassDatabase();
                         obj.conn.ConnectionString = obj.locate1;
                         obj.conn.Open();
-      
-                            string insertUser = "update postilion_users set password = '"+ encrypt(password1.Text) + "' where user_id = '" + Request.QueryString["id"] + "'";
-                            obj.cmd.Connection = obj.conn;
-                            obj.cmd.CommandText = insertUser;
-                            obj.cmd.ExecuteNonQuery();
-                            obj.cmd.CommandTimeout = 60;
 
-                            obj.conn.Close();
-
-                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
-
-                         
-                            password1.Text = "";
-                            password2.Text = "";
-                     /*   }
-                        else
-                        {
-                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER NOT FOUND')", true);
-
-                        }*/
-
-
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PASSWORD TOO SHORT AND ALSO INCLUDE A NUMBER ')", true);
-
-                    }
-                }
-                else
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER SAME PASSWORD')", true);
-
-                }
-            }
-            if (password1.Enabled == true && role.Enabled == true && DropDownList2.Enabled == true)
-            {
-                bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
-
-                if (password1.Text == password2.Text)
-                {
-                    if (password1.Text.Length >= big && isDigitPresent)
-                    {
-
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
-                        /*    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE first_name = '" + password1.Text + "' and last_name = '"+password1.Text+"' ", obj.conn);
-                            DataTable dt = new DataTable();
-                            adapter.Fill(dt);
-                            if (dt.Rows[0][0].ToString() != "0")
-                            {
-
-    */
-                        string insertUser = "update postilion_users set password = '" + encrypt(password1.Text) + "',branch = '" + DropDownList2.Text.Substring(0,3) + "',role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                        string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0,3) + "',role = '" + role.Text + "', active = '"+status.Text+"' where user_id = '" + Request.QueryString["id"] + "'";
                         obj.cmd.Connection = obj.conn;
                         obj.cmd.CommandText = insertUser;
                         obj.cmd.ExecuteNonQuery();
                         obj.cmd.CommandTimeout = 60;
-
-                        obj.conn.Close();
-
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
-
-
-                        password1.Text = "";
-                        password1.Text = "";
-                        /*   }
-                           else
-                           {
-                               ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER NOT FOUND')", true);
-
-                           }*/
-
-
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PASSWORD TOO SHORT AND ALSO INCLUDE A NUMBER ')", true);
-
-                    }
-                }
-                else
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER SAME PASSWORD')", true);
-
-                }
-            }
-            if (password1.Enabled == true && role.Enabled == true && DropDownList2.Enabled == false)
-            {
-                bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
-
-                if (password1.Text == password2.Text)
-                {
-                    if (password1.Text.Length >= big && isDigitPresent)
-                    {
-
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
-                        /*    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE first_name = '" + password1.Text + "' and last_name = '"+password1.Text+"' ", obj.conn);
-                            DataTable dt = new DataTable();
-                            adapter.Fill(dt);
-                            if (dt.Rows[0][0].ToString() != "0")
-                            {
-
-    */
-                        string insertUser = "update postilion_users set password = '" + encrypt(password1.Text) + "' , role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                        
+                        string insertUser2 = "update postilion_user_list set  branch = '" + DropDownList2.Text.Substring(0, 3) + "',role = '" + role.Text + "',status = '" + status.Text + "'  where username = '" + Request.QueryString["username"] + "'";
                         obj.cmd.Connection = obj.conn;
-                        obj.cmd.CommandText = insertUser;
+                        obj.cmd.CommandText = insertUser2;
                         obj.cmd.ExecuteNonQuery();
                         obj.cmd.CommandTimeout = 60;
-
                         obj.conn.Close();
 
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
 
-
-                        password1.Text = "";
-                        password1.Text = "";
-                        /*   }
-                           else
-                           {
-                               ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER NOT FOUND')", true);
-
-                           }*/
-
-
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PASSWORD TOO SHORT AND ALSO INCLUDE A NUMBER ')", true);
-
-                    }
-                }
-                else
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER SAME PASSWORD')", true);
-
-                }
+                   
+              
             }
-            if (password1.Enabled == true && role.Enabled == false && DropDownList2.Enabled == true)
+            if ( role.Enabled == true && DropDownList2.Enabled == false && status.Enabled == true)
             {
-                bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
 
-                if (password1.Text == password2.Text)
-                {
-                    if (password1.Text.Length >= big && isDigitPresent)
-                    {
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
 
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
-                        /*    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE first_name = '" + password1.Text + "' and last_name = '"+password1.Text+"' ", obj.conn);
-                            DataTable dt = new DataTable();
-                            adapter.Fill(dt);
-                            if (dt.Rows[0][0].ToString() != "0")
-                            {
+                string insertUser = "update postilion_users set role = '" + role.Text + "', active = '" + status.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
 
-    */
-                        string insertUser = "update postilion_users set password = '" + encrypt(password1.Text) + "' , branch = '" + DropDownList2.Text.Substring(0, 3) + "' where user_id = '" + Request.QueryString["id"] + "'";
-                        obj.cmd.Connection = obj.conn;
-                        obj.cmd.CommandText = insertUser;
-                        obj.cmd.ExecuteNonQuery();
-                        obj.cmd.CommandTimeout = 60;
+                string insertUser2 = "update postilion_user_list set role = '" + role.Text + "',status = '" + status.Text + "'  where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
 
-                        obj.conn.Close();
-
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
 
 
-                        password1.Text = "";
-                        password1.Text = "";
-                        /*   }
-                           else
-                           {
-                               ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER NOT FOUND')", true);
 
-                           }*/
+            }
+            if ( role.Enabled == false && DropDownList2.Enabled == true && status.Enabled == true)
+            {
+                //  bool isDigitPresent = password1.Text.Any(c => char.IsDigit(c));
 
 
-                    }
-                    else
-                    {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PASSWORD TOO SHORT AND ALSO INCLUDE A NUMBER ')", true);
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
 
-                    }
-                }
-                else
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER SAME PASSWORD')", true);
+                string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0, 3) + "', active = '" + status.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
 
-                }
+                string insertUser2 = "update postilion_user_list set  branch = '" + DropDownList2.Text.Substring(0, 3) + "',status = '" + status.Text + "'  where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
+
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+
+
+
+
             }
 
-            if (password1.Enabled == false && role.Enabled == false && DropDownList2.Enabled == false)
+            if (role.Enabled == false && DropDownList2.Enabled == false && status.Enabled == false)
             {
                 
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SELECT OPTION WHICH YOU WANT TO UPDATE')", true);
 
             }
-            if (password1.Enabled == false && role.Enabled == true && DropDownList2.Enabled == true)
+            if (role.Enabled == true && DropDownList2.Enabled == true && status.Enabled == false)
             {
-                 
 
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
-                        /*    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE first_name = '" + password1.Text + "' and last_name = '"+password1.Text+"' ", obj.conn);
-                            DataTable dt = new DataTable();
-                            adapter.Fill(dt);
-                            if (dt.Rows[0][0].ToString() != "0")
-                            {
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
 
-    */
-                        string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0, 3) + "',role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
-                        obj.cmd.Connection = obj.conn;
-                        obj.cmd.CommandText = insertUser;
-                        obj.cmd.ExecuteNonQuery();
-                        obj.cmd.CommandTimeout = 60;
+                string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0, 3) + "',role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
 
-                        obj.conn.Close();
+                string insertUser2 = "update postilion_user_list set  branch = '" + DropDownList2.Text.Substring(0, 3) + "',role = '" + role.Text + "' where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
 
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
 
 
             }
-            if (password1.Enabled == false && role.Enabled == true && DropDownList2.Enabled == false)
+            
+            if (role.Enabled == false && DropDownList2.Enabled == true && status.Enabled == false)
             {
-                
 
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
-                        /*    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE first_name = '" + password1.Text + "' and last_name = '"+password1.Text+"' ", obj.conn);
-                            DataTable dt = new DataTable();
-                            adapter.Fill(dt);
-                            if (dt.Rows[0][0].ToString() != "0")
-                            {
 
-    */
-                        string insertUser = "update postilion_users set role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
-                        obj.cmd.Connection = obj.conn;
-                        obj.cmd.CommandText = insertUser;
-                        obj.cmd.ExecuteNonQuery();
-                        obj.cmd.CommandTimeout = 60;
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
 
-                        obj.conn.Close();
+                string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0, 3) + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
 
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+                string insertUser2 = "update postilion_user_list set  branch = '" + DropDownList2.Text.Substring(0, 3) + "' where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
 
-                 
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+
+
             }
-            if (password1.Enabled == false && role.Enabled == false && DropDownList2.Enabled == true)
+
+            if (role.Enabled == false && DropDownList2.Enabled == false && status.Enabled == true)
             {
-               
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
 
-                        ClassDatabase obj = new ClassDatabase();
-                        obj.conn.ConnectionString = obj.locate1;
-                        obj.conn.Open();
+                string insertUser = "update postilion_users set active = '" + status.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
 
-                        string insertUser = "update postilion_users set branch = '" + DropDownList2.Text.Substring(0, 3) + "' where user_id = '" + Request.QueryString["id"] + "'";
-                        obj.cmd.Connection = obj.conn;
-                        obj.cmd.CommandText = insertUser;
-                        obj.cmd.ExecuteNonQuery();
-                        obj.cmd.CommandTimeout = 60;
+                string insertUser2 = "update postilion_user_list set status = '" + status.Text + "'  where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
 
-                        obj.conn.Close();
-
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
 
 
-                    
             }
-      
-          /*  else if(password1.Text == "" || password2.Text == "")
+            if (role.Enabled == true && DropDownList2.Enabled == false && status.Enabled == false)
             {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER ALL FIELDS')", true);
 
-            }*/
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                obj.conn.Open();
+
+                string insertUser = "update postilion_users set role = '" + role.Text + "' where user_id = '" + Request.QueryString["id"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+
+                string insertUser2 = "update postilion_user_list set role = '" + role.Text + "' where username = '" + Request.QueryString["username"] + "'";
+                obj.cmd.Connection = obj.conn;
+                obj.cmd.CommandText = insertUser2;
+                obj.cmd.ExecuteNonQuery();
+                obj.cmd.CommandTimeout = 60;
+                obj.conn.Close();
+
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('USER UPDATED')", true);
+
+
+            }
         }
 
         protected void CheckBox2_CheckedChanged(object sender, EventArgs e)
@@ -396,7 +291,7 @@ namespace webform_postilion
             }
         }
 
-        protected void CheckBox3_CheckedChanged(object sender, EventArgs e)
+     /*   protected void CheckBox3_CheckedChanged(object sender, EventArgs e)
         {
             if (password1.Enabled == false)
             {
@@ -414,11 +309,23 @@ namespace webform_postilion
                 RequiredFieldValidator2.Enabled = false;
 
             }
-        }
+        }*/
 
         protected void Back_Click(object sender, EventArgs e)
         {
             Response.Redirect("Delete_User.aspx");
+        }
+
+        protected void CheckBox2_CheckedChanged3(object sender, EventArgs e)
+        {
+            if (status.Enabled == false)
+            {
+                status.Enabled = true;
+            }
+            else
+            {
+                status.Enabled = false;
+            }
         }
     }
     }

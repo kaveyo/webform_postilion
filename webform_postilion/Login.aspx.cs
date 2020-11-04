@@ -3,6 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
+using System.DirectoryServices;
+using System.DirectoryServices.AccountManagement;
 using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
@@ -33,126 +35,184 @@ namespace webform_postilion
             }
             else
             {
-                String Pass = encrypt(TextBox2.Text);
+
                 try
                 {
-                    
-                    obj.conn.ConnectionString = obj.locate1;
-                    obj.conn.Open();
-                   SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE username = '" + TextBox1.Text.ToLower() + "'and password = '" + Pass + "' and role ='"+DropDownList1.Text+"' ", obj.conn);                  
-                    DataTable dt = new DataTable();
-                    adapter.Fill(dt);
-                    if (dt.Rows[0][0].ToString() == "1")
+                    // set up domain context
+                    PrincipalContext ctx = new PrincipalContext(ContextType.Domain, "FBC.CORP");
+
+                    // find a user
+                    UserPrincipal user = UserPrincipal.FindByIdentity(ctx, TextBox1.Text);
+
+                    if (user != null)
                     {
-                        if (DropDownList1.Text == "ADMINISTRATOR")
+                        // check user lockout state
+                        if (user.IsAccountLockedOut())
                         {
-                            // Button2.Visible = true;
-                            //  Response.Redirect("Register.aspx");
-                            Response.Redirect("Add_User.aspx");
+                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU ARE LOCKED OUT')", true);
+                            return;
                         }
-                        if(DropDownList1.Text == "MAKER")
+                        else
                         {
-                            Session["User"] = TextBox1.Text;
-                            Session["role"] = DropDownList1.Text;
 
-                                SqlDataReader sdr, sdr2;
+                            //Authenticate user
 
-                                SqlCommand cmd = new SqlCommand("SELECT branch FROM postilion_users  where username = '" + TextBox1.Text.ToLower() + "' ", obj.conn);
+                            bool authentic = false;
+                            try
+                            {
+                                DirectoryEntry entry = new DirectoryEntry("LDAP://10.170.8.20:389/OU=FBC,DC=fbc,DC=corp", TextBox1.Text, TextBox2.Text);
+                                DirectoryEntry ldapConnection = new DirectoryEntry("FBC.CORP");
+                                ldapConnection.Path = "LDAP://";
+                                ldapConnection.Username = "Nyakudyap";// "Mashingat";
+                                ldapConnection.Password = "legend45*";//"password1*"
+                                ldapConnection.AuthenticationType = AuthenticationTypes.Secure;
 
-                                SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+                                //Login with user
+                                object nativeObject = entry.NativeObject;
+                                authentic = true;
 
-                                using (sdr = cmd.ExecuteReader())
+                                if (authentic == true)
                                 {
-                                    if (sdr.Read())
+                                    //Navigate to home
+                                    obj.conn.ConnectionString = obj.locate1;
+                                    obj.conn.Open();
+                                    SqlDataAdapter adapter = new SqlDataAdapter("SELECT COUNT (*) FROM postilion_users  WHERE username = '" + TextBox1.Text.ToLower() + "' and role ='" + DropDownList1.Text + "' and active = 'active'" , obj.conn);
+                                    DataTable dt = new DataTable();
+                                    adapter.Fill(dt);
+                                    if (dt.Rows[0][0].ToString() == "1")
                                     {
+                                        if (DropDownList1.Text == "ADMINISTRATOR")
+                                        {
+                                           
+                                            Response.Redirect("Add_User.aspx");
+                                        }
+                                        if (DropDownList1.Text == "MAKER")
+                                        {
+                                            Session["User"] = TextBox1.Text;
+                                            Session["role"] = DropDownList1.Text;
 
-                                         be = (sdr["branch"].ToString());
+                                            SqlDataReader sdr, sdr2;
 
+                                            SqlCommand cmd = new SqlCommand("SELECT branch FROM postilion_users  where username = '" + TextBox1.Text.ToLower() + "' ", obj.conn);
+
+                                            SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                                            using (sdr = cmd.ExecuteReader())
+                                            {
+                                                if (sdr.Read())
+                                                {
+                                                    be = (sdr["branch"].ToString());
+
+                                                }
+
+                                            }
+                                            String checker = "CHECKER";
+                                            SqlCommand cmd2 = new SqlCommand("SELECT * FROM postilion_users where branch = '" + be + "' and role = '" + checker + "' ", obj.conn);
+
+                                            SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
+
+                                            using (sdr2 = cmd2.ExecuteReader())
+                                            {
+                                                if (sdr2.Read())
+                                                {
+
+                                                    Session["checker_label"] = (sdr2["username"].ToString());
+
+                                                }
+
+                                            }
+                                            Session["branch"] = be;
+
+                                            if (Session["checker_label"].ToString() == "")
+                                            {
+                                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('MAKER IS IN A BRANCH WITH NO CHECKER ALLOCATED')", true);
+
+                                            }
+                                            else
+                                            {
+                                                Response.Redirect("Search_Account_Pan.aspx?acc=");
+                                            }
+
+                                        }
+                                        if (DropDownList1.Text == "CHECKER")
+                                        {
+                                            Session["User"] = TextBox1.Text;
+                                            Session["role"] = DropDownList1.Text;
+                                            get_checker_branch(TextBox1.Text); SqlDataReader sdr, sdr2;
+
+                                            SqlCommand cmd = new SqlCommand("SELECT branch FROM postilion_users  where username = '" + TextBox1.Text.ToLower() + "' ", obj.conn);
+
+                                            SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                                            using (sdr = cmd.ExecuteReader())
+                                            {
+                                                if (sdr.Read())
+                                                {
+
+                                                    be = (sdr["branch"].ToString());
+
+                                                }
+
+                                            }
+                                            String checker = "CHECKER";
+                                            SqlCommand cmd2 = new SqlCommand("SELECT * FROM postilion_users  where branch = '" + be + "' and role = '" + checker + "' and active = 'active' ", obj.conn);
+
+                                            SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
+
+                                            using (sdr2 = cmd2.ExecuteReader())
+                                            {
+                                                if (sdr2.Read())
+                                                {
+
+                                                    Session["checker_label"] = (sdr2["username"].ToString());
+
+                                                }
+
+                                            }
+
+                                            Session["branch"] = be;
+                                            Response.Redirect("Authorise.aspx");
+
+                                        }
                                     }
+                                    else {
+                                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('WRONG CREDENTIALS OR YOUR USER IS INACTIVE')", true);
 
-                                }
-                                String checker = "CHECKER";
-                                SqlCommand cmd2 = new SqlCommand("SELECT * FROM postilion_users where branch = '" + be + "' and role = '" + checker + "' ", obj.conn);
-
-                                SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
-
-                                using (sdr2 = cmd2.ExecuteReader())
-                                {
-                                    if (sdr2.Read())
-                                    {
-                                                                     
-                                        Session["checker_label"] = (sdr2["username"].ToString());
-                                    
+                                        return;
                                     }
-
                                 }
-                                Session["branch"] = be;
-
-                            if (Session["checker_label"].ToString() == "") {
-                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('MAKER IS IN A BRANCH WITH NO CHECKER ALLOCATED')", true);
-
-                            }
-                            else
-                            {
-                                Response.Redirect("Search_Account_Pan.aspx?acc=");
-                            }
-
-                        }
-                        if (DropDownList1.Text == "CHECKER")
-                        {
-                            Session["User"] = TextBox1.Text;
-                            Session["role"] = DropDownList1.Text;
-                            get_checker_branch(TextBox1.Text); SqlDataReader sdr, sdr2;
-
-                            SqlCommand cmd = new SqlCommand("SELECT branch FROM postilion_users  where username = '" + TextBox1.Text.ToLower() + "' ", obj.conn);
-
-                            SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
-
-                            using (sdr = cmd.ExecuteReader())
-                            {
-                                if (sdr.Read())
+                                else
                                 {
+                                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FAILED TO LOGIN INSUFFICIENT LOGIN RIGHTS')", true);
 
-                                    be = (sdr["branch"].ToString());
-
+                                    return ;
                                 }
 
                             }
-                            String checker = "CHECKER";
-                            SqlCommand cmd2 = new SqlCommand("SELECT * FROM postilion_users  where branch = '" + be + "' and role = '" + checker + "' ", obj.conn);
-
-                            SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
-
-                            using (sdr2 = cmd2.ExecuteReader())
+                            catch (DirectoryServicesCOMException ex)
                             {
-                                if (sdr2.Read())
-                                {
-                                   
-                                    Session["checker_label"] = (sdr2["username"].ToString());
+                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FAILED TO LOGIN')", true);
 
-                                }
-
+                                return ;
                             }
-
-                            Session["branch"] = be;
-                            Response.Redirect("Authorise.aspx");
-                            
                         }
 
                     }
                     else
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('wrong password or username')", true);
-                      
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FAILED TO LOGIN')", true);
+                        return;
                     }
-
-
                 }
                 catch (Exception ex)
                 {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('Error'+'"+ex+"')", true);
-
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FAILED TO LOGIN')", true);
+                    return ;
                 }
+
+
+                String Pass = encrypt(TextBox2.Text);
+             
 
             }
         }
@@ -257,8 +317,9 @@ namespace webform_postilion
 
         protected void Button2_Click(object sender, EventArgs e)
         {
+           // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "myFunction()", true);
 
-           
+            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EXECUTED')", true);
         }
     }
 }

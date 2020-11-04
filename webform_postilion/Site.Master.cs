@@ -13,16 +13,50 @@ using System.IO;
 
 using System.Security.Cryptography;
 using System.Text;
-
+using System.Configuration;
+using System.Web.Configuration;
 
 namespace webform_postilion
 {
+   
     public partial class SiteMaster : MasterPage
     {
         ClassDatabase obj = new ClassDatabase();
         protected void Page_Load(object sender, EventArgs e)
         {
-          
+           if (Context.Session != null)
+
+        {
+
+            if (Session.IsNewSession)
+
+            {
+
+                HttpCookie newSessionIdCookie = Request.Cookies["ASP.NET_SessionId"];
+
+                if (newSessionIdCookie != null)
+
+                {
+
+                    string newSessionIdCookieValue = newSessionIdCookie.Value;
+
+                    if (newSessionIdCookieValue != string.Empty)
+
+                    {
+
+                        // This means Session was timed Out and New Session was started
+
+                        Response.Redirect("Login.aspx");
+
+                    }
+
+                }
+
+            }
+
+        }
+
+
             if (Label2.Text != "" && Label2.Text == "MAKER")
             {
           
@@ -163,14 +197,31 @@ namespace webform_postilion
         }
         protected void login_ServerClick(object sender, EventArgs e)
         {
-            //  ScriptManager.RegisterClientScriptBlock(this, this.GetType(), "alertMessage", "alert('" + "Hello" + "')", true);
-          //  MessageBox.Show("Loging out");
+            
             Session.Clear();
             Session.RemoveAll();
             Session.Abandon();
 
+            DateTime time = DateTime.Now;              // Use current time
+            string format = "yyyy-MM-dd HH:mm:ss";
+
+            ClassDatabase obj = new ClassDatabase();
+            ClassDatabase obj2 = new ClassDatabase();
+          
+            obj.conn.ConnectionString = obj.locate1;
+            obj.conn.Open();
+
+            string insertUser = "update postilion_user_list set last_login = '" + time.ToString(format) + "' where username = '" + Label3.Text + "' and branch = '"+branch_label.Text+"'";
+            obj.cmd.Connection = obj.conn;
+            obj.cmd.CommandText = insertUser;
+            obj.cmd.ExecuteNonQuery();
+            obj.cmd.CommandTimeout = 60;
+
+            obj.conn.Close();
+
             Response.Redirect("Login.aspx");
         }
+
         protected void Button1_Click(object sender, EventArgs e)
         {
 

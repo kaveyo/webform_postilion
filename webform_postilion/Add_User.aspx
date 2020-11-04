@@ -32,7 +32,7 @@
 
      
           </div>  
-       <div class="row">
+       <%--<div class="row">
         <div class="form-group col-md-5">
             <asp:Label ID="Label2" runat="server" Text="FIRST NAME" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
@@ -53,7 +53,7 @@
         </div>
 
      
-          </div>  
+          </div>  --%>
       <div class="row">
          <div class="form-group col-md-5">
            
@@ -62,13 +62,13 @@
                 <asp:DropDownList ID="role" runat="server" class = "form-control" Enabled="TRUE" AutoPostBack="false">
                     <asp:ListItem>MAKER</asp:ListItem>
                     <asp:ListItem>CHECKER</asp:ListItem>
-                    
+                    <asp:ListItem>Administrator</asp:ListItem>
                 </asp:DropDownList>
             </div>
         </div>
              
             </div> 
-          <div class="row">
+       <%--   <div class="row">
          <div class="form-group col-md-5">
            
             <asp:Label ID="Label9" runat="server" Text="ENTER PASSWORD" class = "control-label col-md-5"></asp:Label>
@@ -91,7 +91,7 @@
             </div>
         </div>
              
-            </div> 
+            </div> --%>
           <div class="row">
                <div class="form-group col-md-5">
            

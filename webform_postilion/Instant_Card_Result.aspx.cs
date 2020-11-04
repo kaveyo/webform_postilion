@@ -4,6 +4,7 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.Web;
+using System.Web.Services;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using System.Windows.Forms;
@@ -15,21 +16,25 @@ namespace webform_postilion
         DateTime time = DateTime.Now;              // Use current time
         string format = "yyyy-MM-dd HH:mm:ss";
         ClassDatabase obj = new ClassDatabase();
+        ClassDatabase obj2 = new ClassDatabase();
         Boolean p = true;
+        string branches,branch_1 ;
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!IsPostBack)
             {
+           
+                  
                
-
                 String card = Request.QueryString["card"];
             
                 obj.conn.ConnectionString = obj.locate;
+                obj2.conn.ConnectionString = obj2.locate1;
 
                 if (Request.QueryString["card"] != "")
                 {
-                    try
-                    {
+                  //  try
+                   // {
 
                         obj.conn.Open();
                         SqlDataReader sdr;
@@ -51,23 +56,156 @@ namespace webform_postilion
                                 TextBox5.Text = (sdr["last_updated_user"]).ToString();
                                 DropDownList1.Text = get_response((sdr["hold_rsp_code"]).ToString());
                                 TextBox9.Text = (sdr["date_issued"].ToString());
-                                TextBox10.Text = (sdr["branch_code"].ToString());
+                            //  TextBox10.Text = (sdr["branch_code"].ToString());
+                            branch_1 = (sdr["branch_code"].ToString());
+                            if (branch_1 != null && branch_1 != "" && !String.IsNullOrEmpty(branch_1))
+                            {
+                                branches = (branch_1).Substring(0, 3);
+                            }
+                            else
+                            {
+                                branches = "";
+                            }
+
                                 TextBox11.Text = (sdr["card_program"]).ToString();
                                 PopulateGridview((sdr["customer_id"]).ToString());
                                 customer_id_text.Text = (sdr["customer_id"]).ToString();
                             }
 
+
                         }
                         obj.conn.Close();
-                    }
+                  /*  }
                     catch (Exception ex)
                     {
                        //   MessageBox.Show(ex.Message);
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "place(ex.Message)", true);
+                    }*/
+
+                    if (TextBox1.Text == "" && TextBox3.Text == "" && TextBox5.Text == "" && TextBox9.Text == "" )
+                    {
+
+                                          
+                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "deleted('1');", true);
+
+                      
+                        /*ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('DATA NOT FOUND')", true);
+
+                        ScriptManager.RegisterStartupScript(this, GetType(), "DATA NOT FOUND", "alertMessage();", true);
+                        Response.Redirect("Instant_Search_Account.aspx");*/
                     }
                 }
-              
+              //  MessageBox.Show(branches);
+                filldrop();
             }
+        }
+        [WebMethod]
+        public static string DeleteClick(string id)
+        {
+            return "DONE";
+        }
+        public string getSimilar_branch(string v)
+        {
+            string result = "None";
+           if(v != null && v != "" && !String.IsNullOrEmpty(v)) {
+
+                if (v.Trim().Length < 3)
+                {
+                    v = "0" + v;
+
+                    obj2.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("select * from postilion_branch where branch like '" + v.Trim() + "%' ", obj2.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+
+                            result = (sdr["branch"].ToString());
+
+                        }
+
+                    }
+                    obj.conn.Close();
+                    return result;
+                }
+                else
+                {
+                    obj2.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("select * from postilion_branch where branch like '" + v.Trim() + "%' ", obj2.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+
+                            result = (sdr["branch"].ToString());
+
+                        }
+
+                    }
+                    obj.conn.Close();
+                    return result;
+                }
+            }
+          
+            else {
+                string nono = "None";
+                obj2.conn.Open();
+                SqlDataReader sdr;
+
+                SqlCommand cmd = new SqlCommand("select * from postilion_branch where branch like '" + nono + "%' ", obj2.conn);
+
+                SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                using (sdr = cmd.ExecuteReader())
+                {
+                    if (sdr.Read())
+                    {
+
+                        result = (sdr["branch"].ToString());
+
+                    }
+
+                }
+                obj.conn.Close();
+                return result;
+            }
+        
+        }
+        private void filldrop()
+        {
+            DropDownList2.DataSource = getBranches();
+            DropDownList2.DataTextField = "branch";
+            DropDownList2.DataValueField = "branch";
+
+            DropDownList2.DataBind();
+            DropDownList2.SelectedValue = DropDownList2.Items.FindByText(getSimilar_branch(branches)).Value;
+          //  DropDownList2.SelectedValue = DropDownList2.Items.FindByText("none").Value;
+        }
+        private DataTable getBranches()
+        {
+            ClassDatabase obj = new ClassDatabase();
+
+            DataTable dtbl = new DataTable();
+            using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+            {
+                sqlCon.Open();
+                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_branch ", sqlCon);
+
+                sqlDa.Fill(dtbl);
+                sqlCon.Close();
+            }
+            dtbl.DefaultView.Sort = "branch ASC";
+            return dtbl;
         }
         void PopulateGridview(String cust_id)
         {
@@ -86,6 +224,8 @@ namespace webform_postilion
             {
                 gvPhoneBook.DataSource = dtbl;
                 gvPhoneBook.DataBind();
+                Button9.Enabled = false;
+                Button10.Enabled = false;
             }
             else
             {
@@ -126,6 +266,7 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
 
+                if (str.Text == "019") { 
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
                 if (DropDownList1.Text != "None")
@@ -173,15 +314,21 @@ namespace webform_postilion
                       //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "place('REMOVE HOLD ACCOUNT')", true);
 
                     }
-                }
+              }
+            }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
+            }
 
         }
-        }
+    }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
             TextBox10.ReadOnly = false;
             DropDownList1.Enabled = true;
+            DropDownList2.Enabled = true;
             RequiredFieldValidator1.Enabled = true;
         }
 
@@ -209,12 +356,12 @@ namespace webform_postilion
                 {
                     sqlCon.Open();
                     // string query = "UPDATE pc_cards_1_A SET card_status = 0 WHERE customer_id = '"+customer_id_text.Text+"'";
-                    string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + DateTime.Now.ToString() + "','DEACTIVATE','" + TextBox1.Text + "','','" + str.Text + "','REQUEST TO DEACTIVATE CARD','" + str2.Text + "' , '0')";
+                    string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','DEACTIVATE INSTANT','" + TextBox1.Text + "','','" + str.Text + "','REQUEST TO DEACTIVATE CARD','" + str2.Text + "' , '0')";
 
                     SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                     sqlCmd.ExecuteNonQuery();
 
-                    string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('DEACTIVATE','" + row + "','','','" + customer_id_text.Text + "','','','' , '','','','','','','','','' , '','','','','','','','','' , '')";
+                    string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('DEACTIVATE INSTANT','" + row + "','','','" + customer_id_text.Text + "','','','' , '','','','','','','','','' , '','','','','','','','','' , '')";
 
                     SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
@@ -225,7 +372,7 @@ namespace webform_postilion
                    // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "activate('DEACTIVATED')", true);
 
                 }
-            
+                Button2.Enabled = false;
             }
             else
             {
@@ -237,7 +384,7 @@ namespace webform_postilion
                     {
                         sqlCon.Open();
                         //   string query = "UPDATE pc_cards_1_A SET card_status = 1 WHERE customer_id = '" + customer_id_text.Text + "'";
-                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + DateTime.Now.ToString() + "','ACTIVATE INSTANT','" + TextBox1.Text + "','0','" + str.Text + "','REQUEST TO ACTIVATE CARD','" + str2.Text + "' , '0')";
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','ACTIVATE INSTANT','" + TextBox1.Text + "','0','" + str.Text + "','REQUEST TO ACTIVATE CARD','" + str2.Text + "' , '0')";
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
@@ -249,6 +396,7 @@ namespace webform_postilion
                         TextBox3.Text = "1";
 
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ACTIVATED')", true);
+                        Button2.Enabled = false;
                        // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "activate('ACTIVATED')", true);
                     }
                 }
@@ -256,6 +404,7 @@ namespace webform_postilion
                 {
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save(ex.Message)", true);
                 }
+                Button2.Enabled = false;
             }
         }
         private string get_response(string v)
@@ -263,7 +412,7 @@ namespace webform_postilion
             List<String> response = new List<String>();
 
 
-            response.Add("Account closed : 45");
+            response.Add("Account closed :45");
             response.Add("Approved or completed successfully:00");
             response.Add("Refer to card issuer:01");
             response.Add("Refer to card issuer, special condition:02");
@@ -380,17 +529,18 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
-            String row = (Convert.ToDouble(str4.Text) + 1).ToString();
+            if (str.Text == "019") {
+                String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
-            ClassDatabase obj = new ClassDatabase();
-            obj.conn.ConnectionString = obj.locate1;
-            try
-            {
+                ClassDatabase obj = new ClassDatabase();
+                obj.conn.ConnectionString = obj.locate1;
+                /* try
+                 {*/
                 using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                 {
                     sqlCon.Open();
                     //   string query = "UPDATE pc_cards_1_A SET card_status = 1 WHERE customer_id = '" + customer_id_text.Text + "'";
-                    string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + DateTime.Now.ToString() + "','UNLINK USER INSTANT FROM CARD','" + TextBox1.Text + "','0','" + str + "','REQUEST TO UNLINK USER','" + str2 + "' , '0')";
+                    string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','UNLINK USER INSTANT FROM CARD','" + TextBox1.Text + "','0','" + str.Text + "','REQUEST TO UNLINK USER','" + str2.Text + "' , '0')";
 
                     SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                     sqlCmd.ExecuteNonQuery();
@@ -402,16 +552,17 @@ namespace webform_postilion
                     //  TextBox3.Text = "1";
 
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED')", true);
-                   // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('UNLINKED')", true);
+                    // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('UNLINKED')", true);
                     sqlCon.Close();
                 }
-            }
-            catch (Exception ex)
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ERROR '" + ex + "'')", true);
-
-            }
+            
         }
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
+        }
+        
+    }
         public String action_(String money)
         {
             // Response.Write("<script>alert('hie' + '"+money+"' );</script>");
@@ -427,7 +578,7 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
           
-                if (TextBox10.Text != "")
+                if (TextBox10.Text != "" && DropDownList1.Enabled == true)
                 {
                     
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
@@ -448,13 +599,14 @@ namespace webform_postilion
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SAVED')", true);
                     //ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('SAVED')", true);
                             sqlCon.Close();
+
                         }
-                    
-                 
-                }
+
+                Button4.Enabled = false;
+            }
                 else
                 {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER EMPTY FIELDS')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER EMPTY FIELDS AND EDIT DATA BEFORE SAVING')", true);
                // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('Enter Empty Fields')", true);
                 }
             

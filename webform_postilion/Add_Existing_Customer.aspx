@@ -63,12 +63,14 @@
     <div style="margin-top : 2%;" id="editors">
         <div class="row">
         <div class="form-group col-md-5">
-            <asp:Label ID="Label1" runat="server" Text="CUSTOMER ID" class = "control-label col-md-5"></asp:Label>
+            <asp:Label ID="Label1" runat="server" Text="CUSTOMER CIF" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:TextBox ID="TextBox1" runat="server" class = "form-control"></asp:TextBox>
               <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox1" ForeColor="Red"></asp:RequiredFieldValidator>
               <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Error Correct Customer ID" ValidationExpression = "^[\s\S]{7,7}$" ForeColor="Red" ></asp:RegularExpressionValidator>
-            </div>
+            <asp:RegularExpressionValidator ID="RegularExpressionValidator4" runat="server" ControlToValidate="TextBox1" ErrorMessage="Please Enter Only Numbers" ForeColor="Red" ValidationExpression="^\d+$"></asp:RegularExpressionValidator>
+             
+              </div>
         </div>
 
         <div class="form-group col-md-7">
@@ -88,12 +90,12 @@
 
         <h3> CUSTOMER DETAILS</h3>
         <div class="row">
-        <div class="form-group col-md-5">
+   <%--     <div class="form-group col-md-5">
             <asp:Label ID="Label2" runat="server" Text="LINK ACCOUNTS TO CUSTOMER" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:CheckBox ID="CheckBox1" runat="server" />
               </div>
-        </div>
+        </div>--%>
 
      
           </div>  

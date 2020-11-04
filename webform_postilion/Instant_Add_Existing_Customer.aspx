@@ -72,11 +72,11 @@
     <div style="margin-top : 2%;" id="editors">
        <div class="row">
         <div class="form-group col-md-5">
-            <asp:Label ID="Label1" runat="server" Text="CUSTOMER ID" class = "control-label col-md-5"></asp:Label>
+            <asp:Label ID="Label1" runat="server" Text="CUSTOMER CIF" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
-              <asp:TextBox ID="TextBox1" runat="server" class = "form-control"></asp:TextBox>
+              <asp:TextBox ID="TextBox1" runat="server" class = "form-control" ></asp:TextBox>
               <asp:RequiredFieldValidator ID="RequiredFieldValidator9" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox1" ForeColor="Red"></asp:RequiredFieldValidator>
-              <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Error Correct Customer ID" ValidationExpression = "^[\s\S]{7,7}$" ForeColor="Red" ></asp:RegularExpressionValidator>
+              <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Error Correct Customer ID" ValidationExpression = "^[\s\S]{16,16}$" ForeColor="Red" ></asp:RegularExpressionValidator>
             </div>
         </div>
 
@@ -97,12 +97,12 @@
 
         <h3> CUSTOMER DETAILS</h3>
         <div class="row">
-        <div class="form-group col-md-5">
+      <%--  <div class="form-group col-md-5">
             <asp:Label ID="Label2" runat="server" Text="LINK ACCOUNTS TO CUSTOMER" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:CheckBox ID="CheckBox1" runat="server" />
               </div>
-        </div>
+        </div>--%>
 
      
           </div>  
@@ -118,7 +118,7 @@
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox7" runat="server" class = "form-control"></asp:TextBox>
             
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredField" ForeColor="Red" ControlToValidate="TextBox7" Enabled="False"></asp:RequiredFieldValidator> </div>
+             </div>
         </div>
                 <div class="form-group col-md-7">
            
@@ -135,7 +135,6 @@
             <asp:Label ID="Label3" runat="server" Text="NAME ON CARD" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox2" runat="server" class = "form-control"></asp:TextBox>
-         <asp:RequiredFieldValidator ID="RequiredFieldValidator3" runat="server" ErrorMessage="RequiredField" ForeColor="Red"  ControlToValidate="TextBox2" Enabled="False"></asp:RequiredFieldValidator>
             </div>
         </div>
                 <div class="form-group col-md-7">
@@ -143,7 +142,6 @@
             <asp:Label ID="Label4" runat="server" Text="LAST NAME" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox3" runat="server" class = "form-control"></asp:TextBox>
-         <asp:RequiredFieldValidator ID="RequiredFieldValidator4" runat="server" ErrorMessage="RequiredField" ForeColor="Red" ControlToValidate="TextBox3" Enabled="False"></asp:RequiredFieldValidator>
             </div>
         </div>
             </div> 
@@ -159,7 +157,6 @@
             <asp:Label ID="Label25" runat="server" Text="TELEPHONE NUMBER" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox8" runat="server" class = "form-control"></asp:TextBox>
-         <asp:RequiredFieldValidator ID="RequiredFieldValidator6" runat="server" ErrorMessage="RequiredField" ForeColor="Red"  ControlToValidate="TextBox8" Enabled="False"></asp:RequiredFieldValidator>
             </div>
         </div>
               
@@ -170,7 +167,6 @@
             <asp:Label ID="Label8" runat="server" Text="EMAIL ADDRESS" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox6" runat="server" class = "form-control"></asp:TextBox>
-        <asp:RequiredFieldValidator ID="RequiredFieldValidator7" runat="server" ErrorMessage="RequiredField" ForeColor="Red" ControlToValidate="TextBox6" Enabled="False"></asp:RequiredFieldValidator>
                  </div>
         </div>
                <div class="form-group col-md-7">
@@ -178,7 +174,6 @@
             <asp:Label ID="Label6" runat="server" Text="MOBILE / CALL NUMBER" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
                  <asp:TextBox ID="TextBox5" runat="server" class = "form-control"></asp:TextBox>
-         <asp:RequiredFieldValidator ID="RequiredFieldValidator8" runat="server" ErrorMessage="RequiredField" ForeColor="Red" ControlToValidate="TextBox5" Enabled="False"></asp:RequiredFieldValidator>
             </div>
         </div>
               

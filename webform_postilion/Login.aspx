@@ -4,6 +4,7 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
+
     <title></title>
     <link href="Content/css/main.css" rel="stylesheet" />
     <link href="Content/css/util.css" rel="stylesheet" />
@@ -30,14 +31,22 @@
 
             });
         }
+
+        function myFunction() {
+            var person = prompt("Please enter your name", "Harry Potter");
+            if (person != null) {
+                document.getElementById("demo").innerHTML =
+                    "Hello " + person + "! How are you today?";
+            }
+        }
     </script>
 </head>
 <body>
+
     <form id="form1" runat="server">
      <div class="container">
 
-     
-        <div class="row" style="margin-top :5%">
+<div class="row" style="margin-top :5%">
              <div class="login100-form-avatar">
 						<img src="Content/images/avatar-01.jpg" alt="AVATAR"/>
                       
@@ -88,7 +97,7 @@
                                 <asp:Button ID="Button1" runat="server" Text="LOGIN" class="btn btn-lg btn-primary btn-block" OnClick="Button1_Click" />
                                 </div>
                                     <div style="margin-top:2%;">
-                                <asp:Button ID="Button2" runat="server" Text="ADMIN LOGIN" class="btn btn-lg btn-block btn-danger"  Visible="False" OnClick="Button2_Click" />
+                                <asp:Button ID="Button2" runat="server" Text="ADMIN LOGIN" class="btn btn-lg btn-block btn-danger" OnClick="Button2_Click" Visible="False" />
                                 </div>
                             
                             </fieldset>
@@ -100,5 +109,6 @@
         </div>
     </div>
     </form>
+ 
 </body>
 </html>

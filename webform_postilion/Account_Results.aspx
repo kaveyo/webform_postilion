@@ -11,7 +11,58 @@
              })
 
          }
-         
+         function reason() {
+
+             Swal.fire({
+                 title: 'ENTER REASON',
+                 input: 'text',
+                 icon: 'warning',
+                 showCancelButton: true,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'SAVE'
+             }).then((result) => {
+                 if (result.value) {
+                     const id = JSON.stringify(result.value)
+                     $.ajax({
+                         type: "POST",
+                         url: "Account_Results.aspx/reason2",
+                         data: "{id:" + id + "}",
+                         contentType: "application/json; charset=utf-8",
+                         dataType: "json",
+                         success: function (r) {
+                             Swal("DONE", r.d, "success");
+                         }
+                     });
+                 }
+             })
+         }
+         function deleted(id) {
+
+             Swal.fire({
+                 title: 'Message!',
+                 text: "DATA NOT FOUND!",
+                 icon: 'warning',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'OK'
+             }).then((result) => {
+                 if (result.value) {
+                     $.ajax({
+                         type: "POST",
+                         url: "Account_Results.aspx/DeleteClick",
+                         data: "{id:" + id + "}",
+                         contentType: "application/json; charset=utf-8",
+                         dataType: "json",
+                         success: function (r) {
+
+                             window.location.assign("/Search_Account_Pan.aspx");
+                         }
+                     });
+                 }
+             })
+         }
              function alertme( msg) {
                  swal({
                      title: "ALERT",
@@ -52,7 +103,7 @@
                  });
              });
          });
-         </script>
+     </script>
     <div class="form-horizontal">
         <h4>Normal Accounts</h4>
         <hr />
@@ -90,7 +141,6 @@
                     
                     <asp:ListItem>None</asp:ListItem>
                     <asp:ListItem>FBC Instant Banking</asp:ListItem>
-                    <asp:ListItem>Account closed :45</asp:ListItem>
                     <asp:ListItem>Local</asp:ListItem>
                     
                 </asp:DropDownList>
@@ -117,10 +167,17 @@
             <div class="col-md-10">
            
                 <asp:DropDownList ID="DropDownList2" runat="server" class = "form-control" Enabled="False">
-                       <asp:ListItem>Account closed :45</asp:ListItem>
+                       
                     <asp:ListItem>None</asp:ListItem>
-                    <asp:ListItem>Approved or completed successfully:00</asp:ListItem>
-<asp:ListItem>Refer to card issuer:01</asp:ListItem>
+                       <asp:ListItem>Account closed :45</asp:ListItem>
+                   <%-- <asp:ListItem>Refer to card issuer:01</asp:ListItem>
+                   <asp:ListItem>Lost card, pick-up:41</asp:ListItem>
+                    <asp:ListItem>Stolen card, pick-up:43</asp:ListItem>
+                 
+                   <asp:ListItem>Card Renewed:89</asp:ListItem>--%>
+
+                    
+                    <%-- <asp:ListItem>Approved or completed successfully:00</asp:ListItem>
 <asp:ListItem>Refer to card issuer, special condition:02</asp:ListItem>
 <asp:ListItem>Invalid merchant:03</asp:ListItem>
 <asp:ListItem>Pick-up card:04</asp:ListItem>
@@ -160,9 +217,9 @@
 <asp:ListItem>PIN tries exceeded, pick-up:38</asp:ListItem>
 <asp:ListItem>No credit account:39</asp:ListItem>
 <asp:ListItem>Function not supported:40</asp:ListItem>
-<asp:ListItem>Lost card, pick-up:41</asp:ListItem>
+
 <asp:ListItem>No universal account:42</asp:ListItem>
-<asp:ListItem>Stolen card, pick-up:43</asp:ListItem>
+
 <asp:ListItem>No investment account:44</asp:ListItem>
 <asp:ListItem>Identification required:46</asp:ListItem>
 <asp:ListItem>Identification cross-check required:47</asp:ListItem>
@@ -214,7 +271,7 @@
 <asp:ListItem>PIN Change failed:C1</asp:ListItem>
 <asp:ListItem>PIN Unblock failed:C2</asp:ListItem>
 <asp:ListItem>MAC Error:D1</asp:ListItem>
-<asp:ListItem>Prepay error:E1</asp:ListItem>
+<asp:ListItem>Prepay error:E1</asp:ListItem>--%>
                 </asp:DropDownList>
             </div>
         </div>
@@ -357,6 +414,10 @@
            
             </div>
         </div>
+
+    
+
+
     </div>
     </div>
 </asp:Content>

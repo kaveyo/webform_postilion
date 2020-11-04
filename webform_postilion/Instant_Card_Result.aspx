@@ -37,6 +37,32 @@
              })
 
          }*/
+         function deleted(id) {
+
+             Swal.fire({
+                 title: 'Message!',
+                 text: "DATA NOT FOUND!",
+                 icon: 'warning',
+                 showCancelButton: false,
+                 confirmButtonColor: '#3085d6',
+                 cancelButtonColor: '#d33',
+                 confirmButtonText: 'OK'
+             }).then((result) => {
+                 if (result.value) {
+                     $.ajax({
+                         type: "POST",
+                         url: "Instant_Card_Result.aspx/DeleteClick",
+                         data: "{id:" + id + "}",
+                         contentType: "application/json; charset=utf-8",
+                         dataType: "json",
+                         success: function (r) {
+
+                             window.location.assign("/Instant_Search_Account.aspx");
+                         }
+                     });
+                 }
+             })
+         }
          function place(msg) {
              Swal.fire({
                  position: 'center',
@@ -85,7 +111,7 @@
              )
 
          }
-       </script>
+     </script>
       <div class="form-horizontal">
         <h4>INSTANT CARD NUMBER</h4>
         <hr />
@@ -107,7 +133,7 @@
           </div>
         </div>
           </div>  
-        <div class="row">
+     <%--   <div class="row">
         <div class="form-group col-md-5">
          
             <asp:Label ID="Label12" runat="server" Text="COMPANY CARD" class = "control-label col-md-5"></asp:Label>
@@ -123,7 +149,7 @@
           
             </div>
         </div>
-            </div>
+            </div>--%>
          <div class="row">
         <div class="form-group col-md-5">
            
@@ -150,7 +176,9 @@
            
             <asp:Label ID="Label14" runat="server" Text="BRANCH CODE" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
-                 <asp:TextBox ID="TextBox10" runat="server" class = "form-control" ReadOnly="True"></asp:TextBox>
+                 <asp:TextBox ID="TextBox10" runat="server" class = "form-control" ReadOnly="True" Visible="False"></asp:TextBox>
+                <asp:DropDownList ID="DropDownList2" runat="server" class = "form-control" Enabled="False">
+                      </asp:DropDownList>
              <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox10" Enabled="False" ForeColor="Red"></asp:RequiredFieldValidator>  
            <!--     <asp:CompareValidator runat="server" Operator="DataTypeCheck" Type="Integer"  ForeColor="Red" ControlToValidate ="TextBox10" ErrorMessage="Enter Branch Code" />
           <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "TextBox10" ForeColor="Red" ID="RegularExpressionValidator1" ValidationExpression = "^[\s\S]{3,3}$" runat="server" ErrorMessage="Enter valid branch code"></asp:RegularExpressionValidator>   -->
@@ -398,7 +426,7 @@
             <div class="">
                 <div class="row">
                     <div class="col-md-10">
-                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" OnClick="Button7_Click"/>
+                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" OnClick="Button7_Click" Visible="False"/>
                           <asp:Button ID="Button1" runat="server" Text="EDIT" class="btn btn-info" OnClick="Button1_Click"  />
                           <asp:Button ID="Button2" runat="server" Text="ACTIVATE / DEACTIVATE" class="btn btn-primary" OnClick="Button2_Click"/>
                         

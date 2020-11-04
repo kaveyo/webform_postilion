@@ -35,7 +35,7 @@
                         contentType: "application/json; charset=utf-8",
                         dataType: "json",
                         success: function (r) {
-                            Swal("Data Transfered SuccessFully", r.d, "success");
+                            Swal("DELETED", r.d, "success");
                         }
                     });
                 }
@@ -57,7 +57,7 @@
      
        <div class="row">
         <div class="form-group col-md-5">
-            <asp:Label ID="Label2" runat="server" Text="FIRST NAME" class = "control-label col-md-5"></asp:Label>
+            <asp:Label ID="Label2" runat="server" Text="USERNAME" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:TextBox ID="first" runat="server" class = "form-control"></asp:TextBox>
               </div>
@@ -67,12 +67,12 @@
         </div>
         </div>
                           
-             <div class="form-group col-md-5">
+          <%--   <div class="form-group col-md-5">
             <asp:Label ID="Label1" runat="server" Text="SURNAME" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:TextBox ID="surname" runat="server" class = "form-control"></asp:TextBox>
            </div>
-        </div>
+        </div>--%>
              <div class="form-group col-md-2">
             
           <div class="col-md-7">
@@ -112,7 +112,8 @@
                  <asp:BoundField AccessibleHeaderText="IDENTITY" DataField="user_id" HeaderText="IDENTITY" />
                  <asp:BoundField DataField="username" HeaderText="USERNAME" />
                  <asp:BoundField DataField="first_name" HeaderText="FIRST NAME" />
-                 <asp:BoundField DataField="last_name" HeaderText="LAST NAME" />
+                 <asp:BoundField DataField="active" HeaderText="STATUS" />
+                 <asp:BoundField DataField="branch" HeaderText="BRANCH" />
                  <asp:BoundField DataField="role" HeaderText="ROLE" />
                  <asp:ButtonField ButtonType="Button" CommandName="accept2"   HeaderText="UPDATE" Text="UPDATE" />
                  <asp:ButtonField ButtonType="Button" CommandName="reject2" HeaderText="DELETE" Text="DELETE" />

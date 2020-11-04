@@ -11,6 +11,32 @@
              })
 
           }
+          function deleted(id) {
+
+              Swal.fire({
+                  title: 'Message!',
+                  text: "DATA NOT FOUND!",
+                  icon: 'warning',
+                  showCancelButton: false,
+                  confirmButtonColor: '#3085d6',
+                  cancelButtonColor: '#d33',
+                  confirmButtonText: 'OK'
+              }).then((result) => {
+                  if (result.value) {
+                      $.ajax({
+                          type: "POST",
+                          url: "Instant_Account_Result.aspx/DeleteClick",
+                          data: "{id:" + id + "}",
+                          contentType: "application/json; charset=utf-8",
+                          dataType: "json",
+                          success: function (r) {
+
+                              window.location.assign("/Instant_Search_Account.aspx");
+                          }
+                      });
+                  }
+              })
+          }
           function alertme(msg) {
               swal({
                   title: "ALERT",
@@ -40,7 +66,7 @@
                  });
              });
          });
-         </script>
+      </script>
     <div class="form-horizontal">
         <h4>INSTANT ACCOUNT</h4>
         <hr />
@@ -76,8 +102,8 @@
             <div class="col-md-10">
                 <asp:DropDownList ID="DropDownList1" runat="server" class = "form-control" Enabled="False">
                    <asp:ListItem>None</asp:ListItem>
-                    <asp:ListItem>FBC Instant Banking</asp:ListItem>
-                    <asp:ListItem>Account closed :45</asp:ListItem>
+                   <asp:ListItem>FBC Instant Banking</asp:ListItem>
+                  
                 </asp:DropDownList>
            
           </div>
@@ -98,11 +124,19 @@
         </div>
         <div class="form-group">
          
-            <asp:Label ID="Label7" runat="server" Text="HOLD RESPONCE CODE" class = "control-label col-md-2"></asp:Label>
+            <asp:Label ID="Label7" runat="server" Text="HOLD RESPONSE CODE" class = "control-label col-md-2"></asp:Label>
             <div class="col-md-10">
            
-                <asp:DropDownList ID="DropDownList2" runat="server" class = "form-control" Enabled="False">
+                <asp:DropDownList ID="DropDownList2" runat="server" class = "form-control" Enabled="False" >
+                    <asp:ListItem>None</asp:ListItem>
                     <asp:ListItem>Account closed :45</asp:ListItem>
+                   <%-- <asp:ListItem>Refer to card issuer:01</asp:ListItem>
+                   <asp:ListItem>Lost card, pick-up:41</asp:ListItem>
+                    <asp:ListItem>Stolen card, pick-up:43</asp:ListItem>
+                    <asp:ListItem>Account closed :45</asp:ListItem>--%>
+                  
+
+<%--                    <asp:ListItem>Account closed :45</asp:ListItem>
                     <asp:ListItem>None</asp:ListItem>
                     <asp:ListItem>Approved or completed successfully:00</asp:ListItem>
 <asp:ListItem>Refer to card issuer:01</asp:ListItem>
@@ -199,7 +233,7 @@
 <asp:ListItem>PIN Change failed:C1</asp:ListItem>
 <asp:ListItem>PIN Unblock failed:C2</asp:ListItem>
 <asp:ListItem>MAC Error:D1</asp:ListItem>
-<asp:ListItem>Prepay error:E1</asp:ListItem>
+<asp:ListItem>Prepay error:E1</asp:ListItem>--%>
                 </asp:DropDownList>
             </div>
         </div>

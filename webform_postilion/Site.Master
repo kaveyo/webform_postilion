@@ -1,5 +1,6 @@
 ﻿<%@ Master Language="C#" AutoEventWireup="true" CodeBehind="Site.master.cs" Inherits="webform_postilion.SiteMaster" %>
 
+
 <!DOCTYPE html>
 
 <html lang="en">
@@ -29,6 +30,16 @@
         function alertme(msg) {
             swal({
                 title: "ALERT",
+                //  text: "WRONG USERNAME OR PASSWORD",
+                text: msg,
+                icon: "success",
+                button: "OK"
+
+            });
+        }
+        function alertme4(msg) {
+            swal({
+                title: "REASON",
                 //  text: "WRONG USERNAME OR PASSWORD",
                 text: msg,
                 icon: "success",
@@ -210,6 +221,8 @@
         $(function () {
             $("#datepicker1").datepicker();
         });
+
+       
     </script>
 
     <asp:PlaceHolder runat="server">
@@ -242,6 +255,8 @@
             </Scripts>
         </asp:ScriptManager>
 
+        
+     
 
               
              <div id="wrapper">

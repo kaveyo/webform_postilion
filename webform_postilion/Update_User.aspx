@@ -60,7 +60,7 @@
         </div>
              
             </div> 
-         <div class="row">
+        <%-- <div class="row">
          <div class="form-group col-md-5">
            
             <asp:Label ID="Label1" runat="server" Text="CHANGE USER PASSWORD" class = "control-label col-md-5"></asp:Label>
@@ -94,7 +94,7 @@
             </div>
         </div>
              
-            </div> 
+            </div> --%>
           <div class="row">
                <div class="form-group col-md-5">
            
@@ -109,7 +109,22 @@
         </div> 
 
           </div>
-                
+                 <div class="row">
+         <div class="form-group col-md-5">
+           
+            <asp:Label ID="Label1" runat="server" Text="STATUS" class = "control-label col-md-5"></asp:Label>
+            <div class="col-md-7">
+                <asp:DropDownList ID="status" runat="server" class = "form-control" Enabled="False" AutoPostBack="false">
+                    <asp:ListItem>active</asp:ListItem>
+                    <asp:ListItem>inactive</asp:ListItem>
+                    
+           </asp:DropDownList>
+                        <asp:CheckBox ID="CheckBox3" Text="Update Status" runat="server" OnCheckedChanged="CheckBox2_CheckedChanged3" AutoPostBack="true"/>
+         
+            </div>
+        </div>
+             
+            </div>  
    
  </div>
 

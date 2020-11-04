@@ -264,7 +264,10 @@
 
                         <li class="divider"></li>
                         <li>
-                           <a href='Login.aspx'><i class="fa fa-sign-out fa-fw"></i> Logout</a>
+                          
+                         <a href='Login.aspx'><i class="fa fa-sign-out fa-fw" onserverclick="Button4_Click" runat="server"></i> Logout</a>
+             <%--              <asp:Button ID="Button4" runat="server" Text="Logout" class="fa fa-sign-out fa-fw" OnClick="Button4_Click" autopostback="false"/>
+         --%>
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
@@ -331,6 +334,14 @@
                                 </li>
                                 <li>
                                     <asp:HyperLink ID="HyperLink6" runat="server" NavigateUrl="report_change_user.aspx" >CHANGE BY USER</asp:HyperLink>
+
+                                </li>
+                                  <li>
+                                    <asp:HyperLink ID="HyperLink2" runat="server" NavigateUrl="User_Listing.aspx" >USER LISTING</asp:HyperLink>
+
+                                </li>
+                                           <li>
+                                    <asp:HyperLink ID="HyperLink3" runat="server" NavigateUrl="role_report.aspx" >ROLE REPORT</asp:HyperLink>
 
                                 </li>
                             </ul>

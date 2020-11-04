@@ -64,10 +64,10 @@ namespace webform_postilion
             }
             else
             {
-                try
-                {
-
-                    obj.conn.Open();
+                //  try
+                //  {
+                obj.conn.ConnectionString = obj.locate;
+                obj.conn.Open();
                     SqlDataReader sdr;
 
                     SqlCommand cmd = new SqlCommand("SELECT * FROM pc_customers_2_A  where customer_id = '" + TextBox1.Text + "' ", obj.conn);
@@ -94,14 +94,14 @@ namespace webform_postilion
 
                     }
                     obj.conn.Close();
-                }
-                catch (Exception ex)
+              //  }
+               /* catch (Exception ex)
                 {
                     //  MessageBox.Show(ex.Message);
 
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ERROR RETRIEVING INFO')", true);
                   //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "error('ERROR RETRIEVING INFO')", true);
-                }
+                }*/
             }
         }
 
@@ -117,7 +117,7 @@ namespace webform_postilion
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','ADD EXISTING CUSTOMER INSTANT','" + TextBox1.Text + "','0','" + str.Text + "','REQUEST TO ADD EXISTING CUSTOMER','" + str2.Text + "' , '0')";
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','ADD EXISTING CUSTOMER INSTANT','" + pan + "','0','" + str.Text + "','REQUEST TO ADD EXISTING CUSTOMER','" + str2.Text + "' , '0')";
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
@@ -129,6 +129,7 @@ namespace webform_postilion
                 //  TextBox3.Text = "1";
 
                 ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SAVED')", true);
+                Button4.Enabled = false;
               //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('SAVED')", true);
                         sqlCon.Close();
                     }

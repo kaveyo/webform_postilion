@@ -48,8 +48,8 @@ namespace webform_postilion
              
                 RequiredFieldValidator3.Enabled = true;
                 RequiredFieldValidator4.Enabled = true;
-                RequiredFieldValidator5.Enabled = true;
-                RequiredFieldValidator6.Enabled = true;
+              //  RequiredFieldValidator5.Enabled = true;
+               // RequiredFieldValidator6.Enabled = true;
                 RequiredFieldValidator7.Enabled = true;
                 RequiredFieldValidator8.Enabled = true;
             }
@@ -64,7 +64,7 @@ namespace webform_postilion
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city,dob,language,national_id,fax,tel_nr,address_1_2,address_2_1,address_2_2,city2,country_1,country_2) values ('ADD NEW CUSTOMER INSTANT','" + row + "','" + str.Text + "','','" + customer_d.Text + "','','','" + pan + "' , '','','" + email.Text + "','','','" + title.Text + "','" + first_name.Text + "','" + middle_initials.Text + "','" + last_name.Text + "' , '" + name_on_card.Text + "','','','" + mobile.Text + "','" + issue_nr + "','','','','" + address_1_1.Text + "' , '" + city_1.Text + "','" + date + "','" + language.Text + "','" + national_id.Text + "' , '" + fax_number.Text + "','" + tel.Text + "','" + address_1_2.Text + "','" + address_2_1.Text + "','" + address_2_2.Text + "','" + city_2.Text + "','ZWE','ZWE')";
+                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city,dob,language,national_id,fax,tel_nr,address_1_2,address_2_1,address_2_2,city2,country_1,country_2) values ('ADD NEW CUSTOMER INSTANT','" + row + "','" + str.Text + "','','" + customer_d.Text + "','','','" + pan + "' , '','','" + email.Text + "','','','" + title.Text + "','" + first_name.Text + "','" + middle_initials.Text + "','" + last_name.Text + "' , '" + name_on_card.Text + "','','','" + mobile.Text + "','" + issue_nr + "','','','','" + address_1_1.Text + "' , '" + city_1.Text + "','" + date + "','" + language.Text + "','" + national_id.Text + "' , '','','" + address_1_2.Text + "','" + address_2_1.Text + "','" + address_2_2.Text + "','" + city_2.Text + "','ZWE','ZWE')";
 
                         SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
@@ -72,6 +72,7 @@ namespace webform_postilion
 
 
                     ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('SAVED')", true);
+                    Button4.Enabled = false;
                    // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('SAVED')", true);
                         sqlCon.Close();
                     }

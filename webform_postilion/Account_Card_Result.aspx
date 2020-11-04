@@ -3,7 +3,7 @@
        <script>
         /*function alertme( msg) {
             Swal.fire({
-                title: 'Are you sure?',
+                title: 'Are you sure?',<a href="Account_Card_Result.aspx">Account_Card_Result.aspx</a>
                 text: "You won't be able to revert this!",
                 icon: 'warning',
                 html: '<a href = "Login.aspx/action">links</a>',
@@ -46,7 +46,33 @@
                })
 
            }
-           
+
+           function deleted(id) {
+
+               Swal.fire({
+                   title: 'Message!',
+                   text: "DATA NOT FOUND!",
+                   icon: 'warning',
+                   showCancelButton: false,
+                   confirmButtonColor: '#3085d6',
+                   cancelButtonColor: '#d33',
+                   confirmButtonText: 'OK'
+               }).then((result) => {
+                   if (result.value) {
+                       $.ajax({
+                           type: "POST",
+                           url: "Account_Card_Result.aspx/DeleteClick",
+                           data: "{id:" + id + "}",
+                           contentType: "application/json; charset=utf-8",
+                           dataType: "json",
+                           success: function (r) {
+                                                              
+                               window.location.assign("/Search_Account_Pan.aspx");
+                           }
+                       });
+                   }
+               })
+           }
                function alertme( msg) {
                    swal({
                        title: "ALERT",
@@ -81,10 +107,38 @@
            function save(msg) {
                Swal.fire(
                    msg+"!",
-                   
-                   
+                                      
                )
 
+           }
+          
+               function alertMessage() {
+                   alert('ALERT!');
+                }
+           function notfound(id) {
+
+               Swal.fire({
+                   title: 'DATA NOT FOUND',
+                   text: "CHECK IF INSERT INFO IN CORRECT",
+                   icon: 'warning',
+                   showCancelButton: true,
+                   confirmButtonColor: '#3085d6',
+                   cancelButtonColor: '#d33',
+                   confirmButtonText: 'Yes, delete it!'
+               }).then((result) => {
+                   if (result.value) {
+                       $.ajax({
+                           type: "POST",
+                           url: "Login.aspx",
+                           data: "{id:" + id + "}",
+                           contentType: "application/json; charset=utf-8",
+                           dataType: "json",
+                           success: function (r) {
+                               Swal("Data Transfered SuccessFully", r.d, "success");
+                           }
+                       });
+                   }
+               })
            }
        </script>
        <div class="form-horizontal">
@@ -112,16 +166,16 @@
         <div class="row">
         <div class="form-group col-md-5">
          
-            <asp:Label ID="Label12" runat="server" Text="COMPANY CARD" class = "control-label col-md-5"></asp:Label>
+            <asp:Label ID="Label12" runat="server" Text="COMPANY CARD" class = "control-label col-md-5" Enabled="False" Visible="False"></asp:Label>
             <div class="col-md-7">
-                <asp:CheckBox ID="CheckBox2" runat="server"/>
+                <asp:CheckBox ID="CheckBox2" runat="server" Enabled="False" Visible="False"/>
                 </div>
         </div>
                 <div class="form-group col-md-7">
            
-            <asp:Label ID="Label16" runat="server" Text="COMPANY NAME" class = "control-label col-md-5"></asp:Label>
+            <asp:Label ID="Label16" runat="server" Text="COMPANY NAME" class = "control-label col-md-5" Visible="False"></asp:Label>
             <div class="col-md-7">
-                 <asp:TextBox ID="TextBox12" runat="server" class = "form-control" EnableTheming="True" ReadOnly="True"></asp:TextBox>
+                 <asp:TextBox ID="TextBox12" runat="server" class = "form-control" EnableTheming="True" ReadOnly="True" Enabled="False" Visible="False"></asp:TextBox>
           
             </div>
         </div>
@@ -152,9 +206,11 @@
            
             <asp:Label ID="Label14" runat="server" Text="BRANCH CODE" class = "control-label col-md-5"></asp:Label>
             <div class="col-md-7">
-                 <asp:TextBox ID="TextBox10" runat="server" class = "form-control" ReadOnly="True"></asp:TextBox>
-                <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox10" Enabled="False" ForeColor="Red"></asp:RequiredFieldValidator>  
-          <!--      <asp:CompareValidator runat="server" Operator="DataTypeCheck" Type="Integer"  ForeColor="Red" ControlToValidate ="TextBox10" ErrorMessage="Enter Branch Code" />
+                 <asp:TextBox ID="TextBox10" runat="server" class = "form-control" ReadOnly="True" Visible="False"></asp:TextBox>
+                <asp:DropDownList ID="DropDownList2" runat="server" class = "form-control" Enabled="False">
+                      </asp:DropDownList>
+               <!-- <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox10" Enabled="False" ForeColor="Red"></asp:RequiredFieldValidator>  
+              <asp:CompareValidator runat="server" Operator="DataTypeCheck" Type="Integer"  ForeColor="Red" ControlToValidate ="TextBox10" ErrorMessage="Enter Branch Code" />
           <asp:RegularExpressionValidator Display = "Dynamic" ControlToValidate = "TextBox10" ForeColor="Red" ID="RegularExpressionValidator1" ValidationExpression = "^[\s\S]{3,3}$" runat="server" ErrorMessage="Enter valid branch code"></asp:RegularExpressionValidator> -->
               
               </div>
@@ -384,7 +440,7 @@
                    
                      <asp:TemplateField HeaderText="UNLINK">
                         <ItemTemplate>
-                            <asp:Button ID="Button8" runat="server" Text="UNLINK CUSTOMER" CommandName="Delete" class="btn btn-danger" OnClick="Button8_Click"/>
+                            <asp:Button ID="Button8" runat="server" Text="UNLINK CUSTOMER" CommandName="Delete" class="btn btn-danger" />
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtContact" Text='' runat="server" />
@@ -397,15 +453,86 @@
                 </Columns>
             </asp:GridView>
         </div>
-       
+        <div>
+           <hr />
+        </div>
+        
+         <h2> LINKED ACCOUNTS </h2>
+ 
+        <div>
+             <asp:GridView ID="gvPhoneBook2" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" Width="1066px"  AutoGenerateColumns="false" DataKeyNames="account_id" 
+                 OnSelectedIndexChanged="gvPhoneBook_SelectedIndexChanged" OnRowDeleting="gvPhoneBook_RowDeleting2" OnRowCommand="gvPhoneBook_RowCommand">
+                
+                <%-- Theme Properties --%>
+                <FooterStyle BackColor="White" ForeColor="#000066" />
+                <HeaderStyle BackColor="#006699" Font-Bold="True" ForeColor="White" />
+                <PagerStyle BackColor="White" ForeColor="#000066" HorizontalAlign="Left" />
+                <RowStyle ForeColor="#000066" />
+                <SelectedRowStyle BackColor="#669999" Font-Bold="True" ForeColor="White" />
+                <SortedAscendingCellStyle BackColor="#F1F1F1" />
+                <SortedAscendingHeaderStyle BackColor="#007DBB" />  
+                <SortedDescendingCellStyle BackColor="#CAC9C9" />
+                <SortedDescendingHeaderStyle BackColor="#00547E" />
+                
+                <Columns>
+                    <asp:TemplateField HeaderText="ACCOUNT NUMBER">
+                        <ItemTemplate>
+                            <asp:Label Text='<%# Eval("account_id") %>' runat="server" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="account_id" Text='<%# Eval("account_id") %>' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtaccount_idFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="ACCOUNT TYPE">
+                        <ItemTemplate>
+                            <asp:Label Text='<%# Eval("account_type") %>' ToolTip="10: Savings   , 20: Check/Cheque , 21: FBC STAFF  " runat="server" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="account_type" Text='<%# Eval("account_type") %>'  runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtaccount_typeFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
+                    <asp:TemplateField HeaderText="LAST UPDATED USER">
+                        <ItemTemplate>
+                            <asp:Label Text='<%# Eval("last_updated_user") %>' runat="server" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="account_product" Text='<%# Eval("last_updated_user") %>' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtlast_updated_userFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
+                                                                       
+                     <asp:TemplateField HeaderText="UNLINK">
+                        <ItemTemplate>
+                            <%--<asp:Button ID="Button8" runat="server" Text="UNLINK ACCOUNT" CommandName="Delete" class="btn btn-danger" />--%>
+                             <asp:Button ID="Button5" runat="server" Text="UNLINK ACCOUNT" CommandName="reason" class="btn btn-danger" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtContact" Text='' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtREASONFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
+                  
+                </Columns>
+            </asp:GridView>
+        </div>
         <div class="container">
             <div class="">
                 <div class="row">
                     <div class="col-md-10">
-                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" OnClick="Button7_Click1" />
+                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" OnClick="Button7_Click1" Visible="False" />
                           <asp:Button ID="Button1" runat="server" Text="EDIT" class="btn btn-info" OnClick="Button1_Click"  />
                           <asp:Button ID="Button2" runat="server" Text="ACTIVATE / DEACTIVATE" class="btn btn-primary" OnClick="Button2_Click"/>
-                         <asp:Button ID="Button11" runat="server" OnClick="Button11_Click" Text="Button" Visible="False" />
+                         <asp:Button ID="Button3" runat="server" Text="LINK ACCOUNT" class="btn btn-info" OnClick="Button3_Click"  />
                     </div>
                 </div>
                 <div> <hr /></div>
