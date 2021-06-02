@@ -1030,6 +1030,7 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
+
             ClassDatabase obj = new ClassDatabase();
             obj.conn.ConnectionString = obj.locate1;
        
