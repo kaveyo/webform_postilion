@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
           
-    <title>Postilion Portal Admin Page</title>
+    <title>FBC Postilion Portal Admin Page</title>
          
     <script src="Scripts/css/pikaday.js"></script>
     <link href="Scripts/css/pikaday.css" rel="stylesheet" />  
@@ -264,14 +264,15 @@
 
                         <li class="divider"></li>
                         <li>
-                          
+                                                   
                          <a href='Login.aspx'><i class="fa fa-sign-out fa-fw" onserverclick="Button4_Click" runat="server"></i> Logout</a>
-             <%--              <asp:Button ID="Button4" runat="server" Text="Logout" class="fa fa-sign-out fa-fw" OnClick="Button4_Click" autopostback="false"/>
-         --%>
+        
                         </li>
                     </ul>
                     <!-- /.dropdown-user -->
                 </li>
+
+
                 <!-- /.dropdown -->
             </ul>
             <!-- /.navbar-top-links -->
@@ -292,12 +293,34 @@
                         <li>
                             <a id="4"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
                         </li>
+                         <li>
+                            <a href="#" id="1"><i class="glyphicon glyphicon-home" ></i> MANAGE BRANCHES<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                             
+                                <li>
+                                    <asp:HyperLink ID="HyperLink7" runat="server" NavigateUrl="Manage_Branchs.aspx" >EDIT BRANCHES</asp:HyperLink>
+                                </li>
+                      <li>
+                                    <asp:HyperLink ID="HyperLink9" runat="server" NavigateUrl="ADD_BRANCH.aspx" >ADD BRANCHES</asp:HyperLink>
+                                </li>
+                            </ul>
+                        </li>
                         <li>
                             <a href="#" id="1"><i class="glyphicon glyphicon-user" ></i> USERS<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                              
                                 <li>
                                     <asp:HyperLink ID="HyperLink1" runat="server" NavigateUrl="Add_User.aspx" >ADD USER</asp:HyperLink>
+                                </li>
+                      
+                            </ul>
+                        </li>
+                         <li>
+                            <a href="#" id="1"><i class="glyphicon glyphicon-user" ></i> USER ROLES<span class="fa arrow"></span></a>
+                            <ul class="nav nav-second-level">
+                             
+                                <li>
+                                    <asp:HyperLink ID="HyperLink8" runat="server" NavigateUrl="Roles.aspx" >EDIT ROLES</asp:HyperLink>
                                 </li>
                       
                             </ul>
@@ -381,6 +404,7 @@
           $(function () {
               $("#datepicker1").datepicker();
           });
+         
       </script>
     <script src="../vendor/jquery/jquery.min.js"></script>
     <script src="Content/vendor/jquery/jquery.min.js"></script>

@@ -106,7 +106,7 @@ namespace webform_postilion
                             using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                             {
                                 sqlCon.Open();
-                                string query = " insert into postilion_users(username,first_name,branch,role) values ('" + username.Text.ToLower() + "','" + user.DisplayName.ToLower() + "','" + DropDownList2.Text.Substring(0, 3) + "','" + role.Text + "')";
+                                string query = " insert into postilion_users(username,first_name,branch,role,active) values ('" + username.Text.ToLower() + "','" + user.DisplayName.ToLower() + "','" + DropDownList2.Text.Substring(0, 3) + "','" + role.Text + "','active')";
 
                                 SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                                 sqlCmd.ExecuteNonQuery();

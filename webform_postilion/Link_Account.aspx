@@ -10,8 +10,8 @@
             <asp:Label ID="Label1" runat="server" Text="ACCOUNT NUMBER" class = "control-label col-md-5"></asp:Label>
           <div class="col-md-7">
               <asp:TextBox ID="TextBox1" runat="server" class = "form-control" ></asp:TextBox>
-              <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox1" ForeColor="Red" Enabled ="false"></asp:RequiredFieldValidator>
-              <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Error Correct Customer ID" ValidationExpression = "^[\s\S]{16,16}$" ForeColor="Red" Enable="false"></asp:RegularExpressionValidator>
+              <asp:RequiredFieldValidator ID="RequiredFieldValidator2" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox1" ForeColor="Red" Enabled ="True"></asp:RequiredFieldValidator>
+              <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ControlToValidate="TextBox1" ErrorMessage="Error Correct Customer ID" ValidationExpression = "^[\s\S]{16,16}$" ForeColor="Red" Enable="True"></asp:RegularExpressionValidator>
             </div>
         </div>
 
@@ -106,7 +106,7 @@
            
               <%-- <asp:Button ID="Button4" runat="server" Text="ADD" class="btn btn-success" OnClick="Button4_Click"/>--%>
              
-               <div class="btn btn-danger" ><a href='Account_Card_Result.aspx' style="color: #FFFFFF"> BACK</a></div>  
+               <div class="btn btn-danger" ><a href='Search_Account_Pan.aspx' style="color: #FFFFFF"> BACK</a></div>  
             </div>
         </div>
     </div>

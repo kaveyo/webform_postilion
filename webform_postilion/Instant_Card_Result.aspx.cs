@@ -23,9 +23,55 @@ namespace webform_postilion
         {
             if (!IsPostBack)
             {
-           
-                  
-               
+
+                if (HttpContext.Current.Session["Roles"] != null)
+                {
+                    var list2 = HttpContext.Current.Session["Roles"] as List<Model.postilion_role>;
+
+                    
+                       if (list2[22].id == 0 )
+                       {
+                           gvPhoneBook.Enabled = false;
+                       }if (list2[0].id == 0 )
+                     {
+                         gvPhoneBook.Enabled = false;
+                     }
+                    if (list2[8].id == 0 )
+                    {
+                        Button7.Enabled = false;
+                    }
+                    if (list2[9].id == 0 )
+                    {
+                        Button7.Enabled = false;
+                    }
+                    if (list2[17].id == 0)
+                    {
+                        Button1.Enabled = false;
+                        Button4.Enabled = false;
+                    }
+                    if (list2[15].id == 0 )
+                    {
+                        Button2.Enabled = false;
+                    }
+                    if (list2[13].id == 0 )
+                    {
+                        Button2.Enabled = false;
+                    }
+                    if (list2[28].id == 0 )
+                    {
+                        Button11.Enabled = false;
+                    }
+                    if (list2[24].id == 0 )
+                    {
+                        Button9.Enabled = false;
+                    }
+                    if (list2[26].id == 0 )
+                    {
+                        Button10.Enabled = false;
+                    }
+                   
+                }
+
                 String card = Request.QueryString["card"];
             
                 obj.conn.ConnectionString = obj.locate;
@@ -237,6 +283,7 @@ namespace webform_postilion
                 gvPhoneBook.Rows[0].Cells[0].ColumnSpan = dtbl.Columns.Count;
                 gvPhoneBook.Rows[0].Cells[0].Text = "No Customer Linked to the Card ..!";
                 gvPhoneBook.Rows[0].Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                gvPhoneBook.Enabled = false;
             }
 
         }
@@ -244,8 +291,7 @@ namespace webform_postilion
         {
             Response.Redirect("Instant_Search_Account.aspx");
         }
-
-   
+         
 
         protected void Button10_Click(object sender, EventArgs e)
         {
@@ -265,8 +311,9 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+                System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
 
-                if (str.Text == "019") { 
+              
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
                 if (DropDownList1.Text != "None")
@@ -315,21 +362,18 @@ namespace webform_postilion
 
                     }
               }
-            }
-            else
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
-            }
+          
 
         }
-    }
+            Response.Redirect(Request.Url.ToString(), false);
+        }
 
         protected void Button1_Click(object sender, EventArgs e)
         {
             TextBox10.ReadOnly = false;
             DropDownList1.Enabled = true;
             DropDownList2.Enabled = true;
-            RequiredFieldValidator1.Enabled = true;
+            
         }
 
         protected void Button2_Click(object sender, EventArgs e)
@@ -406,6 +450,7 @@ namespace webform_postilion
                 }
                 Button2.Enabled = false;
             }
+            Response.Redirect(Request.Url.ToString(), false);
         }
         private string get_response(string v)
         {
@@ -522,6 +567,25 @@ namespace webform_postilion
         {
 
         }
+        protected void gvPhoneBook_RowCommand(object sender, GridViewCommandEventArgs e)
+        {
+            System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+            System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
+
+           
+                if (e.CommandName.Equals("CUST_id") && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
+                {
+
+                    Response.Redirect("Edit_Instant_Customer.aspx?cust_id=" + e.CommandArgument.ToString());
+
+                }
+           
+        }
+
         protected void gvPhoneBook_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {
             System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
@@ -529,7 +593,8 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
-            if (str.Text == "019") {
+            System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
+                        
                 String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
                 ClassDatabase obj = new ClassDatabase();
@@ -555,20 +620,61 @@ namespace webform_postilion
                     // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('UNLINKED')", true);
                     sqlCon.Close();
                 }
-            
+            Response.Redirect(Request.Url.ToString(), false);
+
         }
-            else
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
-        }
-        
-    }
         public String action_(String money)
         {
             // Response.Write("<script>alert('hie' + '"+money+"' );</script>");
             Response.Write("<script>alert('" + money + "'+ 'hie' );</script>");
             return "";
         }
+
+        protected void Button11_Click1(object sender, EventArgs e)
+        {
+            ClassDatabase obj = new ClassDatabase();
+            obj.conn.ConnectionString = obj.locate;
+            System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+            obj.conn.Open();
+            SqlDataReader sdr, sdr2;
+
+            SqlCommand cmd = new SqlCommand("SELECT * FROM pc_card_programs where card_program = '" + TextBox11.Text + "' ", obj.conn);
+
+            SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+            using (sdr = cmd.ExecuteReader())
+            {
+                if (sdr.Read())
+                {
+
+                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM pc_card_override_lim_2_A where pan = '" + Request.QueryString["card"] + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
+
+                    using (sdr2 = cmd2.ExecuteReader())
+                    {
+                        if (!sdr2.HasRows)
+                        {
+
+                            using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                            {
+                                sqlCon.Open();
+                                string query = " insert into pc_card_override_lim_2_A (issuer_nr,pan,seq_nr,goods_nr_trans_lim,goods_lim,goods_offline_lim,cash_nr_trans_lim,cash_lim,cash_offline_lim,cnp_lim,cnp_offline_lim,deposit_credit_lim,last_updated_date,last_updated_user,weekly_goods_nr_trans_lim,weekly_goods_lim,weekly_goods_offline_lim,weekly_cash_nr_trans_lim,weekly_cash_lim,weekly_cash_offline_lim,weekly_cnp_lim,weekly_cnp_offline_lim,weekly_deposit_credit_lim,monthly_goods_nr_trans_lim,monthly_goods_lim,monthly_goods_offline_lim,monthly_cash_nr_trans_lim,monthly_cash_lim,monthly_cash_offline_lim,monthly_cnp_lim,monthly_cnp_offline_lim,monthly_deposit_credit_lim,tran_goods_lim,tran_goods_offline_lim,tran_cash_lim,tran_cash_offline_lim,tran_cnp_lim,tran_cnp_offline_lim,tran_deposit_credit_lim,date_deleted,paymnt_nr_trans_lim,paymnt_lim,paymnt_offline_lim,weekly_paymnt_nr_trans_lim,weekly_paymnt_lim,weekly_paymnt_offline_lim,monthly_paymnt_nr_trans_lim,monthly_paymnt_lim,monthly_paymnt_offline_lim,tran_paymnt_lim,tran_paymnt_offline_lim) values ('" + (sdr["issuer_nr"].ToString()) + "','" + Request.QueryString["card"] + "','" + TextBox2.Text + "','" + (sdr["goods_nr_trans_lim"].ToString()) + "','" + (sdr["goods_lim"].ToString()) + "','" + (sdr["goods_offline_lim"].ToString()) + "','" + (sdr["cash_nr_trans_lim"].ToString()) + "','" + (sdr["cash_lim"].ToString()) + "','" + (sdr["cash_offline_lim"].ToString()) + "','" + (sdr["cnp_lim"].ToString()) + "','" + (sdr["cnp_offline_lim"].ToString()) + "','" + (sdr["deposit_credit_lim"].ToString()) + "','" + time.ToString(format) + "','" + str2.Text + "','" + (sdr["weekly_goods_nr_trans_lim"].ToString()) + "','" + (sdr["weekly_goods_lim"].ToString()) + "','" + (sdr["weekly_goods_offline_lim"].ToString()) + "','" + (sdr["weekly_cash_nr_trans_lim"].ToString()) + "','" + (sdr["weekly_cash_lim"].ToString()) + "','" + (sdr["weekly_cash_offline_lim"].ToString()) + "','" + (sdr["weekly_cnp_lim"].ToString()) + "','" + (sdr["weekly_cnp_offline_lim"].ToString()) + "','" + (sdr["weekly_deposit_credit_lim"].ToString()) + "','" + (sdr["monthly_goods_nr_trans_lim"].ToString()) + "','" + (sdr["monthly_goods_lim"].ToString()) + "','" + (sdr["monthly_goods_offline_lim"].ToString()) + "','" + (sdr["monthly_cash_nr_trans_lim"].ToString()) + "','" + (sdr["monthly_cash_lim"].ToString()) + "','" + (sdr["monthly_cash_offline_lim"].ToString()) + "','" + (sdr["monthly_cnp_lim"].ToString()) + "','" + (sdr["monthly_cnp_offline_lim"].ToString()) + "','" + (sdr["monthly_deposit_credit_lim"].ToString()) + "','" + (sdr["tran_goods_lim"].ToString()) + "','" + (sdr["tran_goods_offline_lim"].ToString()) + "','" + (sdr["tran_cash_lim"].ToString()) + "','" + (sdr["tran_cash_offline_lim"].ToString()) + "','" + (sdr["tran_cnp_lim"].ToString()) + "','" + (sdr["tran_cnp_offline_lim"].ToString()) + "','" + (sdr["tran_deposit_credit_lim"].ToString()) + "',NULL,'" + (sdr["paymnt_nr_trans_lim"].ToString()) + "','" + (sdr["paymnt_lim"].ToString()) + "','" + (sdr["paymnt_offline_lim"].ToString()) + "','" + (sdr["weekly_paymnt_nr_trans_lim"].ToString()) + "','" + (sdr["weekly_paymnt_lim"].ToString()) + "','" + (sdr["weekly_paymnt_offline_lim"].ToString()) + "','" + (sdr["monthly_paymnt_nr_trans_lim"].ToString()) + "','" + (sdr["monthly_paymnt_lim"].ToString()) + "','" + (sdr["monthly_paymnt_offline_lim"].ToString()) + "','" + (sdr["tran_paymnt_lim"].ToString()) + "','" + (sdr["tran_paymnt_offline_lim"].ToString()) + "')";
+
+                                SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                                sqlCmd.ExecuteNonQuery();
+                              
+                            }
+                        }
+                    }
+                }
+
+            }
+            obj.conn.Close();
+
+           Response.Redirect("Instant_Card_Limit.aspx?pan=" + TextBox1.Text + "&card_program=" + TextBox11.Text);
+        }
+
         protected void Button4_Click(object sender, EventArgs e)
         {
             System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
@@ -578,7 +684,7 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
           
-                if (TextBox10.Text != "" && DropDownList1.Enabled == true)
+                if (DropDownList1.Enabled == true)
                 {
                     
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
@@ -589,7 +695,7 @@ namespace webform_postilion
 
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                            string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('EDIT CARD INSTANT','" + row + "','" + TextBox10.Text + "','','" + customer_id_text.Text + "','" + DropDownList1.Text + "','','' , '','','','','','','','','' , '','','','','','','','','' , '')";
+                            string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('EDIT CARD INSTANT','" + row + "','" + DropDownList2.Text + "','','" + customer_id_text.Text + "','" + DropDownList1.Text + "','','' , '','','','','','','','','' , '','','','','','','','','' , '')";
 
                             SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
@@ -604,13 +710,15 @@ namespace webform_postilion
 
                 Button4.Enabled = false;
             }
-                else
-                {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER EMPTY FIELDS AND EDIT DATA BEFORE SAVING')", true);
-               // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('Enter Empty Fields')", true);
-                }
-            
+            else
+            {
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDIT DATA BEFORE SAVING')", true);
 
+                //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('Enter Empty Fields')", true);
+            }
+
+
+            Response.Redirect(Request.Url.ToString(), false);
         }
 
        

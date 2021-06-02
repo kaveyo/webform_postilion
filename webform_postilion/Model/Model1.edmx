@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="postcard_portal_testModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2008" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="postilion_role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="action" Type="nvarchar" MaxLength="150" Nullable="false" />
+          <Property Name="branch_users" Type="int" Nullable="false" />
+          <Property Name="convenience_users" Type="int" Nullable="false" />
+          <Property Name="099 MICROPLAN FINANCIAL SERVICES" Type="int" Nullable="false" />
+          <Property Name="051 TREASURY DEPARTMENT" Type="int" Nullable="false" />
+          <Property Name="013 KWEKWE BRANCH" Type="int" Nullable="false" />
+          <Property Name="870 BS BULAWAYO BRANCH" Type="int" Nullable="false" />
+          <Property Name="882 BS GWERU BRANCH" Type="int" Nullable="false" />
+          <Property Name="016 CENTRAL CASH DEPOT" Type="int" Nullable="false" />
+          <Property Name="006 BATANAI GARDENS BRANCH" Type="int" Nullable="false" />
+          <Property Name="055 TRADE FINANCE DEPARTMENT" Type="int" Nullable="false" />
+          <Property Name="864 BS TREASURY BRANCH" Type="int" Nullable="false" />
+          <Property Name="860 BS REGIONAL OFFICE" Type="int" Nullable="false" />
+          <Property Name="020 FBC CENTRE BRANCH" Type="int" Nullable="false" />
+          <Property Name="850 BANK REGIONAL OFFICE" Type="int" Nullable="false" />
+          <Property Name="861 BS LEOPOLD TAKAWIRA BRANCH" Type="int" Nullable="false" />
+          <Property Name="027 BORROWDALE BRANCH" Type="int" Nullable="false" />
+          <Property Name="005 JASON MOYO STREET BRANCH" Type="int" Nullable="false" />
+          <Property Name="001 SAMORA MACHEL AVENUE BRANCH" Type="int" Nullable="false" />
+          <Property Name="000 HEAD OFFICE BRANCH" Type="int" Nullable="false" />
+          <Property Name="009 MUTARE BRANCH" Type="int" Nullable="false" />
+          <Property Name="007 CUSTODIAL SERVICES" Type="int" Nullable="false" />
+          <Property Name="880 BS MUTARE BRANCH" Type="int" Nullable="false" />
+          <Property Name="029 FBC BUSINESS BANKING DIVISION" Type="int" Nullable="false" />
+          <Property Name="008 ZVISHAVANE BRANCH" Type="int" Nullable="false" />
+          <Property Name="012 VICTORIA FALLS BRANCH" Type="int" Nullable="false" />
+          <Property Name="026 BEITBRIDGE BRANCH" Type="int" Nullable="false" />
+          <Property Name="011 CHINHOYI BRANCH" Type="int" Nullable="false" />
+          <Property Name="866 BS PROJECTS  BRANCH" Type="int" Nullable="false" />
+          <Property Name="018 BULAWAYO CENTRAL CASH" Type="int" Nullable="false" />
+          <Property Name="028 GRANITE SIDE BRANCH" Type="int" Nullable="false" />
+          <Property Name="014 MASVINGO BRANCH" Type="int" Nullable="false" />
+          <Property Name="010 GWERU BRANCH" Type="int" Nullable="false" />
+          <Property Name="002 NELSON MANDELA AVENUE BRANCH" Type="int" Nullable="false" />
+          <Property Name="883 BS KWEKWE BRANCH" Type="int" Nullable="false" />
+          <Property Name="863 BS MORTGAGES BRANCH" Type="int" Nullable="false" />
+          <Property Name="862 BS FBC CENTRE BRANCH" Type="int" Nullable="false" />
+          <Property Name="881 BS MASVINGO BRANCH" Type="int" Nullable="false" />
+          <Property Name="021 MSASA BRANCH" Type="int" Nullable="false" />
+          <Property Name="019 CONVENIENCE BANKING BRANCH" Type="int" Nullable="false" />
+          <Property Name="003 SOUTHERTON BRANCH" Type="int" Nullable="false" />
+          <Property Name="865 BUSINESS BANKING BRANCH" Type="int" Nullable="false" />
+          <Property Name="004 FBC PRIVATE BANK, HARARE" Type="int" Nullable="false" />
+          <Property Name="022 CHITUNGWIZA BRANCH" Type="int" Nullable="false" />
+          <Property Name="015 CENTRAL PROCESSING CENTRE" Type="int" Nullable="false" />
+          <Property Name="017 BULAWAYO PRIVATE  BANKING CENTRE" Type="int" Nullable="false" />
+          <Property Name="030 HEAD OFFICE BRANCH" Type="int" Nullable="false" />
+          <Property Name="031 CORPORATE AND INSTITUTIONAL BANKING" Type="int" Nullable="false" />
+          <Property Name="960 BUREAU DE CHANGE REGIONAL OFFICE" Type="int" Nullable="false" />
+          <Property Name="961 KWAME NKRUMAH BUREAU DE CHANGE" Type="int" Nullable="false" />
+          <Property Name="962 JASON MOYO BUREAU DE CHANGE" Type="int" Nullable="false" />
+          <Property Name="964 KWAME NKRUMAH BUREAU DE CHANGE" Type="int" Nullable="false" />
+          <Property Name="032 FBC VIRTUAL" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="postcard_portal_testModelStoreContainer">
+          <EntitySet Name="postilion_role" EntityType="Self.postilion_role" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="postcard_portal_testModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="postilion_role">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="action" Type="String" MaxLength="150" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="branch_users" Type="Int32" Nullable="false" />
+          <Property Name="convenience_users" Type="Int32" Nullable="false" />
+          <Property Name="C099_MICROPLAN_FINANCIAL_SERVICES" Type="Int32" Nullable="false" />
+          <Property Name="C051_TREASURY_DEPARTMENT" Type="Int32" Nullable="false" />
+          <Property Name="C013_KWEKWE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C870_BS_BULAWAYO_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C882_BS_GWERU_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C016_CENTRAL_CASH_DEPOT" Type="Int32" Nullable="false" />
+          <Property Name="C006_BATANAI_GARDENS_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C055_TRADE_FINANCE_DEPARTMENT" Type="Int32" Nullable="false" />
+          <Property Name="C864_BS_TREASURY_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C860_BS_REGIONAL_OFFICE" Type="Int32" Nullable="false" />
+          <Property Name="C020_FBC_CENTRE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C850_BANK_REGIONAL_OFFICE" Type="Int32" Nullable="false" />
+          <Property Name="C861_BS_LEOPOLD_TAKAWIRA_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C027_BORROWDALE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C005_JASON_MOYO_STREET_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C001_SAMORA_MACHEL_AVENUE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C000_HEAD_OFFICE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C009_MUTARE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C007_CUSTODIAL_SERVICES" Type="Int32" Nullable="false" />
+          <Property Name="C880_BS_MUTARE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C029_FBC_BUSINESS_BANKING_DIVISION" Type="Int32" Nullable="false" />
+          <Property Name="C008_ZVISHAVANE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C012_VICTORIA_FALLS_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C026_BEITBRIDGE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C011_CHINHOYI_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C866_BS_PROJECTS__BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C018_BULAWAYO_CENTRAL_CASH" Type="Int32" Nullable="false" />
+          <Property Name="C028_GRANITE_SIDE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C014_MASVINGO_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C010_GWERU_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C002_NELSON_MANDELA_AVENUE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C883_BS_KWEKWE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C863_BS_MORTGAGES_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C862_BS_FBC_CENTRE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C881_BS_MASVINGO_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C021_MSASA_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C019_CONVENIENCE_BANKING_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C003_SOUTHERTON_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C865_BUSINESS_BANKING_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C004_FBC_PRIVATE_BANK__HARARE" Type="Int32" Nullable="false" />
+          <Property Name="C022_CHITUNGWIZA_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C015_CENTRAL_PROCESSING_CENTRE" Type="Int32" Nullable="false" />
+          <Property Name="C017_BULAWAYO_PRIVATE__BANKING_CENTRE" Type="Int32" Nullable="false" />
+          <Property Name="C030_HEAD_OFFICE_BRANCH" Type="Int32" Nullable="false" />
+          <Property Name="C031_CORPORATE_AND_INSTITUTIONAL_BANKING" Type="Int32" Nullable="false" />
+          <Property Name="C960_BUREAU_DE_CHANGE_REGIONAL_OFFICE" Type="Int32" Nullable="false" />
+          <Property Name="C961_KWAME_NKRUMAH_BUREAU_DE_CHANGE" Type="Int32" Nullable="false" />
+          <Property Name="C962_JASON_MOYO_BUREAU_DE_CHANGE" Type="Int32" Nullable="false" />
+          <Property Name="C964_KWAME_NKRUMAH_BUREAU_DE_CHANGE" Type="Int32" Nullable="false" />
+          <Property Name="C032_FBC_VIRTUAL" Type="Int32" Nullable="false" />
+        </EntityType>
+        <EntityContainer Name="postcard_portal_testEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="postilion_role" EntityType="Self.postilion_role" />
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="postcard_portal_testModelStoreContainer" CdmEntityContainer="postcard_portal_testEntities">
+          <EntitySetMapping Name="postilion_role">
+            <EntityTypeMapping TypeName="postcard_portal_testModel.postilion_role">
+              <MappingFragment StoreEntitySet="postilion_role">
+                <ScalarProperty Name="C032_FBC_VIRTUAL" ColumnName="032 FBC VIRTUAL" />
+                <ScalarProperty Name="C964_KWAME_NKRUMAH_BUREAU_DE_CHANGE" ColumnName="964 KWAME NKRUMAH BUREAU DE CHANGE" />
+                <ScalarProperty Name="C962_JASON_MOYO_BUREAU_DE_CHANGE" ColumnName="962 JASON MOYO BUREAU DE CHANGE" />
+                <ScalarProperty Name="C961_KWAME_NKRUMAH_BUREAU_DE_CHANGE" ColumnName="961 KWAME NKRUMAH BUREAU DE CHANGE" />
+                <ScalarProperty Name="C960_BUREAU_DE_CHANGE_REGIONAL_OFFICE" ColumnName="960 BUREAU DE CHANGE REGIONAL OFFICE" />
+                <ScalarProperty Name="C031_CORPORATE_AND_INSTITUTIONAL_BANKING" ColumnName="031 CORPORATE AND INSTITUTIONAL BANKING" />
+                <ScalarProperty Name="C030_HEAD_OFFICE_BRANCH" ColumnName="030 HEAD OFFICE BRANCH" />
+                <ScalarProperty Name="C017_BULAWAYO_PRIVATE__BANKING_CENTRE" ColumnName="017 BULAWAYO PRIVATE  BANKING CENTRE" />
+                <ScalarProperty Name="C015_CENTRAL_PROCESSING_CENTRE" ColumnName="015 CENTRAL PROCESSING CENTRE" />
+                <ScalarProperty Name="C022_CHITUNGWIZA_BRANCH" ColumnName="022 CHITUNGWIZA BRANCH" />
+                <ScalarProperty Name="C004_FBC_PRIVATE_BANK__HARARE" ColumnName="004 FBC PRIVATE BANK, HARARE" />
+                <ScalarProperty Name="C865_BUSINESS_BANKING_BRANCH" ColumnName="865 BUSINESS BANKING BRANCH" />
+                <ScalarProperty Name="C003_SOUTHERTON_BRANCH" ColumnName="003 SOUTHERTON BRANCH" />
+                <ScalarProperty Name="C019_CONVENIENCE_BANKING_BRANCH" ColumnName="019 CONVENIENCE BANKING BRANCH" />
+                <ScalarProperty Name="C021_MSASA_BRANCH" ColumnName="021 MSASA BRANCH" />
+                <ScalarProperty Name="C881_BS_MASVINGO_BRANCH" ColumnName="881 BS MASVINGO BRANCH" />
+                <ScalarProperty Name="C862_BS_FBC_CENTRE_BRANCH" ColumnName="862 BS FBC CENTRE BRANCH" />
+                <ScalarProperty Name="C863_BS_MORTGAGES_BRANCH" ColumnName="863 BS MORTGAGES BRANCH" />
+                <ScalarProperty Name="C883_BS_KWEKWE_BRANCH" ColumnName="883 BS KWEKWE BRANCH" />
+                <ScalarProperty Name="C002_NELSON_MANDELA_AVENUE_BRANCH" ColumnName="002 NELSON MANDELA AVENUE BRANCH" />
+                <ScalarProperty Name="C010_GWERU_BRANCH" ColumnName="010 GWERU BRANCH" />
+                <ScalarProperty Name="C014_MASVINGO_BRANCH" ColumnName="014 MASVINGO BRANCH" />
+                <ScalarProperty Name="C028_GRANITE_SIDE_BRANCH" ColumnName="028 GRANITE SIDE BRANCH" />
+                <ScalarProperty Name="C018_BULAWAYO_CENTRAL_CASH" ColumnName="018 BULAWAYO CENTRAL CASH" />
+                <ScalarProperty Name="C866_BS_PROJECTS__BRANCH" ColumnName="866 BS PROJECTS  BRANCH" />
+                <ScalarProperty Name="C011_CHINHOYI_BRANCH" ColumnName="011 CHINHOYI BRANCH" />
+                <ScalarProperty Name="C026_BEITBRIDGE_BRANCH" ColumnName="026 BEITBRIDGE BRANCH" />
+                <ScalarProperty Name="C012_VICTORIA_FALLS_BRANCH" ColumnName="012 VICTORIA FALLS BRANCH" />
+                <ScalarProperty Name="C008_ZVISHAVANE_BRANCH" ColumnName="008 ZVISHAVANE BRANCH" />
+                <ScalarProperty Name="C029_FBC_BUSINESS_BANKING_DIVISION" ColumnName="029 FBC BUSINESS BANKING DIVISION" />
+                <ScalarProperty Name="C880_BS_MUTARE_BRANCH" ColumnName="880 BS MUTARE BRANCH" />
+                <ScalarProperty Name="C007_CUSTODIAL_SERVICES" ColumnName="007 CUSTODIAL SERVICES" />
+                <ScalarProperty Name="C009_MUTARE_BRANCH" ColumnName="009 MUTARE BRANCH" />
+                <ScalarProperty Name="C000_HEAD_OFFICE_BRANCH" ColumnName="000 HEAD OFFICE BRANCH" />
+                <ScalarProperty Name="C001_SAMORA_MACHEL_AVENUE_BRANCH" ColumnName="001 SAMORA MACHEL AVENUE BRANCH" />
+                <ScalarProperty Name="C005_JASON_MOYO_STREET_BRANCH" ColumnName="005 JASON MOYO STREET BRANCH" />
+                <ScalarProperty Name="C027_BORROWDALE_BRANCH" ColumnName="027 BORROWDALE BRANCH" />
+                <ScalarProperty Name="C861_BS_LEOPOLD_TAKAWIRA_BRANCH" ColumnName="861 BS LEOPOLD TAKAWIRA BRANCH" />
+                <ScalarProperty Name="C850_BANK_REGIONAL_OFFICE" ColumnName="850 BANK REGIONAL OFFICE" />
+                <ScalarProperty Name="C020_FBC_CENTRE_BRANCH" ColumnName="020 FBC CENTRE BRANCH" />
+                <ScalarProperty Name="C860_BS_REGIONAL_OFFICE" ColumnName="860 BS REGIONAL OFFICE" />
+                <ScalarProperty Name="C864_BS_TREASURY_BRANCH" ColumnName="864 BS TREASURY BRANCH" />
+                <ScalarProperty Name="C055_TRADE_FINANCE_DEPARTMENT" ColumnName="055 TRADE FINANCE DEPARTMENT" />
+                <ScalarProperty Name="C006_BATANAI_GARDENS_BRANCH" ColumnName="006 BATANAI GARDENS BRANCH" />
+                <ScalarProperty Name="C016_CENTRAL_CASH_DEPOT" ColumnName="016 CENTRAL CASH DEPOT" />
+                <ScalarProperty Name="C882_BS_GWERU_BRANCH" ColumnName="882 BS GWERU BRANCH" />
+                <ScalarProperty Name="C870_BS_BULAWAYO_BRANCH" ColumnName="870 BS BULAWAYO BRANCH" />
+                <ScalarProperty Name="C013_KWEKWE_BRANCH" ColumnName="013 KWEKWE BRANCH" />
+                <ScalarProperty Name="C051_TREASURY_DEPARTMENT" ColumnName="051 TREASURY DEPARTMENT" />
+                <ScalarProperty Name="C099_MICROPLAN_FINANCIAL_SERVICES" ColumnName="099 MICROPLAN FINANCIAL SERVICES" />
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="action" ColumnName="action" />
+                <ScalarProperty Name="branch_users" ColumnName="branch_users" />
+                <ScalarProperty Name="convenience_users" ColumnName="convenience_users" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="true" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

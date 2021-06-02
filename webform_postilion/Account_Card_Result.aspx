@@ -231,103 +231,14 @@
             <div class="col-md-7">
                 <asp:DropDownList ID="DropDownList1" runat="server" class = "form-control" Enabled="False" AutoPostBack="false">
                     <asp:ListItem>Account closed :45</asp:ListItem>
-                    <asp:ListItem>None</asp:ListItem>
-                    <asp:ListItem>Approved or completed successfully:00</asp:ListItem>
-<asp:ListItem>Refer to card issuer:01</asp:ListItem>
-<asp:ListItem>Refer to card issuer, special condition:02</asp:ListItem>
-<asp:ListItem>Invalid merchant:03</asp:ListItem>
-<asp:ListItem>Pick-up card:04</asp:ListItem>
-<asp:ListItem>Do not honor:05</asp:ListItem>
-<asp:ListItem>Error:06</asp:ListItem>
-<asp:ListItem>Pick-up card, special condition:07</asp:ListItem>
-<asp:ListItem>Honor with identification:08</asp:ListItem>
-<asp:ListItem>Request in progress:09</asp:ListItem>
-<asp:ListItem>Approved, partial:10</asp:ListItem>
-<asp:ListItem>Approved, VIP:11</asp:ListItem>
-<asp:ListItem>Invalid transaction:12</asp:ListItem>
-<asp:ListItem>Invalid amount:13</asp:ListItem>
-<asp:ListItem>Invalid card number:14</asp:ListItem>
-<asp:ListItem>No such issuer:15</asp:ListItem>
-<asp:ListItem>Approved, update track 3:16</asp:ListItem>
-<asp:ListItem>Customer cancellation:17</asp:ListItem>
-<asp:ListItem>Customer dispute:18</asp:ListItem>
-<asp:ListItem>Re-enter transaction:19</asp:ListItem>
-<asp:ListItem>Invalid response:20</asp:ListItem>
-<asp:ListItem>No action taken:21</asp:ListItem>
-<asp:ListItem>Suspected malfunction:22</asp:ListItem>
-<asp:ListItem>Unacceptable transaction fee:23</asp:ListItem>
-<asp:ListItem>File update not supported:24</asp:ListItem>
-<asp:ListItem>Unable to locate record:25</asp:ListItem>
-<asp:ListItem>Duplicate record:26</asp:ListItem>
-<asp:ListItem>File update field edit error:27</asp:ListItem>
-<asp:ListItem>File update file locked:28</asp:ListItem>
-<asp:ListItem>File update failed:29</asp:ListItem>
-<asp:ListItem>Format error:30</asp:ListItem>
-<asp:ListItem>Bank not supported:31</asp:ListItem>
-<asp:ListItem>Completed partially:32</asp:ListItem>
+                    <asp:ListItem>None</asp:ListItem>              
 <asp:ListItem>Expired card, pick-up:33</asp:ListItem>
-<asp:ListItem>Suspected fraud, pick-up:34</asp:ListItem>
-<asp:ListItem>Contact acquirer, pick-up:35</asp:ListItem>
-<asp:ListItem>Restricted card, pick-up:36</asp:ListItem>
-<asp:ListItem>Call acquirer security, pick-up:37</asp:ListItem>
-<asp:ListItem>PIN tries exceeded, pick-up:38</asp:ListItem>
-<asp:ListItem>No credit account:39</asp:ListItem>
-<asp:ListItem>Function not supported:40</asp:ListItem>
 <asp:ListItem>Lost card, pick-up:41</asp:ListItem>
 <asp:ListItem>No universal account:42</asp:ListItem>
 <asp:ListItem>Stolen card, pick-up:43</asp:ListItem>
-<asp:ListItem>No investment account:44</asp:ListItem>
-<asp:ListItem>Identification required:46</asp:ListItem>
-<asp:ListItem>Identification cross-check required:47</asp:ListItem>
-<asp:ListItem>No customer record:48</asp:ListItem>
-<asp:ListItem>Reserved for future Realtime use:49</asp:ListItem>
-<asp:ListItem>Not sufficient funds:51</asp:ListItem>
-<asp:ListItem>No check account:52</asp:ListItem>
-<asp:ListItem>No savings account:53</asp:ListItem>
 <asp:ListItem>Expired card:54</asp:ListItem>
-<asp:ListItem>Incorrect PIN:55</asp:ListItem>
-<asp:ListItem>No card record:56</asp:ListItem>
-<asp:ListItem>Transaction not permitted to cardholder:57</asp:ListItem>
-<asp:ListItem>Transaction not permitted on terminal:58</asp:ListItem>
-<asp:ListItem>Suspected fraud:59</asp:ListItem>
-<asp:ListItem>Contact acquirer:60</asp:ListItem>
-<asp:ListItem>Exceeds withdrawal limit:61</asp:ListItem>
-<asp:ListItem>Restricted card:62</asp:ListItem>
-<asp:ListItem>Security violation:63</asp:ListItem>
-<asp:ListItem>Original amount incorrect:64</asp:ListItem>
-<asp:ListItem>Exceeds withdrawal frequency:65</asp:ListItem>
-<asp:ListItem>Call acquirer security:66</asp:ListItem>
-<asp:ListItem>Hard capture:67</asp:ListItem>
-<asp:ListItem>Response received too late:68</asp:ListItem>
-<asp:ListItem>Advice received too late:69</asp:ListItem>
-<asp:ListItem>Reserved for future Realtime use:70</asp:ListItem>
-<asp:ListItem>PIN tries exceeded:75</asp:ListItem>
-<asp:ListItem>Reserved for future Realtime use:76</asp:ListItem>
-<asp:ListItem>Intervene, bank approval required:77</asp:ListItem>
-<asp:ListItem>Intervene, bank approval required for partial amount:78</asp:ListItem>
-<asp:ListItem>Reserved for client-specific use (declined):79 to 89</asp:ListItem>
-<asp:ListItem>Cut-off in progress:90</asp:ListItem>
-<asp:ListItem>Issuer or switch inoperative:91</asp:ListItem>
-<asp:ListItem>Routing error:92</asp:ListItem>
-<asp:ListItem>Violation of law:93</asp:ListItem>
-<asp:ListItem>Duplicate transaction:94</asp:ListItem>
-<asp:ListItem>Reconcile error:95</asp:ListItem>
-<asp:ListItem>System malfunction:96</asp:ListItem>
-<asp:ListItem>Reserved for future Realtime use:97</asp:ListItem>
-<asp:ListItem>Exceeds cash limit:98</asp:ListItem>
-<asp:ListItem>Reserved for future Realtime use:99</asp:ListItem>
-<asp:ListItem>ATC not incremented:A1</asp:ListItem>
-<asp:ListItem>ATC limit exceeded:A2</asp:ListItem>
-<asp:ListItem>ATC configuration error:A3</asp:ListItem>
-<asp:ListItem>CVR check failure:A4</asp:ListItem>
-<asp:ListItem>CVR configuration error:A5</asp:ListItem>
-<asp:ListItem>TVR check failure:A6</asp:ListItem>
-<asp:ListItem>TVR configuration error:A7</asp:ListItem>
-<asp:ListItem>Unacceptable PIN:C Zero</asp:ListItem>
-<asp:ListItem>PIN Change failed:C1</asp:ListItem>
-<asp:ListItem>PIN Unblock failed:C2</asp:ListItem>
-<asp:ListItem>MAC Error:D1</asp:ListItem>
-<asp:ListItem>Prepay error:E1</asp:ListItem>
+
+
       </asp:DropDownList>
            
           </div>
@@ -367,7 +278,7 @@
  
         <div>
              <asp:GridView ID="gvPhoneBook" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" Width="1066px"  AutoGenerateColumns="false" DataKeyNames="customer_id" 
-                 OnSelectedIndexChanged="gvPhoneBook_SelectedIndexChanged" OnRowDeleting="gvPhoneBook_RowDeleting" >
+                 OnRowDeleting="gvPhoneBook_RowDeleting" OnRowCommand="gvPhoneBook_RowCommand" >
                 
                 <%-- Theme Properties --%>
                 <FooterStyle BackColor="White" ForeColor="#000066" />
@@ -440,7 +351,18 @@
                    
                      <asp:TemplateField HeaderText="UNLINK">
                         <ItemTemplate>
-                            <asp:Button ID="Button8" runat="server" Text="UNLINK CUSTOMER" CommandName="Delete" class="btn btn-danger" />
+                            <asp:Button ID="Button_unlink" runat="server" Text="UNLINK CUSTOMER" CommandName="Delete" class="btn btn-danger"   />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtContact" Text='' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtREASONFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
+                            <asp:TemplateField HeaderText="EDIT CUSTOMER DETAILS">
+                        <ItemTemplate>
+                            <asp:Button ID="Button_edit" runat="server" Text="EDIT DETAILS"  CommandName="CUST_id" CommandArgument='<%# Eval("customer_id") %>' class="btn btn-danger" />
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtContact" Text='' runat="server" />
@@ -461,7 +383,7 @@
  
         <div>
              <asp:GridView ID="gvPhoneBook2" runat="server" BackColor="White" BorderColor="#CCCCCC" BorderStyle="None" BorderWidth="1px" CellPadding="3" Width="1066px"  AutoGenerateColumns="false" DataKeyNames="account_id" 
-                 OnSelectedIndexChanged="gvPhoneBook_SelectedIndexChanged" OnRowDeleting="gvPhoneBook_RowDeleting2" OnRowCommand="gvPhoneBook_RowCommand">
+                  OnRowDeleting="gvPhoneBook_RowDeleting2" OnRowCommand="gvPhoneBook_RowCommand">
                 
                 <%-- Theme Properties --%>
                 <FooterStyle BackColor="White" ForeColor="#000066" />
@@ -512,7 +434,7 @@
                      <asp:TemplateField HeaderText="UNLINK">
                         <ItemTemplate>
                             <%--<asp:Button ID="Button8" runat="server" Text="UNLINK ACCOUNT" CommandName="Delete" class="btn btn-danger" />--%>
-                             <asp:Button ID="Button5" runat="server" Text="UNLINK ACCOUNT" CommandName="reason" class="btn btn-danger" />
+                             <asp:Button ID="Button_acc" runat="server" Text="UNLINK ACCOUNT" CommandName="reason" class="btn btn-danger" />
                         </ItemTemplate>
                         <EditItemTemplate>
                             <asp:TextBox ID="txtContact" Text='' runat="server" />
@@ -525,15 +447,38 @@
                 </Columns>
             </asp:GridView>
         </div>
+             <!-- Modal reason -->
+ <div id="myModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">               
+
+                <h4 class="modal-title">ENTER REASON</h4>
+            </div>
+            <div class="modal-body">
+
+                  <asp:TextBox ID="reason_textbox" runat="server" class="form-control p-0 border-0" placeholder ="Phone Number" TextMode="Phone" ></asp:TextBox>
+		              
+            </div>
+            <div class="modal-footer">
+                <asp:Button ID="Button6" runat="server" Text="SAVE" class="btn btn-default"  OnClick="Button2_Click" />
+            </div>
+        </div>
+    </div>
+</div> <!--End Modal reason --> 
+
         <div class="container">
             <div class="">
                 <div class="row">
                     <div class="col-md-10">
-                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" OnClick="Button7_Click1" Visible="False" />
+                           <asp:Button ID="Button7" runat="server" Text="PLACE / REMOVE HOLD" class="btn btn-danger" data-toggle="modal" data-target="#myModal" OnClientClick="return false;" OnClick="Button7_Click1" Visible="False" />
                           <asp:Button ID="Button1" runat="server" Text="EDIT" class="btn btn-info" OnClick="Button1_Click"  />
                           <asp:Button ID="Button2" runat="server" Text="ACTIVATE / DEACTIVATE" class="btn btn-primary" OnClick="Button2_Click"/>
-                         <asp:Button ID="Button3" runat="server" Text="LINK ACCOUNT" class="btn btn-info" OnClick="Button3_Click"  />
-                    </div>
+                         <asp:Button ID="Button3" runat="server" Text="LINK ACCOUNT" class="btn btn-info" OnClick="Button3_Click"  /> 
+                         <asp:Button ID="Button11" runat="server" Text="OVERRIDE LIMITS" class="btn btn-danger" OnClick="Button11_Click1"  />
+                   </div>
                 </div>
                 <div> <hr /></div>
                 <div class="row">

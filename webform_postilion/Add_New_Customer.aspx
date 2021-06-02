@@ -297,7 +297,7 @@
             <div class="">
            
                <asp:Button ID="Button4" runat="server" Text="OK" class="btn btn-success" OnClick="Button4_Click"/>
-               <div class="btn btn-danger" ><a href='Account_Card_Result.aspx' style="color: #FFFFFF"> BACK</a></div>  
+               <div class="btn btn-danger" ><a href='Search_Account_Pan.aspx' style="color: #FFFFFF"> BACK</a></div>  
            
             </div>
         </div>

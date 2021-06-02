@@ -68,8 +68,16 @@ namespace webform_postilion
             obj.cmd.ExecuteNonQuery();
             obj.cmd.CommandTimeout = 60;
 
+            using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+            {
+                sqlCon.Open();
+                string query = "INSERT into postilion_user_log (username , action, date ) VALUES ('" + str3.Text + "', 'LOGGED OUT','" + time + "')";
+                SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                sqlCmd.ExecuteNonQuery();
+                sqlCon.Close();
+            }
             obj.conn.Close();
-
+            
             Response.Redirect("Login.aspx");
         }
      }

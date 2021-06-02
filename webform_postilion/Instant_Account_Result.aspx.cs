@@ -18,8 +18,36 @@ namespace webform_postilion
         ClassDatabase obj = new ClassDatabase();
         protected void Page_Load(object sender, EventArgs e)
         {
-            if (!IsPostBack) { 
-            if (Request.QueryString["acc"] != "")
+            if (!IsPostBack) {
+                if (HttpContext.Current.Session["Roles"] != null)
+                {
+                    var list2 = HttpContext.Current.Session["Roles"] as List<Model.postilion_role>;
+
+                     if (list2[0].id == 0 )
+                     {
+                       gvPhoneBook.Enabled = false;
+                     }
+                     if (list2[20].id == 0 )
+                     {
+                           gvPhoneBook.Enabled = false;
+                     }
+                    if (list2[11].id == 0 )
+                    {
+                        Button1.Enabled = false;
+                        Button4.Enabled = false;
+                    }
+                    if (list2[4].id == 0 )
+                    {
+                        Button2.Enabled = false;
+                    }
+                    if (list2[5].id == 0 )
+                    {
+                        Button2.Enabled = false;
+                    }
+                    
+                }
+
+                if (Request.QueryString["acc"] != "")
             {
                 obj.conn.ConnectionString = obj.locate;
 
@@ -35,8 +63,8 @@ namespace webform_postilion
                 {
                     while (sdr2.Read())
                     {
-                        TextBox7.Text = Convert.ToString((Convert.ToDecimal(sdr2["ledger_bal"].ToString()) / 100));
-                        TextBox8.Text = Convert.ToString((Convert.ToDecimal(sdr2["available_bal"].ToString()) / 100));
+                        TextBox7.Text = Convert.ToString((Convert.ToDecimal(sdr2["ledger_bal"].ToString()) ));
+                        TextBox8.Text = Convert.ToString((Convert.ToDecimal(sdr2["available_bal"].ToString())));
 
                      //   TextBox7.Text = (sdr2["ledger_bal"].ToString());
                      //   TextBox8.Text = (sdr2["available_bal"].ToString());
@@ -139,6 +167,7 @@ namespace webform_postilion
                 gvPhoneBook.Rows[0].Cells[0].ColumnSpan = dtbl.Columns.Count;
                 gvPhoneBook.Rows[0].Cells[0].Text = "No Customer Linked to the Account ..!";
                 gvPhoneBook.Rows[0].Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                gvPhoneBook.Enabled = false;
             }
         }
 
@@ -185,9 +214,10 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
 
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
-       if(str.Text == "019" )
+       if(true )
             { 
             if (DropDownList2.Enabled == true /*&& gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!"*/)
             {
@@ -202,7 +232,7 @@ namespace webform_postilion
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
 
-                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('PLACE HOLD ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','','','','','','','' , '')";
+                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product) values ('PLACE HOLD ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','"+DropDownList1.Text+"')";
 
                         SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
@@ -223,7 +253,7 @@ namespace webform_postilion
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
 
-                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('REMOVE HOLD ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','','','','','','','' , '')";
+                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product) values ('REMOVE HOLD ACCOUNT INSTANT','" + row + "','','" + DropDownList2.Text + "','','','" + TextBox1.Text + "','' , '','','','','','','','','' , '','','"+DropDownList1.Text+"')";
 
                         SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
@@ -265,7 +295,7 @@ namespace webform_postilion
             List<String> response = new List<String>();
 
 
-            response.Add("Account closed : 45");
+            response.Add("Account closed :45");
             response.Add("Approved or completed successfully:00");
             response.Add("Refer to card issuer:01");
             response.Add("Refer to card issuer, special condition:02");
@@ -382,9 +412,16 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
+            System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
 
-            if (str.Text == "019") { 
-            if (e.CommandName.Equals("Delete"))
+           
+                if (e.CommandName.Equals("CUST_id") && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
+                {
+
+                    Response.Redirect("Edit_Instant_Customer.aspx?cust_id=" + e.CommandArgument.ToString());
+
+                }
+                if (e.CommandName.Equals("Delete"))
             {
                 
                 String row = (Convert.ToDouble(str4.Text) + 1).ToString();
@@ -416,11 +453,7 @@ namespace webform_postilion
                     sqlCon.Close();
                 }
             }
-        }
-                else
-                {
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DO NOT HAVE RIGHTS !')", true);
-        }
+      
     }
         protected void gvPhoneBook_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {

@@ -9,6 +9,7 @@ using System.Web.UI.WebControls;
 using System.Data;
 using System.Web.Services;
 using Microsoft.Ajax.Utilities;
+using System.Reflection;
 
 namespace webform_postilion
 {
@@ -17,22 +18,127 @@ namespace webform_postilion
         DateTime time = DateTime.Now;              // Use current time
         string format = "yyyy-MM-dd HH:mm:ss";
         public static Object My_reason;
+        string final_branch_name;
 
         ClassDatabase obj = new ClassDatabase();
       
         protected void Page_Load(object sender, EventArgs e)
         {
-
-          /*  System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
-
-            if(str2.Text != "MAKER" && str2.Text != "CHECKER")
-            {
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('YOU ARE NOT MAKER!!!')", true);
-                Response.Redirect("Authorise.aspx");
-            }*/
-
             if (!IsPostBack)
             {
+              
+                var list2 = HttpContext.Current.Session["Roles"] as List<Model.postilion_role>;
+               // List<Model.postilion_role> list2 = HttpContext.Current.Session["Roles"] as List<Model.postilion_role>;
+
+                if (HttpContext.Current.Session["Roles"] != null)
+                {
+
+                    if (list2[1].id == 0)
+                    {
+                        gvPhoneBook.Enabled = false;
+                    }
+
+                    if (list2[2].id == 0)
+                    {
+                        Button2.Enabled = false;
+                    }
+                    if (list2[3].id == 0)
+                    {
+                        Button2.Enabled = false;
+                    }
+
+                    if (list2[10].id == 0)
+                    {
+                        Button1.Enabled = false;
+                        Button4.Enabled = false;
+                    }
+
+                    if (list2[18].id == 0)
+                    {
+                        gvPhoneBook.Enabled = false;
+                    }
+
+                    /*   foreach (var property in typeof(Model.postilion_role).GetProperties()) {
+
+
+                           if (property.Name.Contains("id")) 
+                           {
+
+                               //    var PropetyValue = list2.GetType().GetProperty(property.Name).GetValue(list2, null);
+                               // PropertyInfo info = instant.GetType().GetProperty(property.Name);
+                               //  var propertyInfo = list2.GetType().GetProperty(property.Name);
+                               // var value = propertyInfo.GetValue(list2, null);
+                               //var another2 = list2.GetValue(property.Name) 
+                               List<int> another = list2.Select(p =>p.id).ToList();
+
+                              // List<int> another = list2.Where(p=>property.Name.Contains("019") ).ToList();
+
+                              // var PropetyValue = another.GetType().GetProperty(property.Name).GetValue(another, new Object[] { 0 });
+
+                               if (another[1] == 0 )
+                               {
+                                   gvPhoneBook.Enabled = false;
+                               }
+
+                               if (another[2] == 0)
+                               {
+                                   Button2.Enabled = false;
+                               }
+                               if (another[3] == 0)
+                               {
+                                   Button2.Enabled = false;
+                               }
+
+                               if (another[10] == 0 )
+                               {
+                                   Button1.Enabled = false;
+                                   Button4.Enabled = false;
+                               }
+
+                               if (another[18] == 0 )
+                               {
+                                   gvPhoneBook.Enabled = false;
+                               }
+                           }
+
+
+
+                          /* for (int i = 0; i < list2.Count; i++) {
+                               if (property.Name.Contains(str.Text)) {
+
+                                   list2[i].
+                               } 
+                           }*/
+
+                    /*
+                                        if (list2[1].C000_HEAD_OFFICE_BRANCH == 0 || list2[1].branch_users == 0)
+                                        {
+                                            gvPhoneBook.Enabled = false;
+                                        }
+
+                                        if (list2[2].C002_NELSON_MANDELA_AVENUE_BRANCH == 0 || list2[2].branch_users == 0)
+                                        {
+                                            Button2.Enabled = false;
+                                        }
+                                        if (list2[3].convenience_users == 0 || list2[3].branch_users == 0)
+                                        {
+                                            Button2.Enabled = false;
+                                        }
+
+                                        if (list2[10].convenience_users == 0 || list2[10].branch_users == 0)
+                                        {
+                                            Button1.Enabled = false;
+                                            Button4.Enabled = false;
+                                        }
+
+                                        if (list2[18].convenience_users == 0 || list2[18].branch_users == 0)
+                                        {
+                                            gvPhoneBook.Enabled = false;
+                                        }*//*
+                } */
+
+
+                }
                 if (Request.QueryString["acc"] != "")
                 {
                     obj.conn.ConnectionString = obj.locate;
@@ -153,6 +259,7 @@ namespace webform_postilion
                 gvPhoneBook.Rows[0].Cells[0].ColumnSpan = dtbl.Columns.Count;
                 gvPhoneBook.Rows[0].Cells[0].Text = "No Customer Linked to the Account ..!";
                 gvPhoneBook.Rows[0].Cells[0].HorizontalAlign = HorizontalAlign.Center;
+                gvPhoneBook.Enabled = false;
             }
         }
 
@@ -161,7 +268,7 @@ namespace webform_postilion
             if (!DropDownList1.Enabled) {
                 DropDownList1.Enabled = true;
                 DropDownList2.Enabled = true;
-                CheckBox1.Enabled = true;
+              //  CheckBox1.Enabled = true;
                //  Button6.Enabled = true;
                 
             }
@@ -181,7 +288,7 @@ namespace webform_postilion
         protected void Button2_Click(object sender, EventArgs e)
         {
            // class="btn btn-default btn-rounded mb-4" data-toggle="modal" data-target="#modalLoginForm">
-            ClientScript.RegisterStartupScript(GetType(), "Show", "<script> $('#modalLoginForm').modal('modal');</script>");
+          //  ClientScript.RegisterStartupScript(GetType(), "Show", "<script> $('#modalLoginForm').modal('modal');</script>");
 
             obj.conn.ConnectionString = obj.locate1;
             System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
@@ -201,7 +308,7 @@ namespace webform_postilion
                         // string query = "UPDATE pc_cards_1_A SET card_status = 0 WHERE customer_id = '"+customer_id_text.Text+"'";
                       //  string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','PLACE HOLD ACCOUNT','','" + TextBox1.Text + "','" + str.Text + "','REQUEST TO PLACE HOLD ON ACCOUNT','" + str2.Text + "' , '0')";
 
-                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','PLACE HOLD ACCOUNT','','" + TextBox1.Text + "','" + str.Text + "','"+ My_reason.ToString() + "','" + str2.Text + "' , '0')";
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','PLACE HOLD ACCOUNT','','" + TextBox1.Text + "','" + str.Text + "','','" + str2.Text + "' , '0')";
                         
 
                          SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
@@ -218,9 +325,9 @@ namespace webform_postilion
                         Button2.Enabled = false;
                        // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('PLACED HOLD ON ACCOUNT')", true);
                     }
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
+                  //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
                 }
-                else
+                if (DropDownList2.Text == "None")
                 {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
@@ -243,13 +350,12 @@ namespace webform_postilion
                         Button2.Enabled = false;
                         // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('REMOVED HOLD ON ACCOUNT')", true);
                     }
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
+                 //   ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
                 }
             }
             else
             {
                 ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('FIRST CLICK THE EDIT BUTTON')", true);
-
             }
         }
 
@@ -258,7 +364,7 @@ namespace webform_postilion
         protected void Button4_Click(object sender, EventArgs e)
         {
 
-            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
+           // ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "reason('')", true);
 
             System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
@@ -267,7 +373,7 @@ namespace webform_postilion
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
             String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
-            if (DropDownList1.Enabled == true && Button6.Text == "Allow")
+            if (DropDownList1.Enabled == true/* && Button6.Text == "Allow"*/  )
 
             {
               
@@ -293,7 +399,7 @@ namespace webform_postilion
             
 
             }
-            else if (DropDownList1.Enabled && Button6.Text == "DISALLOW") { 
+            else if (DropDownList1.Enabled ==false /* && Button6.Text == "DISALLOW"*/) { 
                 if (TextBox6.Text != "")
                 {
                     try
@@ -356,7 +462,7 @@ namespace webform_postilion
             List<String> response = new List<String>();
 
 
-            response.Add("Account closed : 45");
+            response.Add("Account closed :45");
             response.Add("Approved or completed successfully:00");
             response.Add("Refer to card issuer:01");
             response.Add("Refer to card issuer, special condition:02");
@@ -474,43 +580,48 @@ namespace webform_postilion
 
             System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
             System.Web.UI.WebControls.Label str4 = Master.FindControl("last_row") as System.Web.UI.WebControls.Label;
-            if (str.Text == "019") { 
-            if (e.CommandName.Equals("Delete") && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
-            {
-                // MessageBox.Show(gvPhoneBook.Rows[0].Cells[0].Text);
+            System.Web.UI.WebControls.Label str5 = Master.FindControl("major_branch") as System.Web.UI.WebControls.Label;
 
-                String row = (Convert.ToDouble(str4.Text) + 1).ToString();
-
-
-                string customer_id = e.CommandArgument.ToString();
-
-
-
-
-                ClassDatabase obj = new ClassDatabase();
-                obj.conn.ConnectionString = obj.locate1;
-
-                using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                if (e.CommandName.Equals("Delete") && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
                 {
-                    sqlCon.Open();
-                    string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','UNLINK USER FROM ACCOUNT','','" + TextBox1.Text + "','" + str.Text + "','0','" + str2.Text + "' , '0')";
+                    // MessageBox.Show(gvPhoneBook.Rows[0].Cells[0].Text);
 
-                    SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                    sqlCmd.ExecuteNonQuery();
-                    string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('UNLINK USER FROM ACCOUNT','" + row + "','','','" + customer_id + "','" + DropDownList1.Text + "','','','','','','','','','','','','','','','','','','','','','')";
+                    String row = (Convert.ToDouble(str4.Text) + 1).ToString();
 
-                    SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
 
-                    sqlCmd2.ExecuteNonQuery();
-                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED')", true);
+                    string customer_id = e.CommandArgument.ToString();
 
-                    //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('UNLINKED')", true);
-                    sqlCon.Close();
+
+
+
+                    ClassDatabase obj = new ClassDatabase();
+                    obj.conn.ConnectionString = obj.locate1;
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = " insert into postilion_portal_changes (maker,date,change_made,pan,account,branch,reason,checker,view_status) values ('" + str3.Text + "','" + time.ToString(format) + "','UNLINK USER FROM ACCOUNT','','" + TextBox1.Text + "','" + str.Text + "','0','" + str2.Text + "' , '0')";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        string query2 = " insert into postilion_hold_data (action,id,branch_code,hold_rsp_code,customer_id ,place_hold ,account_id ,pan,card_status ,reason_for_reason ,mail_destination ,seq_nr ,expiry_date ,title,first_name,middle_initial,last_name,name_on_card,other,account_product,mobile,issuer_nr,account_type,last_updated_date,last_updated_user,address_1_1,city) values ('UNLINK USER FROM ACCOUNT','" + row + "','','','" + customer_id + "','" + DropDownList1.Text + "','','','','','','','','','','','','','','','','','','','','','')";
+
+                        SqlCommand sqlCmd2 = new SqlCommand(query2, sqlCon);
+
+                        sqlCmd2.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED')", true);
+
+                        //  ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save('UNLINKED')", true);
+                        sqlCon.Close();
+                    }
                 }
-            }
-        }else{
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('YOU DONT HAVE RIGHTS!')", true);
-            }
+                if (e.CommandName.Equals("CUST_id") && gvPhoneBook.Rows[0].Cells[0].Text != "No Customer Linked to the Account ..!")
+                {
+                    
+                        Response.Redirect("Edit_Account_Details.aspx?cust_id=" + e.CommandArgument.ToString());
+                    
+                } 
+             
         }
             protected void gvPhoneBook_RowDeleting(object sender, GridViewDeleteEventArgs e)
         {

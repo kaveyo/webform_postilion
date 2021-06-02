@@ -13,12 +13,12 @@ namespace webform_postilion
 {
     public partial class Authorise : System.Web.UI.Page
     {
-      
+
 
         String statement = "REJECTED";
         String statement_accept = "CHANGE APPROVED";
         DateTime time = DateTime.Now;              // Use current time
-       
+
         string format = "yyyy-MM-dd HH:mm:ss";
         ClassDatabase obj = new ClassDatabase();
         string pan;
@@ -27,7 +27,7 @@ namespace webform_postilion
         String cust_id;
         String overdraftlimit;
         String account_product;
-        string account_type , currency,account_number;
+        string account_type, currency, account_number;
 
         String customer_id;
         String mail_destination;
@@ -55,19 +55,44 @@ namespace webform_postilion
         String country_2;
         String reason;
 
+        string goods_nr_trans_lim , card_nu;
+        string cash_nr_trans_lim;
+        string paymnt_nr_trans_lim;
+        string goods_lim;
+        string cash_lim;
+        string paymnt_lim;
+        string cnp_lim;
+        string deposit_credit_lim;
+        string goods_offline_lim;
+        string cash_offline_lim;
+        string paymnt_offline_lim;
+        string cnp_offline_lim;
+        string weekly_goods_nr_trans_lim;
+        string weekly_cash_nr_trans_lim;
+        string weekly_paymnt_nr_trans_lim;
+        string weekly_goods_lim;
+        string weekly_cash_lim;
+        string weekly_paymnt_lim;
+        string weekly_cnp_lim;
+        string weekly_deposit_credit_lim;
+        string weekly_goods_offline_lim;
+        string weekly_cash_offline_lim;
+        string weekly_paymnt_offline_lim;
+        string weekly_cnp_offline_lim;
+
         protected void Page_Load(object sender, EventArgs e)
         {
-           
+
         }
-        
-       
+
+
         protected void CloseLinkClicked(Object sender, EventArgs e)
         {
             var closeLink = (System.Web.UI.Control)sender;
             GridViewRow row = (GridViewRow)closeLink.NamingContainer;
             System.Web.UI.WebControls.TextBox lblValue = (System.Web.UI.WebControls.TextBox)row.FindControl("txt_id");
-            
-          
+
+
 
         }
         protected void Button4_Click(object sender, EventArgs e)
@@ -77,7 +102,7 @@ namespace webform_postilion
             using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
             {
                 sqlCon.Open();
-                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_portal_changes where date >='"+ (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "' and date <='"+ (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "' and view_status = 0", sqlCon);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_portal_changes where date >='" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "' and date <='" + (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "' and view_status = 0", sqlCon);
                 sqlDa.Fill(dtbl);
             }
             if (dtbl.Rows.Count > 0)
@@ -97,9 +122,11 @@ namespace webform_postilion
                 GridView1.Rows[0].Cells[0].HorizontalAlign = HorizontalAlign.Center;
             }
         }
-      
+
         protected void GridView1_RowCommand(object sender, GridViewCommandEventArgs e)
         {
+            System.Web.UI.WebControls.Label str3 = Master.FindControl("Label3") as System.Web.UI.WebControls.Label;
+
             if (e.CommandName.Equals("reason"))
             {
                 int crow;
@@ -122,13 +149,338 @@ namespace webform_postilion
                 }
                 obj.conn.Close();
 
-                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme4('"+reason+"')", true);
+                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme4('" + reason + "')", true);
             }
-                if (e.CommandName.Equals("accept2"))
+            if (e.CommandName.Equals("accept2"))
             {
                 int crow;
                 crow = Convert.ToInt32(e.CommandArgument.ToString());
- 
+                if (GridView1.Rows[crow].Cells[3].Text == "REMOVE LOCK LIMIT")
+                {
+                    System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+                            card_nu = (sdr["pan"].ToString());                         
+
+                        }
+
+                    }
+                    obj.conn.Close();
+
+                    obj.conn.ConnectionString = obj.locate;
+                    obj.conn.Open();
+
+                    string insertUser = " delete from fbc_card_locked_limits  where pan = '" + GridView1.Rows[crow].Cells[4].Text.Trim() + "' ";
+                    obj.cmd.Connection = obj.conn;
+                    obj.cmd.CommandText = insertUser;
+                    obj.cmd.ExecuteNonQuery();
+                    obj.cmd.CommandTimeout = 60;
+                    ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED CARD LIMIT')", true);
+                    
+                    String action = "REMOVE LOCK LIMIT";
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '" + str3.Text.Trim() + "' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+                    obj.conn.Close();
+                    return;
+                    
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "LOCK LIMIT")
+                {
+                    System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+                            card_nu = (sdr["pan"].ToString());
+
+                        }
+
+                    }
+                    obj.conn.Close();
+
+                    obj.conn.ConnectionString = obj.locate;
+                    obj.conn.Open();
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "INSERT into fbc_card_locked_limits (pan ) VALUES ('" + GridView1.Rows[crow].Cells[4].Text.Trim() + "')";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('LOCKED CARD LIMIT')", true);
+                    }
+
+                    String action = "LOCK LIMIT";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '" + str3.Text.Trim() + "' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+                    obj.conn.Close();
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "CARD LIMIT")
+                {
+                    System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+                            card_nu = (sdr["pan"].ToString());
+                            goods_nr_trans_lim = (sdr["goods_nr_trans_lim"].ToString());
+                            cash_nr_trans_lim = (sdr["cash_nr_trans_lim"].ToString());
+                            paymnt_nr_trans_lim = (sdr["paymnt_nr_trans_lim"].ToString());
+                            goods_lim = (sdr["goods_lim"].ToString());
+                            cash_lim = (sdr["cash_lim"].ToString());
+                            paymnt_lim = (sdr["paymnt_lim"].ToString());
+                            cnp_lim = (sdr["cnp_lim"].ToString());
+                            deposit_credit_lim = (sdr["deposit_credit_lim"].ToString());
+                            goods_offline_lim = (sdr["goods_offline_lim"].ToString());
+                            cash_offline_lim = (sdr["cash_offline_lim"].ToString());
+                            paymnt_offline_lim = (sdr["paymnt_offline_lim"].ToString());
+                            cnp_offline_lim = (sdr["cnp_offline_lim"].ToString());
+                            weekly_goods_nr_trans_lim = (sdr["weekly_goods_nr_trans_lim"].ToString());
+                            weekly_cash_nr_trans_lim = (sdr["weekly_cash_nr_trans_lim"].ToString());
+                            weekly_paymnt_nr_trans_lim = (sdr["weekly_paymnt_nr_trans_lim"].ToString());
+                            weekly_goods_lim = (sdr["weekly_goods_lim"].ToString());
+                            weekly_cash_lim = (sdr["weekly_cash_lim"].ToString());
+                            weekly_paymnt_lim = (sdr["weekly_paymnt_lim"].ToString());
+                            weekly_cnp_lim = (sdr["weekly_cnp_lim"].ToString());
+                            weekly_deposit_credit_lim = (sdr["weekly_deposit_credit_lim"].ToString());
+                            weekly_goods_offline_lim = (sdr["weekly_goods_offline_lim"].ToString());
+                            weekly_cash_offline_lim = (sdr["weekly_cash_offline_lim"].ToString());
+                            weekly_paymnt_offline_lim = (sdr["weekly_paymnt_offline_lim"].ToString());
+                            weekly_cnp_offline_lim = (sdr["weekly_cnp_offline_lim"].ToString());
+
+                        }
+
+                    }
+                    obj.conn.Close();
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE pc_card_override_lim_1_A SET goods_nr_trans_lim	= '" + goods_nr_trans_lim + "' ,cash_nr_trans_lim	= '" + cash_nr_trans_lim + "' ,paymnt_nr_trans_lim	= '" + paymnt_nr_trans_lim + "' ,goods_lim	= '" + goods_lim + "' ,cash_lim	= '" + cash_lim + "' ,paymnt_lim	= '" + paymnt_lim + "' ,cnp_lim	= '" + cnp_lim + "' ,deposit_credit_lim	= '" + deposit_credit_lim + "' ,goods_offline_lim	= '" + goods_offline_lim + "' ,cash_offline_lim	= '" + cash_offline_lim + "' ,paymnt_offline_lim	= '" + paymnt_offline_lim + "' ,cnp_offline_lim	= '" + cnp_offline_lim + "' ,weekly_goods_nr_trans_lim	= '" + weekly_goods_nr_trans_lim + "' ,weekly_cash_nr_trans_lim	= '" + weekly_cash_nr_trans_lim + "' ,weekly_paymnt_nr_trans_lim	= '" + weekly_paymnt_nr_trans_lim + "' ,weekly_goods_lim	= '" + weekly_goods_lim + "' ,weekly_cash_lim	= '" + weekly_cash_lim + "' ,weekly_paymnt_lim	= '" + weekly_paymnt_lim + "' ,weekly_cnp_lim	= '" + weekly_cnp_lim + "' ,weekly_deposit_credit_lim	= '" + weekly_deposit_credit_lim + "' ,weekly_goods_offline_lim	= '" + weekly_goods_offline_lim + "' ,weekly_cash_offline_lim	= '" + weekly_cash_offline_lim + "' ,weekly_paymnt_offline_lim	= '" + weekly_paymnt_offline_lim + "' ,weekly_cnp_offline_lim	= '" + weekly_cnp_offline_lim + "' ,last_updated_date	= '" + time.ToString(format) + "' ,last_updated_user	= '" + str2.Text + "' ,date_deleted = NULL WHERE pan = '" + card_nu + "'";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CARD LIMIT')", true);
+                    }
+                    String action = "CARD LIMIT";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "INSTANT CARD LIMIT")
+                {
+                    System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+                            card_nu = (sdr["pan"].ToString());
+                            goods_nr_trans_lim = (sdr["goods_nr_trans_lim"].ToString());
+                            cash_nr_trans_lim = (sdr["cash_nr_trans_lim"].ToString());
+                            paymnt_nr_trans_lim = (sdr["paymnt_nr_trans_lim"].ToString());
+                            goods_lim = (sdr["goods_lim"].ToString());
+                            cash_lim = (sdr["cash_lim"].ToString());
+                            paymnt_lim = (sdr["paymnt_lim"].ToString());
+                            cnp_lim = (sdr["cnp_lim"].ToString());
+                            deposit_credit_lim = (sdr["deposit_credit_lim"].ToString());
+                            goods_offline_lim = (sdr["goods_offline_lim"].ToString());
+                            cash_offline_lim = (sdr["cash_offline_lim"].ToString());
+                            paymnt_offline_lim = (sdr["paymnt_offline_lim"].ToString());
+                            cnp_offline_lim = (sdr["cnp_offline_lim"].ToString());
+                            weekly_goods_nr_trans_lim = (sdr["weekly_goods_nr_trans_lim"].ToString());
+                            weekly_cash_nr_trans_lim = (sdr["weekly_cash_nr_trans_lim"].ToString());
+                            weekly_paymnt_nr_trans_lim = (sdr["weekly_paymnt_nr_trans_lim"].ToString());
+                            weekly_goods_lim = (sdr["weekly_goods_lim"].ToString());
+                            weekly_cash_lim = (sdr["weekly_cash_lim"].ToString());
+                            weekly_paymnt_lim = (sdr["weekly_paymnt_lim"].ToString());
+                            weekly_cnp_lim = (sdr["weekly_cnp_lim"].ToString());
+                            weekly_deposit_credit_lim = (sdr["weekly_deposit_credit_lim"].ToString());
+                            weekly_goods_offline_lim = (sdr["weekly_goods_offline_lim"].ToString());
+                            weekly_cash_offline_lim = (sdr["weekly_cash_offline_lim"].ToString());
+                            weekly_paymnt_offline_lim = (sdr["weekly_paymnt_offline_lim"].ToString());
+                            weekly_cnp_offline_lim = (sdr["weekly_cnp_offline_lim"].ToString());
+
+                        }
+
+                    }
+                    obj.conn.Close();
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE pc_card_override_lim_2_A SET goods_nr_trans_lim	= '" + goods_nr_trans_lim + "' ,cash_nr_trans_lim	= '" + cash_nr_trans_lim + "' ,paymnt_nr_trans_lim	= '" + paymnt_nr_trans_lim + "' ,goods_lim	= '" + goods_lim + "' ,cash_lim	= '" + cash_lim + "' ,paymnt_lim	= '" + paymnt_lim + "' ,cnp_lim	= '" + cnp_lim + "' ,deposit_credit_lim	= '" + deposit_credit_lim + "' ,goods_offline_lim	= '" + goods_offline_lim + "' ,cash_offline_lim	= '" + cash_offline_lim + "' ,paymnt_offline_lim	= '" + paymnt_offline_lim + "' ,cnp_offline_lim	= '" + cnp_offline_lim + "' ,weekly_goods_nr_trans_lim	= '" + weekly_goods_nr_trans_lim + "' ,weekly_cash_nr_trans_lim	= '" + weekly_cash_nr_trans_lim + "' ,weekly_paymnt_nr_trans_lim	= '" + weekly_paymnt_nr_trans_lim + "' ,weekly_goods_lim	= '" + weekly_goods_lim + "' ,weekly_cash_lim	= '" + weekly_cash_lim + "' ,weekly_paymnt_lim	= '" + weekly_paymnt_lim + "' ,weekly_cnp_lim	= '" + weekly_cnp_lim + "' ,weekly_deposit_credit_lim	= '" + weekly_deposit_credit_lim + "' ,weekly_goods_offline_lim	= '" + weekly_goods_offline_lim + "' ,weekly_cash_offline_lim	= '" + weekly_cash_offline_lim + "' ,weekly_paymnt_offline_lim	= '" + weekly_paymnt_offline_lim + "' ,weekly_cnp_offline_lim	= '" + weekly_cnp_offline_lim + "',last_updated_date	= '" + time.ToString(format) + "' ,last_updated_user	= '" + str2.Text + "' ,date_deleted = NULL WHERE pan = '" + card_nu + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CARD LIMIT')", true);
+                    }
+                    String action = "INSTANT CARD LIMIT";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT_CUSTOMER_DETAILS_INSTANT")
+                {
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+
+                            cust_id = (sdr["customer_id"].ToString());
+                            mobile = (sdr["mobile"].ToString());
+                            address_1_1 = (sdr["address_1_1"].ToString());
+                            national_id = (sdr["national_id"].ToString());
+                            first_name = (sdr["first_name"].ToString());
+                            last_name = (sdr["last_name"].ToString());
+                            name_on_card = (sdr["name_on_card"].ToString());
+                        }
+
+                    }
+                    obj.conn.Close();
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE pc_customers_2_A SET c1_first_name = '" + cust_id + "' , mobile_nr = '" + mobile + "', postal_address_1 = '" + address_1_1 + "', national_id_nr = '" + national_id + "',c1_last_name ='" + last_name + "' ,c1_name_on_card ='" + name_on_card + "' WHERE customer_id = '" + cust_id + "'";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CUSTOMER DETAILS')", true);
+                    }
+                    String action = "EDIT_CUSTOMER_DETAILS_INSTANT";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT_CUSTOMER_DETAILS_ACCOUNT")
+                {
+                    obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.Open();
+                    SqlDataReader sdr;
+
+                    SqlCommand cmd = new SqlCommand("SELECT * FROM postilion_hold_data where id = '" + GridView1.Rows[crow].Cells[0].Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
+
+                    using (sdr = cmd.ExecuteReader())
+                    {
+                        if (sdr.Read())
+                        {
+
+                            cust_id = (sdr["customer_id"].ToString());
+                            mobile = (sdr["mobile"].ToString());
+                            address_1_1 = (sdr["address_1_1"].ToString());
+                            national_id = (sdr["national_id"].ToString());
+                            first_name = (sdr["first_name"].ToString());
+                            last_name = (sdr["last_name"].ToString());
+                            name_on_card = (sdr["name_on_card"].ToString());
+                        }
+
+                    }
+                    obj.conn.Close();
+                   
+                        using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                        {
+                            sqlCon.Open();
+                            string query = "UPDATE pc_customers_1_A SET c1_first_name = '" + cust_id + "' , mobile_nr = '"+mobile+"', postal_address_1 = '"+address_1_1+"', national_id_nr = '"+national_id+ "',c1_last_name ='"+last_name+"' ,c1_name_on_card ='"+name_on_card+"' WHERE customer_id = '" + cust_id + "'";
+
+                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                            sqlCmd.ExecuteNonQuery();
+                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CUSTOMER DETAILS')", true);
+                        }
+                        String action = "EDIT_CUSTOMER_DETAILS_ACCOUNT";
+                        using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                        {
+                            sqlCon.Open();
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                            sqlCmd.ExecuteNonQuery();
+                            load_to_grid();
+                        }
+                  
+                    return;
+                }
                 if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD ACCOUNT")
                 {
                     obj.conn.ConnectionString = obj.locate1;
@@ -149,25 +501,23 @@ namespace webform_postilion
                     }
                     obj.conn.Close();
                     string name = hold_rsp_code.Split(':')[1];
-                   
-
 
 
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate))
                     {
                         sqlCon.Open();
                         string query = "UPDATE pc_accounts_1_A SET hold_rsp_code = '" + name + "' WHERE account_id = '" + GridView1.Rows[crow].Cells[5].Text + "'";
-                       SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     
+
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PLACED HOLD')", true);
 
-                  }
+                    }
                     String action = "PLACE HOLD ACCOUNT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -183,14 +533,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_accounts_1_A SET hold_rsp_code = NULL where account_id  = '" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     //   MessageBox.Show("REMOVED HOLD ACCOUNT");
+                        //   MessageBox.Show("REMOVED HOLD ACCOUNT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED HOLD ACCOUNT')", true);
                     }
                     String action = "REMOVE HOLD ACCOUNT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -217,7 +567,7 @@ namespace webform_postilion
                     }
                     obj.conn.Close();
                     string name = hold_rsp_code.Split(':')[1];
-                //    MessageBox.Show(name);
+                    //    MessageBox.Show(name);
 
 
 
@@ -227,14 +577,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_accounts_2_A SET hold_rsp_code = '" + name + "' WHERE account_id = '" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     //   MessageBox.Show("PLACE HOLD ACCOUNT INSTANT");
+                        //   MessageBox.Show("PLACE HOLD ACCOUNT INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PLACED HOLD ON INSTANT ACCOUNT')", true);
                     }
                     String action = "PLACE HOLD ACCOUNT INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -249,14 +599,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_accounts_2_A SET hold_rsp_code = NULL where account_id  = '" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                      //  MessageBox.Show("REMOVE HOLD ACCOUNT INSTANT");
+                        //  MessageBox.Show("REMOVE HOLD ACCOUNT INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED HOLD ACCOUNT INSTANT')", true);
                     }
                     String action = "REMOVE HOLD ACCOUNT INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -283,29 +633,29 @@ namespace webform_postilion
                     }
                     obj.conn.Close();
                     string name = hold_rsp_code.Split(':')[1];
-                  //  MessageBox.Show(name);
+                    //  MessageBox.Show(name);
 
-                   
 
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate))
-                        {
-                            sqlCon.Open();
-                            string query = "UPDATE pc_cards_1_A SET hold_rsp_code = '" + name + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
-                            //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("PLACED HOLD");
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE pc_cards_1_A SET hold_rsp_code = '" + name + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        // MessageBox.Show("PLACED HOLD");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PLACED HOLD')", true);
                     }
-                        String action = "PLACE HOLD";
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                        {
-                            sqlCon.Open();
-                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                            load_to_grid();
-                        }
+                    String action = "PLACE HOLD";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
                     return;
 
                 }
@@ -317,14 +667,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_cards_1_A SET hold_rsp_code = NULL WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                      //  MessageBox.Show("REMOVED HOLD CARD");
+                        //  MessageBox.Show("REMOVED HOLD CARD");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED HOLD CARD')", true);
                     }
                     String action = "REMOVE HOLD CARD";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                          string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -351,7 +701,7 @@ namespace webform_postilion
                     }
                     obj.conn.Close();
                     string name = hold_rsp_code.Split(':')[1];
-                  //  MessageBox.Show(name);
+                    //  MessageBox.Show(name);
 
 
 
@@ -362,14 +712,14 @@ namespace webform_postilion
                         //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                      //  MessageBox.Show("PLACED HOLD CARD INSTANT");
+                        //  MessageBox.Show("PLACED HOLD CARD INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('PLACED HOLD ON INSTANT CARD)", true);
                     }
                     String action = "PLACE HOLD CARD INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -384,14 +734,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_cards_2_A SET hold_rsp_code = NULL WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     //   MessageBox.Show("REMOVE HOLD CARD INSTANT");
+                        //   MessageBox.Show("REMOVE HOLD CARD INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REMOVED HOLD ON INSTANT CARD')", true);
                     }
                     String action = "REMOVE HOLD CARD INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                          string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -413,15 +763,15 @@ namespace webform_postilion
                     {
                         if (sdr.Read())
                         {
-                              overdraftlimit = (sdr["overdraft_limit"].ToString());
+                            overdraftlimit = (sdr["overdraft_limit"].ToString());
                             account_product = (sdr["account_product"].ToString());
                         }
 
                     }
                     obj.conn.Close();
 
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate))
-                        {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
                         if (overdraftlimit != "")
                         {
                             sqlCon.Open();
@@ -441,15 +791,15 @@ namespace webform_postilion
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ACCOUNT EDITED')", true);
                         }
                     }
-                        String action = "EDIT ACCOUNT";
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                        {
-                            sqlCon.Open();
-                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                            load_to_grid();
-                        }
+                    String action = "EDIT ACCOUNT";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
                     return;
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "EDIT ACCOUNT INSTANT")
@@ -466,7 +816,7 @@ namespace webform_postilion
                     {
                         if (sdr.Read())
                         {
-                           
+
                             account_product = (sdr["account_product"].ToString());
                         }
 
@@ -479,14 +829,14 @@ namespace webform_postilion
                         string query = "UPDATE pc_accounts_2_A SET account_product = '" + account_product.Trim() + "' WHERE account_id = '" + GridView1.Rows[crow].Cells[5].Text.Trim() + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     //   MessageBox.Show("EDIT ACCOUNT INSTANT");
+                        //   MessageBox.Show("EDIT ACCOUNT INSTANT");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED INSTANT ACCOUNT')", true);
                     }
                     String action = "EDIT ACCOUNT INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and account ='" + GridView1.Rows[crow].Cells[5].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
@@ -495,28 +845,28 @@ namespace webform_postilion
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "ACTIVATE")
                 {
-                    
+
                     try
                     {
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate))
                         {
                             sqlCon.Open();
                             string query = "UPDATE pc_cards_1_A SET card_status = 1 WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
-                          //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
+                            //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                          sqlCmd.ExecuteNonQuery();
-                          //  MessageBox.Show("ACTIVATED");
+                            sqlCmd.ExecuteNonQuery();
+                            //  MessageBox.Show("ACTIVATED");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ACTIVATED')", true);
                         }
                         String action = "ACTIVATE";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
-                            sqlCon.Open(); 
-                             string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '"+ statement_accept + "' WHERE change_made = '" + action+"' and pan ='"+ GridView1.Rows[crow].Cells[4].Text + "'";
+                            sqlCon.Open();
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
-                       }
+                        }
                     }
                     catch (Exception ex)
                     {
@@ -535,14 +885,14 @@ namespace webform_postilion
                             //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                          //  MessageBox.Show("ACTIVATED");
+                            //  MessageBox.Show("ACTIVATED");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ACTIVATED')", true);
                         }
                         String action = "ACTIVATE INSTANT";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -565,14 +915,14 @@ namespace webform_postilion
                             //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                          //  MessageBox.Show("DEACTIVATED");
+                            //  MessageBox.Show("DEACTIVATED");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('DEACTIVATED')", true);
                         }
                         String action = "DEACTIVATE";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -595,14 +945,14 @@ namespace webform_postilion
                             //  string query = "DELETE FROM pc_customers_1_A WHERE customer_id = @customer_id";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("DEACTIVATED");
+                            // MessageBox.Show("DEACTIVATED");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('DEACTIVATED')", true);
                         }
                         String action = "DEACTIVATE INSTANT";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -629,38 +979,45 @@ namespace webform_postilion
                         if (sdr.Read())
                         {
                             hold_rsp_code = (sdr["place_hold"].ToString());
-                           // MessageBox.Show(hold_rsp_code.Substring(hold_rsp_code.LastIndexOf(':') + 1));
-                            branch_code = (sdr["branch_code"].ToString());
+                            // MessageBox.Show(hold_rsp_code.Substring(hold_rsp_code.LastIndexOf(':') + 1));
+                            if (sdr["branch_code"].ToString().Contains('-'))
+                            {
+                                branch_code = (sdr["branch_code"].ToString());
+                            }
+                            else
+                            {
+                                branch_code = (sdr["branch_code"].ToString().Substring(0,3));
+                            }
                         }
 
                     }
                     obj.conn.Close();
-                    try
-                    {
+                   /* try
+                    {*/
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate))
                         {
 
                             sqlCon.Open();
-                            string query = "UPDATE pc_cards_1_A SET branch_code = '"+branch_code+ "' ,hold_rsp_code = '"+ hold_rsp_code.Substring(hold_rsp_code.LastIndexOf(':') + 1) + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
-                           SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                            string query = "UPDATE pc_cards_1_A SET branch_code = '" + branch_code + "' ,hold_rsp_code = '" + hold_rsp_code.Substring(hold_rsp_code.LastIndexOf(':') + 1) + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                         //   MessageBox.Show("EDITED CARD");
+                            //   MessageBox.Show("EDITED CARD");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CARD')", true);
                         }
                         String action = "EDIT CARD";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
                         }
-                    }
+                   /* }
                     catch (Exception ex)
                     {
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save(ex.Message)", true);
-                    }
+                    }*/
                     return;
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "EDIT CARD INSTANT")
@@ -678,7 +1035,14 @@ namespace webform_postilion
                         if (sdr.Read())
                         {
                             hold_rsp_code = (sdr["place_hold"].ToString());
-                            branch_code = (sdr["branch_code"].ToString());
+                            if (sdr["branch_code"].ToString().Contains('-'))
+                            {
+                                branch_code = (sdr["branch_code"].ToString());
+                            }
+                            else
+                            {
+                                branch_code = (sdr["branch_code"].ToString().Substring(0, 3));
+                            }
                         }
 
                     }
@@ -689,7 +1053,7 @@ namespace webform_postilion
                         {
                             sqlCon.Open();
                             string query = "UPDATE pc_cards_2_A SET branch_code = '" + branch_code + "',hold_rsp_code = '" + hold_rsp_code.Substring(hold_rsp_code.LastIndexOf(':') + 1) + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
-                            SqlCommand sqlCmd = new SqlCommand(query,sqlCon);
+                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             //  MessageBox.Show("EDITED CARD INSTANT");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('EDITED CARD INSTANT')", true);
@@ -698,7 +1062,7 @@ namespace webform_postilion
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -712,7 +1076,7 @@ namespace webform_postilion
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER FROM ACCOUNT")
                 {
-                      obj.conn.ConnectionString = obj.locate1;
+                    obj.conn.ConnectionString = obj.locate1;
                     obj.conn.Open();
                     SqlDataReader sdr;
 
@@ -724,8 +1088,8 @@ namespace webform_postilion
                     {
                         if (sdr.Read())
                         {
-                     
-                             cust_id = (sdr["customer_id"].ToString());
+
+                            cust_id = (sdr["customer_id"].ToString());
                         }
 
                     }
@@ -736,10 +1100,10 @@ namespace webform_postilion
                         {
                             sqlCon.Open();
                             string query = "DELETE FROM pc_customer_accounts_1_A WHERE customer_id = '" + cust_id + "'";
-                          
+
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                         //   MessageBox.Show("UNLINKED ACCOUNT");
+                            //   MessageBox.Show("UNLINKED ACCOUNT");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED USER')", true);
                         }
                         String action = "UNLINK USER FROM ACCOUNT";
@@ -773,37 +1137,37 @@ namespace webform_postilion
                         if (sdr.Read())
                         {
 
-                            account_number = (sdr["account_id"].ToString()); 
+                            account_number = (sdr["account_id"].ToString());
                         }
 
                     }
                     obj.conn.Close();
-                  /*  try
-                    {*/
+                    /*  try
+                      {*/
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate))
-                        { 
-                            sqlCon.Open();
-                            string query = "Update pc_card_accounts_1_A set date_deleted = '"+ time.ToString(format) + "',last_updated_date = '"+ time.ToString(format) + "',last_updated_user = '"+ GridView1.Rows[crow].Cells[1].Text + "' WHERE account_id = '" + account_number + "'";
-
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                            //   MessageBox.Show("UNLINKED ACCOUNT");
-                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED ACCOUNT')", true);
-                        }
-                        String action = "UNLINK ACCOUNT FROM CARD";
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                        {
-                            sqlCon.Open();
-                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'"; 
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                            load_to_grid();
-                        }
-                 /*   }
-                    catch (Exception ex)
                     {
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save(ex.Message)", true);
-                    }*/
+                        sqlCon.Open();
+                        string query = "Update pc_card_accounts_1_A set date_deleted = '" + time.ToString(format) + "',last_updated_date = '" + time.ToString(format) + "',last_updated_user = '" + GridView1.Rows[crow].Cells[1].Text + "' WHERE account_id = '" + account_number + "'";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("UNLINKED ACCOUNT");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED ACCOUNT')", true);
+                    }
+                    String action = "UNLINK ACCOUNT FROM CARD";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
+                    /*   }
+                       catch (Exception ex)
+                       {
+                           ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "save(ex.Message)", true);
+                       }*/
                     return;
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER INSTANT FROM ACCOUNT")
@@ -835,7 +1199,7 @@ namespace webform_postilion
 
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("UNLINKED ACCOUNT");
+                            // MessageBox.Show("UNLINKED ACCOUNT");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED ACCOUNT')", true);
                         }
                         String action = "UNLINK USER FROM ACCOUNT";
@@ -862,17 +1226,17 @@ namespace webform_postilion
                         {
                             sqlCon.Open();
                             string query = "UPDATE pc_cards_1_A SET customer_id = null WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
-                           
+
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("UNLICKED CARD");
+                            // MessageBox.Show("UNLICKED CARD");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED CARD')", true);
                         }
                         String action = "UNLINK USER FROM CARD";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -895,14 +1259,14 @@ namespace webform_postilion
 
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("UNLICKED CARD");
+                            // MessageBox.Show("UNLICKED CARD");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('UNLINKED CARD')", true);
                         }
                         String action = "UNLINK USER INSTANT FROM CARD";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -939,18 +1303,18 @@ namespace webform_postilion
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate))
                         {
                             sqlCon.Open();
-                            string query = "UPDATE pc_cards_1_A SET customer_id = '"+cust_id+"' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE pc_cards_1_A SET customer_id = '" + cust_id + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
 
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("ADD EXISTING CUSTOMER");
+                            // MessageBox.Show("ADD EXISTING CUSTOMER");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADD EXISTING CUSTOMER')", true);
                         }
                         String action = "ADD EXISTING CUSTOMER";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -991,14 +1355,14 @@ namespace webform_postilion
 
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
-                           // MessageBox.Show("ADD EXISTING CUSTOMER");
+                            // MessageBox.Show("ADD EXISTING CUSTOMER");
                             ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADD EXISTING CUSTOMER')", true);
                         }
                         String action = "ADD EXISTING CUSTOMER";
                         using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                         {
                             sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                            string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                             SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                             sqlCmd.ExecuteNonQuery();
                             load_to_grid();
@@ -1065,26 +1429,26 @@ namespace webform_postilion
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADDED NEW CUSTOMER')", true);
                     }
 
-                  
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate))
-                        {
-                            sqlCon.Open();
-                            string query = "UPDATE pc_cards_1_A SET customer_id = '" + customer_id + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
 
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                          //  MessageBox.Show("ADDED NEW CUSTOMER");
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE pc_cards_1_A SET customer_id = '" + customer_id + "' WHERE pan = '" + GridView1.Rows[crow].Cells[4].Text + "'";
+
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //  MessageBox.Show("ADDED NEW CUSTOMER");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADDED NEW CUSTOMER')", true);
                     }
-                        String action = "ADD NEW CUSTOMER";
-                        using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                        {
-                            sqlCon.Open();
-                              string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
-                            SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                            sqlCmd.ExecuteNonQuery();
-                            load_to_grid();
-                        }
+                    String action = "ADD NEW CUSTOMER";
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        load_to_grid();
+                    }
                     return;
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "ADD NEW CUSTOMER INSTANT")
@@ -1137,7 +1501,7 @@ namespace webform_postilion
                         string query = "INSERT into pc_customers_2_A (issuer_nr, customer_id  , national_id_nr  , c1_title , c1_first_name , c1_initials  , c1_last_name  , c1_name_on_card  , tel_nr , mobile_nr , fax_nr, email_address , postal_address_1 , postal_address_2 , postal_city  , postal_country  , other_address_1 , other_address_2, other_city,other_country, date_of_birth, preferred_lang , last_updated_date , last_updated_user,vip ) VALUES ('2','" + customer_id.Trim() + "','" + national_id.Trim() + "','" + title.Trim() + "','" + first_name.Trim() + "','" + middle_initial.Trim() + "','" + last_name.Trim() + "','" + name_on_card + "','" + tel_nr.Trim() + "','" + mobile.Trim() + "','" + fax.Trim() + "','" + mail_destination.Trim() + "','" + address_1_1 + "','" + address_1_2 + "','" + city.Trim() + "','" + country_1.Trim() + "','" + address_2_1 + "','" + address_2_2 + "','" + city2.Trim() + "','" + country_2.Trim() + "','" + dob.Trim() + "','" + language.Trim() + "','" + time.ToString(format).Trim() + "','" + str2.Text.Trim() + "','0')";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                       // MessageBox.Show("ADDED NEW CUSTOMER");
+                        // MessageBox.Show("ADDED NEW CUSTOMER");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADDED NEW CUSTOMER')", true);
                     }
 
@@ -1149,24 +1513,22 @@ namespace webform_postilion
 
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                      //  MessageBox.Show("ADDED NEW CUSTOMER");
+                        //  MessageBox.Show("ADDED NEW CUSTOMER");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ADDED NEW CUSTOMER')", true);
                     }
                     String action = "ADD NEW CUSTOMER INSTANT";
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                          string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         load_to_grid();
                     }
                     return;
                 }
-                          
-                
                 if (GridView1.Rows[crow].Cells[3].Text == "LINK ACCOUNT")
-                { 
+                {
                     System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
 
                     obj.conn.ConnectionString = obj.locate1;
@@ -1186,7 +1548,7 @@ namespace webform_postilion
                             account_type = (sdr["account_type"].ToString());
                             currency = (sdr["other"].ToString()).Trim();
                             pan = (sdr["pan"].ToString());
-                                                     
+
                         }
                     }
                     obj.conn.Close();
@@ -1233,7 +1595,7 @@ namespace webform_postilion
                             using (SqlConnection sqlCon6 = new SqlConnection(obj.locate1))
                             {
                                 sqlCon6.Open();
-                                string query6 = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                                string query6 = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
                                 SqlCommand sqlCmd6 = new SqlCommand(query6, sqlCon6);
                                 sqlCmd6.ExecuteNonQuery();
                                 load_to_grid();
@@ -1243,62 +1605,144 @@ namespace webform_postilion
                         }
                         else
                         {
-                                                          
-                                string query = "INSERT into pc_card_accounts_1_A (issuer_nr, account_id , account_type  ,  last_updated_date , last_updated_user ,pan ,account_type_nominated,account_type_qualifier,seq_nr) VALUES ('1','" + account_number.Trim() + "','" + account_type.Trim() + "','" + time.ToString(format).Trim() + "','" + GridView1.Rows[crow].Cells[1].Text.Trim() + "','" + pan + "','" + account_type.Trim() + "','1','001')";
-                                SqlCommand sqlCmd = new SqlCommand(query, obj.conn);
-                                sqlCmd.ExecuteNonQuery();
-                                // MessageBox.Show("ADDED NEW CUSTOMER");
 
-                                String action = "LINK ACCOUNT";
-                                using (SqlConnection sqlCon6 = new SqlConnection(obj.locate1))
-                                {
-                                    sqlCon6.Open();
-                                    string query6 = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
-                                    SqlCommand sqlCmd6 = new SqlCommand(query6, sqlCon6);
-                                    sqlCmd6.ExecuteNonQuery();
-                                    load_to_grid();
-                                }
-                                ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('LINKED ACCOUNT')", true);
+                            string query = "INSERT into pc_card_accounts_1_A (issuer_nr, account_id , account_type  ,  last_updated_date , last_updated_user ,pan ,account_type_nominated,account_type_qualifier,seq_nr) VALUES ('1','" + account_number.Trim() + "','" + account_type.Trim() + "','" + time.ToString(format).Trim() + "','" + GridView1.Rows[crow].Cells[1].Text.Trim() + "','" + pan + "','" + account_type.Trim() + "','1','001')";
+                            SqlCommand sqlCmd = new SqlCommand(query, obj.conn);
+                            sqlCmd.ExecuteNonQuery();
+                            // MessageBox.Show("ADDED NEW CUSTOMER");
+
+                            String action = "LINK ACCOUNT";
+                            using (SqlConnection sqlCon6 = new SqlConnection(obj.locate1))
+                            {
+                                sqlCon6.Open();
+                                string query6 = "UPDATE postilion_portal_changes set view_status = 1,change_made = '" + statement_accept + "', date_of_auth = '" + time.ToString(format) + "', approval_statement = 'AUTHORISED' , checker = '"+str3.Text.Trim()+"' WHERE change_made = '" + action + "' and pan ='" + GridView1.Rows[crow].Cells[4].Text + "'";
+                                SqlCommand sqlCmd6 = new SqlCommand(query6, sqlCon6);
+                                sqlCmd6.ExecuteNonQuery();
+                                load_to_grid();
+                            }
+                            ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('LINKED ACCOUNT')", true);
 
                             return;
                         }
                         obj.conn.Close();
 
                     }
-                                                                      
-                  
+
+
                 }
 
             }
             if (e.CommandName.Equals("reject2"))
             {
-                              
-                    int crow;
-                    crow = Convert.ToInt32(e.CommandArgument.ToString());
-                
 
-                    if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD ACCOUNT")
-                    {
-                    
+                int crow;
+                crow = Convert.ToInt32(e.CommandArgument.ToString());
+                if (GridView1.Rows[crow].Cells[3].Text == "LOCK LIMIT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '" + str3.Text.Trim() + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
-                     //   MessageBox.Show("REJECTED");
+                        //   MessageBox.Show("REJECTED");
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
                         load_to_grid();
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD ACCOUNT")
-                    {
-                   // MessageBox.Show("here");
+                if (GridView1.Rows[crow].Cells[3].Text == "REMOVE LOCK LIMIT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '" + str3.Text.Trim() + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "CARD LIMIT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "INSTANT CARD LIMIT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT_CUSTOMER_DETAILS_INSTANT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT_CUSTOMER_DETAILS_ACCOUNT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD ACCOUNT")
+                {
+
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        //   MessageBox.Show("REJECTED");
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD ACCOUNT")
+                {
+                    // MessageBox.Show("here");
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1307,12 +1751,12 @@ namespace webform_postilion
 
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD ACCOUNT INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD ACCOUNT INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1325,7 +1769,7 @@ namespace webform_postilion
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1338,7 +1782,7 @@ namespace webform_postilion
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1347,11 +1791,11 @@ namespace webform_postilion
                     return;
                 }
                 if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD ACCOUNT INSTANT")
-                    {
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1359,12 +1803,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD CARD")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1372,12 +1816,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD CARD")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1385,12 +1829,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD CARD INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "PLACE HOLD CARD INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1398,12 +1842,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD CARD INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "REMOVE HOLD CARD INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1411,12 +1855,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "EDIT ACCOUNT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT ACCOUNT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "', approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1424,12 +1868,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "EDIT ACCOUNT INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT ACCOUNT INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1437,13 +1881,13 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ACTIVATE")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "ACTIVATE")
+                {
 
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1451,77 +1895,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ACTIVATE INSTANT")
-                    {
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                    {
-                        sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
-                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                        sqlCmd.ExecuteNonQuery();
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
-                        load_to_grid();
-                    }
-                    return;
-                }
-                    if (GridView1.Rows[crow].Cells[3].Text == "DEACTIVATE")
-                    {
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                    {
-                        sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
-                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                        sqlCmd.ExecuteNonQuery();
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
-                        load_to_grid();
-                    }
-                    return;
-                }
-                    if (GridView1.Rows[crow].Cells[3].Text == "DEACTIVATE INSTANT")
-                    {
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                    {
-                        sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
-                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                        sqlCmd.ExecuteNonQuery();
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
-                        load_to_grid();
-                    }
-                    return;
-                }
-                    if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER FROM ACCOUNT")
-                    {
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                    {
-                        sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
-                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                        sqlCmd.ExecuteNonQuery();
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
-                        load_to_grid();
-                    }
-                    return;
-                }
-                    if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER INSTANT FROM ACCOUNT")
-                    {
-                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
-                    {
-                        sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
-                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
-                        sqlCmd.ExecuteNonQuery();
-                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
-                        load_to_grid();
-                    }
-                    return;
-                }
-                    if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER FROM CARD")
+                if (GridView1.Rows[crow].Cells[3].Text == "ACTIVATE INSTANT")
                 {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 , approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1529,12 +1908,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER INSTANT FROM CARD")
+                if (GridView1.Rows[crow].Cells[3].Text == "DEACTIVATE")
                 {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 , approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1542,12 +1921,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "EDIT CARD")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "DEACTIVATE INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1555,12 +1934,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "EDIT CARD INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER FROM ACCOUNT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1568,12 +1947,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REISSUE CARD")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER INSTANT FROM ACCOUNT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1581,12 +1960,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REISSUE CARD INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER FROM CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1594,12 +1973,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ADD EXISTING CUSTOMER")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "UNLINK USER INSTANT FROM CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1607,12 +1986,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ADD EXISTING CUSTOMER INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1620,12 +1999,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ADD NEW CUSTOMER")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "EDIT CARD INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1633,12 +2012,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "ADD NEW CUSTOMER INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "REISSUE CARD")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1646,12 +2025,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REPLACE CARD")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "REISSUE CARD INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1659,12 +2038,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "REPLACE CARD INSTANT")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "ADD EXISTING CUSTOMER")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1672,12 +2051,12 @@ namespace webform_postilion
                     }
                     return;
                 }
-                    if (GridView1.Rows[crow].Cells[3].Text == "DELETE CUSTOMER RETAIL")
-                    {
+                if (GridView1.Rows[crow].Cells[3].Text == "ADD EXISTING CUSTOMER INSTANT")
+                {
                     using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
                     {
                         sqlCon.Open();
-                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '"+time.ToString(format)+"', approval_statement = '" + statement + "' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
                         SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
                         sqlCmd.ExecuteNonQuery();
                         ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
@@ -1685,21 +2064,90 @@ namespace webform_postilion
                     }
                     return;
                 }
-                
+                if (GridView1.Rows[crow].Cells[3].Text == "ADD NEW CUSTOMER")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "ADD NEW CUSTOMER INSTANT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "REPLACE CARD")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "REPLACE CARD INSTANT")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+                if (GridView1.Rows[crow].Cells[3].Text == "DELETE CUSTOMER RETAIL")
+                {
+                    using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+                    {
+                        sqlCon.Open();
+                        string query = "UPDATE postilion_portal_changes set view_status = 1 ,date_of_auth = '" + time.ToString(format) + "',  approval_statement = '" + statement + "' , checker = '"+str3.Text.Trim()+"' WHERE id ='" + GridView1.Rows[crow].Cells[0].Text + "'";
+                        SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                        sqlCmd.ExecuteNonQuery();
+                        ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('REJECTED')", true);
+                        load_to_grid();
+                    }
+                    return;
+                }
+
             }
-         }
+        }
 
-   
+
         public void load_to_grid()
         {
 
             System.Web.UI.WebControls.Label str = Master.FindControl("branch_label") as System.Web.UI.WebControls.Label;
+
+            System.Web.UI.WebControls.Label str2 = Master.FindControl("checker_label") as System.Web.UI.WebControls.Label;
+
+            System.Web.UI.WebControls.Label str3 = Master.FindControl("label3") as System.Web.UI.WebControls.Label;
             DataTable dtbl = new DataTable();
             using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
             {
                 sqlCon.Open();
                 //   SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_portal_changes where date >='" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "' and date <='" + (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "' and view_status = 0 and branch = '"+ str.Text + "'" , sqlCon);
-                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_portal_changes where view_status = 0 and branch = '" + str.Text + "' order by id desc", sqlCon);
+                SqlDataAdapter sqlDa = new SqlDataAdapter("SELECT * FROM postilion_portal_changes where view_status = 0 and maker <> '"+str3.Text.Trim()+"' and branch = '" + str.Text + "' order by id desc", sqlCon);
 
                 sqlDa.Fill(dtbl);
             }
@@ -1769,7 +2217,7 @@ namespace webform_postilion
 
                 }
                 obj.conn.Close();
-             //   MessageBox.Show("Hold response :"+hold_rsp_code);
+                //   MessageBox.Show("Hold response :"+hold_rsp_code);
             }
             catch (Exception ex)
             {
@@ -1780,6 +2228,6 @@ namespace webform_postilion
         protected void Button1_Click(object sender, EventArgs e)
         {
             load_to_grid();
-        }   
+        }
     }
 }

@@ -105,7 +105,7 @@
          });
      </script>
     <div class="form-horizontal">
-        <h4>Normal Accounts</h4>
+        <h4>DEBIT Accounts</h4>
         <hr />
 
     <div style="margin-top : 5%;" id="editors">
@@ -277,19 +277,19 @@
         </div>
         <div class="form-group">
          
-            <asp:Label ID="Label8" runat="server" Text="ALLOW OVERDRAFT LIMIT" class = "control-label col-md-2"></asp:Label>
+            <asp:Label ID="Label8" runat="server" Text="ALLOW OVERDRAFT LIMIT" class = "control-label col-md-2" Visible="False"></asp:Label>
             <div class="col-md-10">
               <!--  <asp:CheckBox ID="CheckBox1" runat="server" Enabled="False" /> -->
-                <asp:Button ID="Button6" runat="server" Text="Allow"  class="btn btn-info" Enabled="False" OnClick="Button6_Click" />
+                <asp:Button ID="Button6" runat="server" Text="Allow"  class="btn btn-info" Enabled="False" OnClick="Button6_Click" Visible="False" />
                 </div>
         </div>
         <div class="form-group">
           
-            <asp:Label ID="Label9" runat="server" Text="OVERDRAFT AMOUNT" class = "control-label col-md-2"></asp:Label>
+            <asp:Label ID="Label9" runat="server" Text="OVERDRAFT AMOUNT" class = "control-label col-md-2" Visible="False"></asp:Label>
             <div class="col-md-10">
-                <asp:TextBox ID="TextBox6" runat="server" class = "form-control" ReadOnly="True"></asp:TextBox>
+                <asp:TextBox ID="TextBox6" runat="server" class = "form-control" ReadOnly="True" Visible="False"></asp:TextBox>
              <!--   <asp:RequiredFieldValidator ID="RequiredFieldValidator1" runat="server" ErrorMessage="RequiredField" ControlToValidate="TextBox6" Enabled="False" ForeColor="Red"></asp:RequiredFieldValidator>
-              -->  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression = "^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])?$"  ErrorMessage="Enter correct currency" ControlToValidate="TextBox6" ForeColor="Red"></asp:RegularExpressionValidator>
+              -->  <asp:RegularExpressionValidator ID="RegularExpressionValidator1" runat="server" ValidationExpression = "^\$?([0-9]{1,3},([0-9]{3},)*[0-9]{3}|[0-9]+)(.[0-9][0-9])?$"  ErrorMessage="Enter correct currency" ControlToValidate="TextBox6" ForeColor="Red" Visible="False"></asp:RegularExpressionValidator>
            </div>
         </div>
         <div class="form-group">
@@ -398,7 +398,17 @@
                             <asp:TextBox ID="txtREASONFooter" runat="server" />
                         </FooterTemplate>
                     </asp:TemplateField>
-                  
+                  <asp:TemplateField HeaderText="EDIT CUSTOMER DETAILS">
+                        <ItemTemplate>
+                            <asp:Button ID="Button9" runat="server" Text="EDIT DETAILS" CommandName="CUST_id" CommandArgument='<%# Eval("customer_id") %>' class="btn btn-danger" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtContact" Text='' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtREASONFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
                 </Columns>
             </asp:GridView>
         </div>

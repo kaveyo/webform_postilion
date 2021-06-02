@@ -6,6 +6,9 @@
 <head runat="server">
 
     <title></title>
+    
+    <link href="Content/vendor/bootstrap/css/bootstrap.css" rel="stylesheet" />
+    <link href="Content/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
     <link href="Content/css/main.css" rel="stylesheet" />
     <link href="Content/css/util.css" rel="stylesheet" />
     <link href="Content/bootstrap-theme.css" rel="stylesheet" />
@@ -99,8 +102,9 @@
                                     <div style="margin-top:2%;">
                                 <asp:Button ID="Button2" runat="server" Text="ADMIN LOGIN" class="btn btn-lg btn-block btn-danger" OnClick="Button2_Click" Visible="False" />
                                 </div>
-                            
+                          
                             </fieldset>
+                                                        
                         </form>
                     </div>
                 </div>
@@ -108,6 +112,9 @@
 
         </div>
     </div>
+         <script src="Content/vendor/jquery/jquery.js"></script>
+        <script src="Content/vendor/jquery/jquery.min.js"></script>
+        <script src="Content/vendor/bootstrap/js/bootstrap.min.js"></script>
     </form>
  
 </body>

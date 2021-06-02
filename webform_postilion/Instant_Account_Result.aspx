@@ -359,6 +359,17 @@
                             <asp:TextBox ID="txtREASONFooter" runat="server" />
                         </FooterTemplate>
                     </asp:TemplateField>
+                     <asp:TemplateField HeaderText="EDIT CUSTOMER DETAILS">
+                        <ItemTemplate>
+                            <asp:Button ID="Button9" runat="server" Text="EDIT DETAILS" CommandName="CUST_id" CommandArgument='<%# Eval("customer_id") %>' class="btn btn-danger" />
+                        </ItemTemplate>
+                        <EditItemTemplate>
+                            <asp:TextBox ID="txtContact" Text='' runat="server" />
+                        </EditItemTemplate>
+                        <FooterTemplate>
+                            <asp:TextBox ID="txtREASONFooter" runat="server" />
+                        </FooterTemplate>
+                    </asp:TemplateField>
                   
                 </Columns>
             </asp:GridView>

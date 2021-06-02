@@ -24,7 +24,7 @@ namespace webform_postilion {
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.DataSet")]
     public partial class DataSet3 : global::System.Data.DataSet {
         
-        private postilion_rolesDataTable tablepostilion_roles;
+        private postilion_branchDataTable tablepostilion_branch;
         
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
@@ -54,8 +54,8 @@ namespace webform_postilion {
             if ((this.DetermineSchemaSerializationMode(info, context) == global::System.Data.SchemaSerializationMode.IncludeSchema)) {
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXmlSchema(new global::System.Xml.XmlTextReader(new global::System.IO.StringReader(strSchema)));
-                if ((ds.Tables["postilion_roles"] != null)) {
-                    base.Tables.Add(new postilion_rolesDataTable(ds.Tables["postilion_roles"]));
+                if ((ds.Tables["postilion_branch"] != null)) {
+                    base.Tables.Add(new postilion_branchDataTable(ds.Tables["postilion_branch"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -79,9 +79,9 @@ namespace webform_postilion {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Browsable(false)]
         [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
-        public postilion_rolesDataTable postilion_roles {
+        public postilion_branchDataTable postilion_branch {
             get {
-                return this.tablepostilion_roles;
+                return this.tablepostilion_branch;
             }
         }
         
@@ -152,8 +152,8 @@ namespace webform_postilion {
                 this.Reset();
                 global::System.Data.DataSet ds = new global::System.Data.DataSet();
                 ds.ReadXml(reader);
-                if ((ds.Tables["postilion_roles"] != null)) {
-                    base.Tables.Add(new postilion_rolesDataTable(ds.Tables["postilion_roles"]));
+                if ((ds.Tables["postilion_branch"] != null)) {
+                    base.Tables.Add(new postilion_branchDataTable(ds.Tables["postilion_branch"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -188,10 +188,10 @@ namespace webform_postilion {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         internal void InitVars(bool initTable) {
-            this.tablepostilion_roles = ((postilion_rolesDataTable)(base.Tables["postilion_roles"]));
+            this.tablepostilion_branch = ((postilion_branchDataTable)(base.Tables["postilion_branch"]));
             if ((initTable == true)) {
-                if ((this.tablepostilion_roles != null)) {
-                    this.tablepostilion_roles.InitVars();
+                if ((this.tablepostilion_branch != null)) {
+                    this.tablepostilion_branch.InitVars();
                 }
             }
         }
@@ -204,13 +204,13 @@ namespace webform_postilion {
             this.Namespace = "http://tempuri.org/DataSet3.xsd";
             this.EnforceConstraints = true;
             this.SchemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
-            this.tablepostilion_roles = new postilion_rolesDataTable();
-            base.Tables.Add(this.tablepostilion_roles);
+            this.tablepostilion_branch = new postilion_branchDataTable();
+            base.Tables.Add(this.tablepostilion_branch);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        private bool ShouldSerializepostilion_roles() {
+        private bool ShouldSerializepostilion_branch() {
             return false;
         }
         
@@ -270,27 +270,31 @@ namespace webform_postilion {
         }
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public delegate void postilion_rolesRowChangeEventHandler(object sender, postilion_rolesRowChangeEvent e);
+        public delegate void postilion_branchRowChangeEventHandler(object sender, postilion_branchRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
         ///</summary>
         [global::System.Serializable()]
         [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
-        public partial class postilion_rolesDataTable : global::System.Data.TypedTableBase<postilion_rolesRow> {
+        public partial class postilion_branchDataTable : global::System.Data.TypedTableBase<postilion_branchRow> {
             
             private global::System.Data.DataColumn columnid;
             
-            private global::System.Data.DataColumn columnrole;
+            private global::System.Data.DataColumn columnbranch;
             
-            private global::System.Data.DataColumn columnbranches;
+            private global::System.Data.DataColumn columnchecker;
             
-            private global::System.Data.DataColumn columnfunctions;
+            private global::System.Data.DataColumn columnMAKER;
+            
+            private global::System.Data.DataColumn columnCHECKER1;
+            
+            private global::System.Data.DataColumn columnADMINISTRATOR;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesDataTable() {
-                this.TableName = "postilion_roles";
+            public postilion_branchDataTable() {
+                this.TableName = "postilion_branch";
                 this.BeginInit();
                 this.InitClass();
                 this.EndInit();
@@ -298,7 +302,7 @@ namespace webform_postilion {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal postilion_rolesDataTable(global::System.Data.DataTable table) {
+            internal postilion_branchDataTable(global::System.Data.DataTable table) {
                 this.TableName = table.TableName;
                 if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
                     this.CaseSensitive = table.CaseSensitive;
@@ -315,7 +319,7 @@ namespace webform_postilion {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            protected postilion_rolesDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+            protected postilion_branchDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
                     base(info, context) {
                 this.InitVars();
             }
@@ -330,25 +334,41 @@ namespace webform_postilion {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn roleColumn {
+            public global::System.Data.DataColumn branchColumn {
                 get {
-                    return this.columnrole;
+                    return this.columnbranch;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn branchesColumn {
+            public global::System.Data.DataColumn checkerColumn {
                 get {
-                    return this.columnbranches;
+                    return this.columnchecker;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public global::System.Data.DataColumn functionsColumn {
+            public global::System.Data.DataColumn MAKERColumn {
                 get {
-                    return this.columnfunctions;
+                    return this.columnMAKER;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn CHECKER1Column {
+                get {
+                    return this.columnCHECKER1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public global::System.Data.DataColumn ADMINISTRATORColumn {
+                get {
+                    return this.columnADMINISTRATOR;
                 }
             }
             
@@ -363,55 +383,50 @@ namespace webform_postilion {
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRow this[int index] {
+            public postilion_branchRow this[int index] {
                 get {
-                    return ((postilion_rolesRow)(this.Rows[index]));
+                    return ((postilion_branchRow)(this.Rows[index]));
                 }
             }
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event postilion_rolesRowChangeEventHandler postilion_rolesRowChanging;
+            public event postilion_branchRowChangeEventHandler postilion_branchRowChanging;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event postilion_rolesRowChangeEventHandler postilion_rolesRowChanged;
+            public event postilion_branchRowChangeEventHandler postilion_branchRowChanged;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event postilion_rolesRowChangeEventHandler postilion_rolesRowDeleting;
+            public event postilion_branchRowChangeEventHandler postilion_branchRowDeleting;
             
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public event postilion_rolesRowChangeEventHandler postilion_rolesRowDeleted;
+            public event postilion_branchRowChangeEventHandler postilion_branchRowDeleted;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void Addpostilion_rolesRow(postilion_rolesRow row) {
+            public void Addpostilion_branchRow(postilion_branchRow row) {
                 this.Rows.Add(row);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRow Addpostilion_rolesRow(string role, string branches, string functions) {
-                postilion_rolesRow rowpostilion_rolesRow = ((postilion_rolesRow)(this.NewRow()));
+            public postilion_branchRow Addpostilion_branchRow(string branch, int checker, string MAKER, string CHECKER1, string ADMINISTRATOR) {
+                postilion_branchRow rowpostilion_branchRow = ((postilion_branchRow)(this.NewRow()));
                 object[] columnValuesArray = new object[] {
                         null,
-                        role,
-                        branches,
-                        functions};
-                rowpostilion_rolesRow.ItemArray = columnValuesArray;
-                this.Rows.Add(rowpostilion_rolesRow);
-                return rowpostilion_rolesRow;
-            }
-            
-            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRow FindByid(int id) {
-                return ((postilion_rolesRow)(this.Rows.Find(new object[] {
-                            id})));
+                        branch,
+                        checker,
+                        MAKER,
+                        CHECKER1,
+                        ADMINISTRATOR};
+                rowpostilion_branchRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowpostilion_branchRow);
+                return rowpostilion_branchRow;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public override global::System.Data.DataTable Clone() {
-                postilion_rolesDataTable cln = ((postilion_rolesDataTable)(base.Clone()));
+                postilion_branchDataTable cln = ((postilion_branchDataTable)(base.Clone()));
                 cln.InitVars();
                 return cln;
             }
@@ -419,16 +434,18 @@ namespace webform_postilion {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Data.DataTable CreateInstance() {
-                return new postilion_rolesDataTable();
+                return new postilion_branchDataTable();
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             internal void InitVars() {
                 this.columnid = base.Columns["id"];
-                this.columnrole = base.Columns["role"];
-                this.columnbranches = base.Columns["branches"];
-                this.columnfunctions = base.Columns["functions"];
+                this.columnbranch = base.Columns["branch"];
+                this.columnchecker = base.Columns["checker"];
+                this.columnMAKER = base.Columns["MAKER"];
+                this.columnCHECKER1 = base.Columns["CHECKER1"];
+                this.columnADMINISTRATOR = base.Columns["ADMINISTRATOR"];
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -436,49 +453,54 @@ namespace webform_postilion {
             private void InitClass() {
                 this.columnid = new global::System.Data.DataColumn("id", typeof(int), null, global::System.Data.MappingType.Element);
                 base.Columns.Add(this.columnid);
-                this.columnrole = new global::System.Data.DataColumn("role", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnrole);
-                this.columnbranches = new global::System.Data.DataColumn("branches", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnbranches);
-                this.columnfunctions = new global::System.Data.DataColumn("functions", typeof(string), null, global::System.Data.MappingType.Element);
-                base.Columns.Add(this.columnfunctions);
-                this.Constraints.Add(new global::System.Data.UniqueConstraint("Constraint1", new global::System.Data.DataColumn[] {
-                                this.columnid}, true));
+                this.columnbranch = new global::System.Data.DataColumn("branch", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnbranch);
+                this.columnchecker = new global::System.Data.DataColumn("checker", typeof(int), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnchecker);
+                this.columnMAKER = new global::System.Data.DataColumn("MAKER", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnMAKER);
+                this.columnCHECKER1 = new global::System.Data.DataColumn("CHECKER1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnCHECKER1);
+                this.columnADMINISTRATOR = new global::System.Data.DataColumn("ADMINISTRATOR", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnADMINISTRATOR);
                 this.columnid.AutoIncrement = true;
                 this.columnid.AutoIncrementSeed = -1;
                 this.columnid.AutoIncrementStep = -1;
                 this.columnid.AllowDBNull = false;
                 this.columnid.ReadOnly = true;
-                this.columnid.Unique = true;
-                this.columnrole.MaxLength = 50;
-                this.columnbranches.MaxLength = 100;
-                this.columnfunctions.MaxLength = 250;
+                this.columnbranch.MaxLength = 150;
+                this.columnMAKER.ReadOnly = true;
+                this.columnMAKER.MaxLength = 158;
+                this.columnCHECKER1.ReadOnly = true;
+                this.columnCHECKER1.MaxLength = 105;
+                this.columnADMINISTRATOR.ReadOnly = true;
+                this.columnADMINISTRATOR.MaxLength = 82;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRow Newpostilion_rolesRow() {
-                return ((postilion_rolesRow)(this.NewRow()));
+            public postilion_branchRow Newpostilion_branchRow() {
+                return ((postilion_branchRow)(this.NewRow()));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
-                return new postilion_rolesRow(builder);
+                return new postilion_branchRow(builder);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override global::System.Type GetRowType() {
-                return typeof(postilion_rolesRow);
+                return typeof(postilion_branchRow);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanged(e);
-                if ((this.postilion_rolesRowChanged != null)) {
-                    this.postilion_rolesRowChanged(this, new postilion_rolesRowChangeEvent(((postilion_rolesRow)(e.Row)), e.Action));
+                if ((this.postilion_branchRowChanged != null)) {
+                    this.postilion_branchRowChanged(this, new postilion_branchRowChangeEvent(((postilion_branchRow)(e.Row)), e.Action));
                 }
             }
             
@@ -486,8 +508,8 @@ namespace webform_postilion {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowChanging(e);
-                if ((this.postilion_rolesRowChanging != null)) {
-                    this.postilion_rolesRowChanging(this, new postilion_rolesRowChangeEvent(((postilion_rolesRow)(e.Row)), e.Action));
+                if ((this.postilion_branchRowChanging != null)) {
+                    this.postilion_branchRowChanging(this, new postilion_branchRowChangeEvent(((postilion_branchRow)(e.Row)), e.Action));
                 }
             }
             
@@ -495,8 +517,8 @@ namespace webform_postilion {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleted(e);
-                if ((this.postilion_rolesRowDeleted != null)) {
-                    this.postilion_rolesRowDeleted(this, new postilion_rolesRowChangeEvent(((postilion_rolesRow)(e.Row)), e.Action));
+                if ((this.postilion_branchRowDeleted != null)) {
+                    this.postilion_branchRowDeleted(this, new postilion_branchRowChangeEvent(((postilion_branchRow)(e.Row)), e.Action));
                 }
             }
             
@@ -504,14 +526,14 @@ namespace webform_postilion {
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
                 base.OnRowDeleting(e);
-                if ((this.postilion_rolesRowDeleting != null)) {
-                    this.postilion_rolesRowDeleting(this, new postilion_rolesRowChangeEvent(((postilion_rolesRow)(e.Row)), e.Action));
+                if ((this.postilion_branchRowDeleting != null)) {
+                    this.postilion_branchRowDeleting(this, new postilion_branchRowChangeEvent(((postilion_branchRow)(e.Row)), e.Action));
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void Removepostilion_rolesRow(postilion_rolesRow row) {
+            public void Removepostilion_branchRow(postilion_branchRow row) {
                 this.Rows.Remove(row);
             }
             
@@ -538,7 +560,7 @@ namespace webform_postilion {
                 type.Attributes.Add(attribute1);
                 global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
                 attribute2.Name = "tableTypeName";
-                attribute2.FixedValue = "postilion_rolesDataTable";
+                attribute2.FixedValue = "postilion_branchDataTable";
                 type.Attributes.Add(attribute2);
                 type.Particle = sequence;
                 global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
@@ -582,110 +604,166 @@ namespace webform_postilion {
         /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
-        public partial class postilion_rolesRow : global::System.Data.DataRow {
+        public partial class postilion_branchRow : global::System.Data.DataRow {
             
-            private postilion_rolesDataTable tablepostilion_roles;
+            private postilion_branchDataTable tablepostilion_branch;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            internal postilion_rolesRow(global::System.Data.DataRowBuilder rb) : 
+            internal postilion_branchRow(global::System.Data.DataRowBuilder rb) : 
                     base(rb) {
-                this.tablepostilion_roles = ((postilion_rolesDataTable)(this.Table));
+                this.tablepostilion_branch = ((postilion_branchDataTable)(this.Table));
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
             public int id {
                 get {
-                    return ((int)(this[this.tablepostilion_roles.idColumn]));
+                    return ((int)(this[this.tablepostilion_branch.idColumn]));
                 }
                 set {
-                    this[this.tablepostilion_roles.idColumn] = value;
+                    this[this.tablepostilion_branch.idColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string role {
+            public string branch {
                 get {
                     try {
-                        return ((string)(this[this.tablepostilion_roles.roleColumn]));
+                        return ((string)(this[this.tablepostilion_branch.branchColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'role\' in table \'postilion_roles\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'branch\' in table \'postilion_branch\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablepostilion_roles.roleColumn] = value;
+                    this[this.tablepostilion_branch.branchColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string branches {
+            public int checker {
                 get {
                     try {
-                        return ((string)(this[this.tablepostilion_roles.branchesColumn]));
+                        return ((int)(this[this.tablepostilion_branch.checkerColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'branches\' in table \'postilion_roles\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'checker\' in table \'postilion_branch\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablepostilion_roles.branchesColumn] = value;
+                    this[this.tablepostilion_branch.checkerColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public string functions {
+            public string MAKER {
                 get {
                     try {
-                        return ((string)(this[this.tablepostilion_roles.functionsColumn]));
+                        return ((string)(this[this.tablepostilion_branch.MAKERColumn]));
                     }
                     catch (global::System.InvalidCastException e) {
-                        throw new global::System.Data.StrongTypingException("The value for column \'functions\' in table \'postilion_roles\' is DBNull.", e);
+                        throw new global::System.Data.StrongTypingException("The value for column \'MAKER\' in table \'postilion_branch\' is DBNull.", e);
                     }
                 }
                 set {
-                    this[this.tablepostilion_roles.functionsColumn] = value;
+                    this[this.tablepostilion_branch.MAKERColumn] = value;
                 }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsroleNull() {
-                return this.IsNull(this.tablepostilion_roles.roleColumn);
+            public string CHECKER1 {
+                get {
+                    try {
+                        return ((string)(this[this.tablepostilion_branch.CHECKER1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'CHECKER1\' in table \'postilion_branch\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablepostilion_branch.CHECKER1Column] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetroleNull() {
-                this[this.tablepostilion_roles.roleColumn] = global::System.Convert.DBNull;
+            public string ADMINISTRATOR {
+                get {
+                    try {
+                        return ((string)(this[this.tablepostilion_branch.ADMINISTRATORColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ADMINISTRATOR\' in table \'postilion_branch\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tablepostilion_branch.ADMINISTRATORColumn] = value;
+                }
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsbranchesNull() {
-                return this.IsNull(this.tablepostilion_roles.branchesColumn);
+            public bool IsbranchNull() {
+                return this.IsNull(this.tablepostilion_branch.branchColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetbranchesNull() {
-                this[this.tablepostilion_roles.branchesColumn] = global::System.Convert.DBNull;
+            public void SetbranchNull() {
+                this[this.tablepostilion_branch.branchColumn] = global::System.Convert.DBNull;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public bool IsfunctionsNull() {
-                return this.IsNull(this.tablepostilion_roles.functionsColumn);
+            public bool IscheckerNull() {
+                return this.IsNull(this.tablepostilion_branch.checkerColumn);
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public void SetfunctionsNull() {
-                this[this.tablepostilion_roles.functionsColumn] = global::System.Convert.DBNull;
+            public void SetcheckerNull() {
+                this[this.tablepostilion_branch.checkerColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsMAKERNull() {
+                return this.IsNull(this.tablepostilion_branch.MAKERColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetMAKERNull() {
+                this[this.tablepostilion_branch.MAKERColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsCHECKER1Null() {
+                return this.IsNull(this.tablepostilion_branch.CHECKER1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetCHECKER1Null() {
+                this[this.tablepostilion_branch.CHECKER1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public bool IsADMINISTRATORNull() {
+                return this.IsNull(this.tablepostilion_branch.ADMINISTRATORColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
+            public void SetADMINISTRATORNull() {
+                this[this.tablepostilion_branch.ADMINISTRATORColumn] = global::System.Convert.DBNull;
             }
         }
         
@@ -693,22 +771,22 @@ namespace webform_postilion {
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public class postilion_rolesRowChangeEvent : global::System.EventArgs {
+        public class postilion_branchRowChangeEvent : global::System.EventArgs {
             
-            private postilion_rolesRow eventRow;
+            private postilion_branchRow eventRow;
             
             private global::System.Data.DataRowAction eventAction;
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRowChangeEvent(postilion_rolesRow row, global::System.Data.DataRowAction action) {
+            public postilion_branchRowChangeEvent(postilion_branchRow row, global::System.Data.DataRowAction action) {
                 this.eventRow = row;
                 this.eventAction = action;
             }
             
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-            public postilion_rolesRow Row {
+            public postilion_branchRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -736,7 +814,7 @@ namespace webform_postilion.DataSet3TableAdapters {
     [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
         ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
     [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-    public partial class postilion_rolesTableAdapter : global::System.ComponentModel.Component {
+    public partial class postilion_branchTableAdapter : global::System.ComponentModel.Component {
         
         private global::System.Data.SqlClient.SqlDataAdapter _adapter;
         
@@ -750,7 +828,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        public postilion_rolesTableAdapter() {
+        public postilion_branchTableAdapter() {
             this.ClearBeforeFill = true;
         }
         
@@ -847,34 +925,20 @@ namespace webform_postilion.DataSet3TableAdapters {
             this._adapter = new global::System.Data.SqlClient.SqlDataAdapter();
             global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
             tableMapping.SourceTable = "Table";
-            tableMapping.DataSetTable = "postilion_roles";
+            tableMapping.DataSetTable = "postilion_branch";
             tableMapping.ColumnMappings.Add("id", "id");
-            tableMapping.ColumnMappings.Add("role", "role");
-            tableMapping.ColumnMappings.Add("branches", "branches");
-            tableMapping.ColumnMappings.Add("functions", "functions");
+            tableMapping.ColumnMappings.Add("branch", "branch");
+            tableMapping.ColumnMappings.Add("checker", "checker");
+            tableMapping.ColumnMappings.Add("MAKER", "MAKER");
+            tableMapping.ColumnMappings.Add("CHECKER1", "CHECKER1");
+            tableMapping.ColumnMappings.Add("ADMINISTRATOR", "ADMINISTRATOR");
             this._adapter.TableMappings.Add(tableMapping);
-            this._adapter.DeleteCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.DeleteCommand.Connection = this.Connection;
-            this._adapter.DeleteCommand.CommandText = "DELETE FROM [postilion_roles] WHERE (([id] = @Original_id))";
-            this._adapter.DeleteCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.DeleteCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
             this._adapter.InsertCommand = new global::System.Data.SqlClient.SqlCommand();
             this._adapter.InsertCommand.Connection = this.Connection;
-            this._adapter.InsertCommand.CommandText = "INSERT INTO [postilion_roles] ([role], [branches], [functions]) VALUES (@role, @b" +
-                "ranches, @functions)";
+            this._adapter.InsertCommand.CommandText = "INSERT INTO [postilion_branch] ([branch], [checker]) VALUES (@branch, @checker)";
             this._adapter.InsertCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@role", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "role", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@branches", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "branches", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@functions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "functions", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand = new global::System.Data.SqlClient.SqlCommand();
-            this._adapter.UpdateCommand.Connection = this.Connection;
-            this._adapter.UpdateCommand.CommandText = "UPDATE [postilion_roles] SET [role] = @role, [branches] = @branches, [functions] " +
-                "= @functions WHERE (([id] = @Original_id))";
-            this._adapter.UpdateCommand.CommandType = global::System.Data.CommandType.Text;
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@role", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "role", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@branches", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "branches", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@functions", global::System.Data.SqlDbType.NVarChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "functions", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
-            this._adapter.UpdateCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@Original_id", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "id", global::System.Data.DataRowVersion.Original, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@branch", global::System.Data.SqlDbType.NChar, 0, global::System.Data.ParameterDirection.Input, 0, 0, "branch", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
+            this._adapter.InsertCommand.Parameters.Add(new global::System.Data.SqlClient.SqlParameter("@checker", global::System.Data.SqlDbType.Int, 0, global::System.Data.ParameterDirection.Input, 0, 0, "checker", global::System.Data.DataRowVersion.Current, false, null, "", "", ""));
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -890,7 +954,7 @@ namespace webform_postilion.DataSet3TableAdapters {
             this._commandCollection = new global::System.Data.SqlClient.SqlCommand[1];
             this._commandCollection[0] = new global::System.Data.SqlClient.SqlCommand();
             this._commandCollection[0].Connection = this.Connection;
-            this._commandCollection[0].CommandText = "SELECT        id, role, branches, functions\r\nFROM            postilion_roles";
+            this._commandCollection[0].CommandText = @"SELECT id,branch,checker,CASE WHEN checker = 0 THEN 'MAKER : ACTIVIATE ACCOUNT AND CARD , ADD CUSTOMER TO CARD , CHANGE ACCOUNT PRODUCT ON ACCOUNT' WHEN checker = 1 THEN 'MAKER : ACTIVIATE ACCOUNT AND CARD , ADD CUSTOMER TO CARD , CHANGE ACCOUNT PRODUCT ON ACCOUNT , LINK ACCOUNT TO CARD , PLACE HOLD RESPONSE ON CARD AND ACCOUNT' END AS MAKER,CASE WHEN checker = 0 THEN 'CHECKER : AUTHORISE ALL CHANGES EXCEPT FOR LINKING ACCOUNT AND PLACING HOLD RESPONSES ON ACCOUNT AND CARD' WHEN checker = 1 THEN 'CHECKER : AUTHORISE ALL CHANGES'END AS CHECKER,CASE WHEN checker > -1 THEN 'MANAGES USERS I.E. ADDING , DELELING , UPDATING USER PROFILES AND GENERATE REPORTS' END AS ADMINISTRATOR FROM postilion_branch";
             this._commandCollection[0].CommandType = global::System.Data.CommandType.Text;
         }
         
@@ -898,7 +962,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
-        public virtual int Fill(DataSet3.postilion_rolesDataTable dataTable) {
+        public virtual int Fill(DataSet3.postilion_branchDataTable dataTable) {
             this.Adapter.SelectCommand = this.CommandCollection[0];
             if ((this.ClearBeforeFill == true)) {
                 dataTable.Clear();
@@ -911,9 +975,9 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
-        public virtual DataSet3.postilion_rolesDataTable GetData() {
+        public virtual DataSet3.postilion_branchDataTable GetData() {
             this.Adapter.SelectCommand = this.CommandCollection[0];
-            DataSet3.postilion_rolesDataTable dataTable = new DataSet3.postilion_rolesDataTable();
+            DataSet3.postilion_branchDataTable dataTable = new DataSet3.postilion_branchDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }
@@ -921,7 +985,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        public virtual int Update(DataSet3.postilion_rolesDataTable dataTable) {
+        public virtual int Update(DataSet3.postilion_branchDataTable dataTable) {
             return this.Adapter.Update(dataTable);
         }
         
@@ -929,7 +993,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         public virtual int Update(DataSet3 dataSet) {
-            return this.Adapter.Update(dataSet, "postilion_roles");
+            return this.Adapter.Update(dataSet, "postilion_branch");
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -950,47 +1014,19 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Delete, true)]
-        public virtual int Delete(int Original_id) {
-            this.Adapter.DeleteCommand.Parameters[0].Value = ((int)(Original_id));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.DeleteCommand.Connection.State;
-            if (((this.Adapter.DeleteCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.DeleteCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.DeleteCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.DeleteCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
         [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Insert, true)]
-        public virtual int Insert(string role, string branches, string functions) {
-            if ((role == null)) {
+        public virtual int Insert(string branch, global::System.Nullable<int> checker) {
+            if ((branch == null)) {
                 this.Adapter.InsertCommand.Parameters[0].Value = global::System.DBNull.Value;
             }
             else {
-                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(role));
+                this.Adapter.InsertCommand.Parameters[0].Value = ((string)(branch));
             }
-            if ((branches == null)) {
+            if ((checker.HasValue == true)) {
+                this.Adapter.InsertCommand.Parameters[1].Value = ((int)(checker.Value));
+            }
+            else {
                 this.Adapter.InsertCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[1].Value = ((string)(branches));
-            }
-            if ((functions == null)) {
-                this.Adapter.InsertCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.InsertCommand.Parameters[2].Value = ((string)(functions));
             }
             global::System.Data.ConnectionState previousConnectionState = this.Adapter.InsertCommand.Connection.State;
             if (((this.Adapter.InsertCommand.Connection.State & global::System.Data.ConnectionState.Open) 
@@ -1004,46 +1040,6 @@ namespace webform_postilion.DataSet3TableAdapters {
             finally {
                 if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
                     this.Adapter.InsertCommand.Connection.Close();
-                }
-            }
-        }
-        
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
-        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
-        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Update, true)]
-        public virtual int Update(string role, string branches, string functions, int Original_id) {
-            if ((role == null)) {
-                this.Adapter.UpdateCommand.Parameters[0].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[0].Value = ((string)(role));
-            }
-            if ((branches == null)) {
-                this.Adapter.UpdateCommand.Parameters[1].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[1].Value = ((string)(branches));
-            }
-            if ((functions == null)) {
-                this.Adapter.UpdateCommand.Parameters[2].Value = global::System.DBNull.Value;
-            }
-            else {
-                this.Adapter.UpdateCommand.Parameters[2].Value = ((string)(functions));
-            }
-            this.Adapter.UpdateCommand.Parameters[3].Value = ((int)(Original_id));
-            global::System.Data.ConnectionState previousConnectionState = this.Adapter.UpdateCommand.Connection.State;
-            if (((this.Adapter.UpdateCommand.Connection.State & global::System.Data.ConnectionState.Open) 
-                        != global::System.Data.ConnectionState.Open)) {
-                this.Adapter.UpdateCommand.Connection.Open();
-            }
-            try {
-                int returnValue = this.Adapter.UpdateCommand.ExecuteNonQuery();
-                return returnValue;
-            }
-            finally {
-                if ((previousConnectionState == global::System.Data.ConnectionState.Closed)) {
-                    this.Adapter.UpdateCommand.Connection.Close();
                 }
             }
         }
@@ -1061,7 +1057,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         
         private UpdateOrderOption _updateOrder;
         
-        private postilion_rolesTableAdapter _postilion_rolesTableAdapter;
+        private postilion_branchTableAdapter _postilion_branchTableAdapter;
         
         private bool _backupDataSetBeforeUpdate;
         
@@ -1083,12 +1079,12 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.ComponentModel.EditorAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterManagerPropertyEditor, Microso" +
             "ft.VSDesigner, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3" +
             "a", "System.Drawing.Design.UITypeEditor")]
-        public postilion_rolesTableAdapter postilion_rolesTableAdapter {
+        public postilion_branchTableAdapter postilion_branchTableAdapter {
             get {
-                return this._postilion_rolesTableAdapter;
+                return this._postilion_branchTableAdapter;
             }
             set {
-                this._postilion_rolesTableAdapter = value;
+                this._postilion_branchTableAdapter = value;
             }
         }
         
@@ -1111,9 +1107,9 @@ namespace webform_postilion.DataSet3TableAdapters {
                 if ((this._connection != null)) {
                     return this._connection;
                 }
-                if (((this._postilion_rolesTableAdapter != null) 
-                            && (this._postilion_rolesTableAdapter.Connection != null))) {
-                    return this._postilion_rolesTableAdapter.Connection;
+                if (((this._postilion_branchTableAdapter != null) 
+                            && (this._postilion_branchTableAdapter.Connection != null))) {
+                    return this._postilion_branchTableAdapter.Connection;
                 }
                 return null;
             }
@@ -1128,7 +1124,7 @@ namespace webform_postilion.DataSet3TableAdapters {
         public int TableAdapterInstanceCount {
             get {
                 int count = 0;
-                if ((this._postilion_rolesTableAdapter != null)) {
+                if ((this._postilion_branchTableAdapter != null)) {
                     count = (count + 1);
                 }
                 return count;
@@ -1142,12 +1138,12 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private int UpdateUpdatedRows(DataSet3 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._postilion_rolesTableAdapter != null)) {
-                global::System.Data.DataRow[] updatedRows = dataSet.postilion_roles.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
+            if ((this._postilion_branchTableAdapter != null)) {
+                global::System.Data.DataRow[] updatedRows = dataSet.postilion_branch.Select(null, null, global::System.Data.DataViewRowState.ModifiedCurrent);
                 updatedRows = this.GetRealUpdatedRows(updatedRows, allAddedRows);
                 if (((updatedRows != null) 
                             && (0 < updatedRows.Length))) {
-                    result = (result + this._postilion_rolesTableAdapter.Update(updatedRows));
+                    result = (result + this._postilion_branchTableAdapter.Update(updatedRows));
                     allChangedRows.AddRange(updatedRows);
                 }
             }
@@ -1161,11 +1157,11 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private int UpdateInsertedRows(DataSet3 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allAddedRows) {
             int result = 0;
-            if ((this._postilion_rolesTableAdapter != null)) {
-                global::System.Data.DataRow[] addedRows = dataSet.postilion_roles.Select(null, null, global::System.Data.DataViewRowState.Added);
+            if ((this._postilion_branchTableAdapter != null)) {
+                global::System.Data.DataRow[] addedRows = dataSet.postilion_branch.Select(null, null, global::System.Data.DataViewRowState.Added);
                 if (((addedRows != null) 
                             && (0 < addedRows.Length))) {
-                    result = (result + this._postilion_rolesTableAdapter.Update(addedRows));
+                    result = (result + this._postilion_branchTableAdapter.Update(addedRows));
                     allAddedRows.AddRange(addedRows);
                 }
             }
@@ -1179,11 +1175,11 @@ namespace webform_postilion.DataSet3TableAdapters {
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "16.0.0.0")]
         private int UpdateDeletedRows(DataSet3 dataSet, global::System.Collections.Generic.List<global::System.Data.DataRow> allChangedRows) {
             int result = 0;
-            if ((this._postilion_rolesTableAdapter != null)) {
-                global::System.Data.DataRow[] deletedRows = dataSet.postilion_roles.Select(null, null, global::System.Data.DataViewRowState.Deleted);
+            if ((this._postilion_branchTableAdapter != null)) {
+                global::System.Data.DataRow[] deletedRows = dataSet.postilion_branch.Select(null, null, global::System.Data.DataViewRowState.Deleted);
                 if (((deletedRows != null) 
                             && (0 < deletedRows.Length))) {
-                    result = (result + this._postilion_rolesTableAdapter.Update(deletedRows));
+                    result = (result + this._postilion_branchTableAdapter.Update(deletedRows));
                     allChangedRows.AddRange(deletedRows);
                 }
             }
@@ -1226,8 +1222,8 @@ namespace webform_postilion.DataSet3TableAdapters {
             if ((dataSet.HasChanges() == false)) {
                 return 0;
             }
-            if (((this._postilion_rolesTableAdapter != null) 
-                        && (this.MatchTableAdapterConnection(this._postilion_rolesTableAdapter.Connection) == false))) {
+            if (((this._postilion_branchTableAdapter != null) 
+                        && (this.MatchTableAdapterConnection(this._postilion_branchTableAdapter.Connection) == false))) {
                 throw new global::System.ArgumentException("All TableAdapters managed by a TableAdapterManager must use the same connection s" +
                         "tring.");
             }
@@ -1263,13 +1259,13 @@ namespace webform_postilion.DataSet3TableAdapters {
             try {
                 // ---- Prepare for update -----------
                 //
-                if ((this._postilion_rolesTableAdapter != null)) {
-                    revertConnections.Add(this._postilion_rolesTableAdapter, this._postilion_rolesTableAdapter.Connection);
-                    this._postilion_rolesTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
-                    this._postilion_rolesTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
-                    if (this._postilion_rolesTableAdapter.Adapter.AcceptChangesDuringUpdate) {
-                        this._postilion_rolesTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
-                        adaptersWithAcceptChangesDuringUpdate.Add(this._postilion_rolesTableAdapter.Adapter);
+                if ((this._postilion_branchTableAdapter != null)) {
+                    revertConnections.Add(this._postilion_branchTableAdapter, this._postilion_branchTableAdapter.Connection);
+                    this._postilion_branchTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(workConnection));
+                    this._postilion_branchTableAdapter.Transaction = ((global::System.Data.SqlClient.SqlTransaction)(workTransaction));
+                    if (this._postilion_branchTableAdapter.Adapter.AcceptChangesDuringUpdate) {
+                        this._postilion_branchTableAdapter.Adapter.AcceptChangesDuringUpdate = false;
+                        adaptersWithAcceptChangesDuringUpdate.Add(this._postilion_branchTableAdapter.Adapter);
                     }
                 }
                 // 
@@ -1330,9 +1326,9 @@ namespace webform_postilion.DataSet3TableAdapters {
                 if (workConnOpened) {
                     workConnection.Close();
                 }
-                if ((this._postilion_rolesTableAdapter != null)) {
-                    this._postilion_rolesTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._postilion_rolesTableAdapter]));
-                    this._postilion_rolesTableAdapter.Transaction = null;
+                if ((this._postilion_branchTableAdapter != null)) {
+                    this._postilion_branchTableAdapter.Connection = ((global::System.Data.SqlClient.SqlConnection)(revertConnections[this._postilion_branchTableAdapter]));
+                    this._postilion_branchTableAdapter.Transaction = null;
                 }
                 if ((0 < adaptersWithAcceptChangesDuringUpdate.Count)) {
                     global::System.Data.Common.DataAdapter[] adapters = new System.Data.Common.DataAdapter[adaptersWithAcceptChangesDuringUpdate.Count];

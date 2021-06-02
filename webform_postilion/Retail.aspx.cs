@@ -23,56 +23,58 @@ namespace webform_postilion
             ClassDatabase obj = new ClassDatabase();
             obj.conn.ConnectionString = obj.locate;
             String customer_id;
-            if (TextBox1.Text != "")
-            {
-                customer_id = TextBox1.Text;
-                PopulateGridview(customer_id);
-            }
-            if (TextBox2.Text != "")
-            {
-                obj.conn.Open();
-                SqlDataReader sdr2;
-
-                SqlCommand cmd2 = new SqlCommand("SELECT * FROM pc_customer_accounts_1_A where account_id = '" + TextBox2.Text + "' ", obj.conn);
-
-                SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
-
-                using (sdr2 = cmd2.ExecuteReader())
+            if (TextBox1.Text != "" || TextBox2.Text != "" || TextBox3.Text != "") {
+                if (TextBox1.Text != "")
                 {
-                    while (sdr2.Read())
+                    customer_id = TextBox1.Text;
+                    PopulateGridview(customer_id);
+                }
+                if (TextBox2.Text != "")
+                {
+                    obj.conn.Open();
+                    SqlDataReader sdr2;
+
+                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM pc_customer_accounts_1_A where account_id = '" + TextBox2.Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
+
+                    using (sdr2 = cmd2.ExecuteReader())
                     {
+                        while (sdr2.Read())
+                        {
 
 
-                        PopulateGridview((sdr2["customer_id"].ToString()));
+                            PopulateGridview((sdr2["customer_id"].ToString()));
+
+                        }
 
                     }
-
+                    obj.conn.Close();
                 }
-                obj.conn.Close();
-            }
-            if (TextBox3.Text != "")
-            {
-                obj.conn.Open();
-                SqlDataReader sdr2;
-
-                SqlCommand cmd2 = new SqlCommand("SELECT * FROM pc_cards_1_A where pan = '" + TextBox3.Text + "' ", obj.conn);
-
-                SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
-
-                using (sdr2 = cmd2.ExecuteReader())
+                if (TextBox3.Text != "")
                 {
-                    while (sdr2.Read())
+                    obj.conn.Open();
+                    SqlDataReader sdr2;
+
+                    SqlCommand cmd2 = new SqlCommand("SELECT * FROM pc_cards_1_A where pan = '" + TextBox3.Text + "' ", obj.conn);
+
+                    SqlDataAdapter dataAdp2 = new SqlDataAdapter(cmd2);
+
+                    using (sdr2 = cmd2.ExecuteReader())
                     {
+                        while (sdr2.Read())
+                        {
 
 
-                        PopulateGridview((sdr2["customer_id"].ToString()));
+                            PopulateGridview((sdr2["customer_id"].ToString()));
+
+                        }
 
                     }
-
+                    obj.conn.Close();
                 }
-                obj.conn.Close();
             }
-           
+            else { ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme('ENTER ONE FIELD')", true); }
         }
         void PopulateGridview(String cust_id)
         {

@@ -24,7 +24,21 @@ namespace webform_postilion
         ClassDatabase obj = new ClassDatabase();
         protected void Page_Load(object sender, EventArgs e)
         {
-           if (Context.Session != null)
+           
+                List<Model.postilion_role> objlt = (List<Model.postilion_role>)Session["Roles"];
+
+                Console.WriteLine(objlt);
+
+            if (HttpContext.Current.Session["Roles"]  != null)
+            {
+                var list2 = HttpContext.Current.Session["Roles"] as List<Model.postilion_role>;
+
+              //  System.Diagnostics.Debug.WriteLine("Cats1>>" + list2[0].id + list2[0].convenience_users);
+
+            }
+           
+
+            if (Context.Session != null)
 
         {
 
@@ -60,22 +74,20 @@ namespace webform_postilion
             if (Label2.Text != "" && Label2.Text == "MAKER")
             {
           
-              //  HyperLink5.Enabled = false;
-               // HyperLink6.Enabled = false;
-                HyperLink7.Enabled = false;
+                HyperLink5.Enabled = false;             
+               // HyperLink7.Enabled = false;
                 //  Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme_site()", true);
             }
             if (Label2.Text != "" && Label2.Text == "CHECKER")
             {
-                HyperLink1.Enabled = false;
+              /*  HyperLink1.Enabled = false;
                 HyperLink2.Enabled = false;
                 HyperLink3.Enabled = false;
-                HyperLink4.Enabled = false;
-               // HyperLink5.Enabled = false;
-              //  HyperLink6.Enabled = false;
-                // Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme2()", true);
+                HyperLink4.Enabled = false;*/
+                HyperLink5.Enabled = false;
+             
             }
-            if (Label2.Text == "ADMIN")
+           /* if (Label2.Text == "ADMIN")
             {
                 checker_label.Text = "ADMIN";
                 HyperLink1.Enabled = false;
@@ -85,29 +97,29 @@ namespace webform_postilion
                 HyperLink7.Enabled = false;
              
                 //Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "admin()", true);
-            }
+            }*/
             if (IsPostBack)
             {
                 
                 if (Label2.Text != "" && Label2.Text == "MAKER")
             {
              
-                 //   HyperLink5.Enabled = false;
+                    HyperLink5.Enabled = false;
                  //   HyperLink6.Enabled = false;
-                    HyperLink7.Enabled = false;
+                   // HyperLink7.Enabled = false;
                     //  Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme_site()", true);
                 }
             if (Label2.Text != "" && Label2.Text == "CHECKER")
                 {
-                    HyperLink1.Enabled = false;
+                    /*HyperLink1.Enabled = false;
                     HyperLink2.Enabled = false;
                     HyperLink3.Enabled = false;
-                    HyperLink4.Enabled = false;
-                //    HyperLink5.Enabled = false;
+                    HyperLink4.Enabled = false;*/
+                    HyperLink5.Enabled = false;
                  //   HyperLink6.Enabled = false;
                     // Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme2()", true);
                 }
-            if (Label2.Text == "ADMIN")
+           /* if (Label2.Text == "ADMIN")
             {
                 checker_label.Text = "ADMIN";
                     HyperLink1.Enabled = false;
@@ -117,40 +129,47 @@ namespace webform_postilion
                     HyperLink7.Enabled = false;
                   
                     //Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "admin()", true);
-                }
+                }*/
             }
             if (!IsPostBack)
             {
-            
+
+                if (Session["major_branch"].ToString() != "")
+                {
+                    major_branch.Text = Session["major_branch"].ToString();
+                }
+
                 if (Session["User"].ToString() != "" && Session["role"].ToString() != "" )
                 {
                     Label2.Text = Session["role"].ToString();
-                Label3.Text = Session["User"].ToString();
+                    Label3.Text = Session["User"].ToString();
                    
-                        checker_label.Text = Session["checker_label"].ToString();
+                    checker_label.Text = Session["checker_label"].ToString();
                     
-                branch_label.Text = Session["branch"].ToString();
-          
+                    branch_label.Text = Session["branch"].ToString();
+                    
+
+
                 if (Label2.Text != "" && Label2.Text == "MAKER")
                 {
                 
-                  //  HyperLink5.Enabled = false;
+                    HyperLink5.Enabled = false;
                   //  HyperLink6.Enabled = false;
-                        HyperLink7.Enabled = false;
+                     //   HyperLink7.Enabled = false;
                         //  Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme_site()", true);
                     }
                 if (Label2.Text != "" && Label2.Text == "CHECKER")
                 {
-                    HyperLink1.Enabled = false;
+                    /*HyperLink1.Enabled = false;
                     HyperLink2.Enabled = false;
                     HyperLink3.Enabled = false;
-                    HyperLink4.Enabled = false;
-                 //   HyperLink5.Enabled = false;
+                    HyperLink4.Enabled = false;*/
+                    HyperLink5.Enabled = false;
                  //   HyperLink6.Enabled = false;
                     // Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "alertme2()", true);
                 }
 
-                if (Label2.Text != "" && Label2.Text == "ADMIN")
+               /* if (Label2.Text != "" && Label2.Text == "ADMIN")
                 {
                     checker_label.Text = "ADMIN";
                     HyperLink1.Enabled = false;
@@ -160,7 +179,7 @@ namespace webform_postilion
                         HyperLink7.Enabled = false;
                        
                         //   Page.ClientScript.RegisterStartupScript(this.GetType(), "randomtext", "admin()", true);
-                    }
+                    }*/
             }
                
                 try
@@ -189,7 +208,7 @@ namespace webform_postilion
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.Message);
+                   Console.WriteLine( ex.StackTrace);
                 }
 
                
@@ -217,8 +236,16 @@ namespace webform_postilion
             obj.cmd.ExecuteNonQuery();
             obj.cmd.CommandTimeout = 60;
 
+           
+            using (SqlConnection sqlCon = new SqlConnection(obj.locate1))
+            {
+                sqlCon.Open();
+                string query = "INSERT into postilion_user_log (username , action, date ) VALUES ('" + Label3.Text + "', 'LOGGED OUT','" + time + "')";
+                SqlCommand sqlCmd = new SqlCommand(query, sqlCon);
+                sqlCmd.ExecuteNonQuery();
+                sqlCon.Close();
+            }
             obj.conn.Close();
-
             Response.Redirect("Login.aspx");
         }
 

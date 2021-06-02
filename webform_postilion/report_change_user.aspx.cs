@@ -69,7 +69,7 @@ namespace webform_postilion
                     obj.conn.Open();
                     // SqlDataReader sdr;
 
-                    string loadToReport = "SELECT * FROM postilion_portal_changes where maker = '" + DropDownList1.Text + "'";
+                    string loadToReport = "SELECT * FROM postilion_portal_changes where maker = '" + DropDownList1.Text + "' order by date asc";
 
                     SqlCommand cmd = new SqlCommand(loadToReport, obj.conn);
                     SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
@@ -97,7 +97,7 @@ namespace webform_postilion
                     obj.conn.Open();
                     // SqlDataReader sdr;
 
-                    string loadToReport = "SELECT * FROM postilion_portal_changes where maker = '" + DropDownList1.Text + "' and branch = '" + DropDownList2.Text.Substring(0, 3) + "'";
+                    string loadToReport = "SELECT * FROM postilion_portal_changes where maker = '" + DropDownList1.Text + "' and branch = '" + DropDownList2.Text.Substring(0, 3) + "' order by date asc";
 
                     SqlCommand cmd = new SqlCommand(loadToReport, obj.conn);
                     SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);

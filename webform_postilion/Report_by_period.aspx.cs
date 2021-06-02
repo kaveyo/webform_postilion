@@ -65,7 +65,7 @@ namespace webform_postilion
 
 
                 obj.conn.Open();
-                string loadToReport = "SELECT * FROM postilion_portal_changes where date between'" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "'and '" + (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "'";
+                string loadToReport = "SELECT * FROM postilion_portal_changes where date between'" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "'and '" + (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "' order by date asc";
 
                 SqlCommand cmd = new SqlCommand(loadToReport, obj.conn);
                 SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);
@@ -87,7 +87,7 @@ namespace webform_postilion
                 obj.conn.Open();
                 // SqlDataReader sdr;
 
-                string loadToReport = "SELECT * FROM postilion_portal_changes where date between'" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "'and '" + (Convert.ToDateTime(datepicker1.Text)).ToString(format) + "' and branch ='"+DropDownList2.Text.Substring(0, 3)+"' ";
+                string loadToReport = "SELECT * FROM postilion_portal_changes where date between'" + (Convert.ToDateTime(datepicker34.Text)).ToString(format) + "'and '" + (Convert.ToDateTime(datepicker1.Text).AddDays(1)).ToString(format) + "' and branch ='"+DropDownList2.Text.Substring(0, 3)+ "' order by date asc";
 
                 SqlCommand cmd = new SqlCommand(loadToReport, obj.conn);
                 SqlDataAdapter dataAdp = new SqlDataAdapter(cmd);

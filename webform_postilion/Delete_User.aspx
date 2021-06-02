@@ -48,7 +48,7 @@
     
     </script>
     <div class="form-horizontal">
-        <h4>DELETE USER</h4>
+        <h4>EDIT USER DETAILS</h4>
         <hr />
            
            
